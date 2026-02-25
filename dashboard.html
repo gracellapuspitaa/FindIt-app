@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - FindIt Universitas Nawasena</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="header-title">
+            <h1>FindIt</h1>
+            <h2>Universitas Nawasena</h2>
+        </div>
+        <div class="nav-controls">
+            <select class="dropdown">
+                <option value="">Fakultas</option>
+                <option value="semua">Semua Fakultas</option>
+                <option value="feb">FEB</option>
+                <option value="fisip">FISIP</option>
+                <option value="fib">FIB</option>
+                <option value="fpsi">FPSI</option>
+                <option value="ft">FT</option>
+                <option value="fh">FH</option>
+                <option value="fk">FK</option>
+            </select>
+
+            <select class="dropdown">
+                <option value="">Jenis Barang</option>
+                <option value="bertuan">Bertuan</option>
+                <option value="tak-bertuan">Tak Bertuan</option>
+            </select>
+
+            <button class="btn-out">OUT</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        
+        <section class="items-grid">
+            <div class="item-card">
+                <div class="image-placeholder">Gambar Barang</div>
+                <div class="card-info">
+                    <div class="bubble-box">Title Barang 1</div>
+                    <div class="bubble-box">Lokasi Penemuan</div>
+                    <button class="btn-detail">Detail</button>
+                </div>
+            </div>
+
+            <div class="item-card">
+                <div class="image-placeholder">Gambar Barang</div>
+                <div class="card-info">
+                    <div class="bubble-box">Title Barang 2</div>
+                    <div class="bubble-box">Lokasi Penemuan</div>
+                    <button class="btn-detail">Detail</button>
+                </div>
+            </div>
+
+            <div class="item-card">
+                <div class="image-placeholder">Gambar Barang</div>
+                <div class="card-info">
+                    <div class="bubble-box">Title Barang 3</div>
+                    <div class="bubble-box">Lokasi Penemuan</div>
+                    <button class="btn-detail">Detail</button>
+                </div>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+            <div class="side-box welcome-box">
+                <h3>HELLO, Grace!</h3>
+                <p>Selamat datang di FindIt</p>
+            </div>
+
+            <div class="side-box calendar-box">
+                <div class="calendar-header">CALENDAR</div>
+                <div class="calendar-mock">
+                    <div class="dot-grid"></div>
+                </div>
+                <button class="btn-reset">Reset</button>
+            </div>
+
+            <div class="side-box chart-box">
+                <h4>Data Diagram Berdasarkan Jenis Barang</h4>
+                <div class="pie-chart-mock">
+                    <span>Tb</span>
+                    <span>Bt</span>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+</body>
+</html>

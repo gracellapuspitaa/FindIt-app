@@ -1,0 +1,179 @@
+/* Reset & Font */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Serif', 'Times New Roman', serif;
+}
+
+body {
+    background-color: #5b624b; /* Warna hijau zaitun luar */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-wrapper {
+    position: relative;
+    width: 95%;
+    max-width: 1200px;
+    height: 90vh;
+    background-color: #d8d9d4; /* Warna abu-abu terang */
+    border-radius: 60px; /* Lengkungan besar di pinggir */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* Style Logo */
+.brand-logo {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.icon-orb {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #2b6cb0, #ecc94b);
+    border-radius: 50% 50% 50% 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.brand-text {
+    font-size: 14px;
+    font-weight: bold;
+    color: #3b4371;
+    margin-top: 5px;
+}
+
+/* Konten Utama */
+.content {
+    display: flex;
+    width: 100%;
+    padding: 0 80px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 100px;
+}
+
+/* Welcome Text */
+.welcome-text {
+    flex: 1.2;
+}
+
+.welcome-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* Membuat teks menumpuk ke bawah */
+    align-items: center;    /* Ini yang membuat teks "Welcome To" jadi di tengah (mid) */
+    text-align: center;     /* Memastikan teks di dalam baris juga rata tengah */
+}
+
+.welcome-text h1 {
+    font-size: 3.5rem;
+    color: #444;
+    line-height: 1.2;
+    font-weight: 500;
+}
+
+/* Area Login */
+.login-box-container {
+    flex: 0.8;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.login-card {
+    background-color: #bbbcba; /* Abu-abu lebih gelap sedikit */
+    padding: 60px 40px;
+    border-radius: 35px;
+    width: 420px;
+    text-align: center;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+}
+
+.login-card h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: #1a1a1a;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+input {
+    width: 70%;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: none;
+    background-color: #ffffff;
+    text-align: center;
+    font-size: 1rem;
+    outline: none;
+    color: #666;
+}
+
+input::placeholder {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+/* Tombol Login */
+.btn-login {
+    width: 70%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 25px;
+    border: none;
+    background-color: #d1b899; /* Warna cokelat pasir sesuai gambar */
+    color: #333;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #c4a785;
+    transform: translateY(-2px);
+}
+
+/* Responsivitas untuk layar HP */
+@media (max-width: 992px) {
+    .content {
+        flex-direction: column;
+        text-align: center;
+        padding: 0 20px;
+    }
+    .welcome-text h1 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+    }
+    .login-box-container {
+        justify-content: center;
+    }
+    .login-card {
+        width: 100%;
+        max-width: 350px;
+    }
+}

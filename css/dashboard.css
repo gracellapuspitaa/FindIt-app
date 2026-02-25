@@ -1,0 +1,144 @@
+/* Reset Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #5b624b; /* Hijau zaitun luar */
+    min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #a4ad8e;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title {
+    text-align: center;
+    flex: 1;
+}
+
+.header-title h1 { font-size: 1.5rem; }
+.header-title h2 { font-size: 1.2rem; font-weight: 400; }
+
+.nav-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.dropdown, .btn-out {
+    background-color: #c4ccb4;
+    border: 1px solid #99a385;
+    padding: 5px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Layout Utama */
+.main-content {
+    display: flex; /* Kunci agar Sidebar ke samping */
+    padding: 25px;
+    gap: 25px;
+    align-items: flex-start;
+}
+
+/* Bagian Grid Barang (75% lebar) */
+.items-grid {
+    flex: 3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 kolom */
+    gap: 20px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 15px;
+}
+
+.item-card {
+    background-color: #a4ad8e;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.image-placeholder {
+    background-color: #8c8c8c;
+    height: 130px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-bottom: 12px;
+}
+
+.bubble-box {
+    background-color: #eee0d5;
+    padding: 6px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #333;
+}
+
+.btn-detail {
+    background-color: #d1b899; /* Cokelat pasir sesuai contoh */
+    border: none;
+    padding: 6px 20px;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-detail:hover { background-color: #c4a785; }
+
+/* Sidebar (25% lebar) */
+.sidebar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.side-box {
+    background-color: #8c947c;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.calendar-header {
+    background-color: #ff5e5e;
+    color: white;
+    padding: 3px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.pie-chart-mock {
+    width: 120px;
+    height: 120px;
+    background-color: #f8e8f0;
+    border-radius: 50%;
+    margin: 15px auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 2px solid #ddd;
+}
+
+.btn-reset {
+    background-color: #d1b899;
+    border: none;
+    padding: 5px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+}
