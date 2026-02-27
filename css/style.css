@@ -1,179 +1,216 @@
-/* Reset & Font */
+/* ================= RESET & GLOBAL FONT ================= */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Serif', 'Times New Roman', serif;
 }
 
 body {
-    background-color: #5b624b; /* Warna hijau zaitun luar */
+    font-family: 'Poppins', sans-serif;
+    background-color: #ebebeb; 
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+    position: relative;
 }
 
+/* ================= ANIMASI TIRAI (ULTRA SMOOTH OPTIMIZED) ================= */
+.layer-top, .layer-bottom {
+    position: fixed;
+    width: 160%; 
+    height: 100vh;
+    z-index: 10000;
+    top: 0;
+    will-change: transform, left, right;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.layer-top {
+    background-color: #ff6700;
+    left: -160%;
+    transform: skewX(-25deg); 
+    animation: slideCrossLeft 2.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+
+.layer-bottom {
+    background-color: #3a6ea5;
+    right: -160%;
+    transform: skewX(-25deg); 
+    animation: slideCrossRight 2.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+
+@keyframes slideCrossLeft {
+    0% { left: -160%; }
+    40%, 60% { left: -30%; } 
+    100% { left: -180%; visibility: hidden; } 
+}
+
+@keyframes slideCrossRight {
+    0% { right: -160%; }
+    40%, 60% { right: -30%; } 
+    100% { right: -180%; visibility: hidden; } 
+}
+
+/* ================= MAIN WRAPPER (REVEAL) ================= */
 .main-wrapper {
     position: relative;
     width: 95%;
     max-width: 1200px;
     height: 90vh;
-    background-color: #d8d9d4; /* Warna abu-abu terang */
-    border-radius: 60px; /* Lengkungan besar di pinggir */
+    background-color: #ebebeb; 
+    border-radius: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    opacity: 0%;
+    animation: smoothReveal 1s ease-out 1.8s forwards;
+    transition: transform 0.5s ease, box-shadow 0.8s ease;
 }
 
-/* Style Logo */
+@keyframes smoothReveal {
+    0% { opacity: ; transform: scale(0.95); filter: blur(5px); }
+    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+/* ================= LOGO ================= */
 .brand-logo {
     position: absolute;
-    top: 30px;
+    top: 30px; 
     left: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    z-index: 10;
+    opacity: 0;
+    animation: fadeInOnly 0.8s ease-out 2.2s forwards;
 }
 
-.icon-orb {
-    width: 32px;
-    height: 32px;
-    background: linear-gradient(135deg, #2b6cb0, #ecc94b);
-    border-radius: 50% 50% 50% 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-weight: bold;
-    font-style: italic;
-    font-size: 14px;
+.logo-img {
+    width: 135px;
+    height: auto;
 }
 
-.brand-text {
-    font-size: 14px;
-    font-weight: bold;
-    color: #3b4371;
-    margin-top: 5px;
-}
-
-/* Konten Utama */
+/* ================= CONTENT AREA ================= */
 .content {
     display: flex;
     width: 100%;
     padding: 0 80px;
     align-items: center;
     justify-content: space-between;
-    gap: 100px;
-}
-
-/* Welcome Text */
-.welcome-text {
-    flex: 1.2;
+    gap: 50px;
 }
 
 .welcome-text {
     flex: 1;
-    display: flex;
-    flex-direction: column; /* Membuat teks menumpuk ke bawah */
-    align-items: center;    /* Ini yang membuat teks "Welcome To" jadi di tengah (mid) */
-    text-align: center;     /* Memastikan teks di dalam baris juga rata tengah */
+    opacity: 0;
+    animation: slideInLeft 1s ease-out 2.2s forwards;
 }
 
 .welcome-text h1 {
-    font-size: 3.5rem;
-    color: #444;
-    line-height: 1.2;
-    font-weight: 500;
+    font-family: 'Playfair Display', serif;
+    font-size: 3.8rem;
+    font-weight: 700;
+    color: #000000; 
+    line-height: 1.1;
 }
 
-/* Area Login */
-.login-box-container {
-    flex: 0.8;
-    display: flex;
-    justify-content: flex-end;
-}
-
+/* ================= LOGIN CARD ================= */
 .login-card {
-    background-color: #bbbcba; /* Abu-abu lebih gelap sedikit */
-    padding: 60px 40px;
-    border-radius: 35px;
-    width: 420px;
+    background-color: #ffffff;
+    padding: 60px 45px;
+    border-radius: 40px;
+    width: 430px;
     text-align: center;
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    opacity: 0;
+    animation: smoothReveal 0.8s ease-out 2.4s forwards;
 }
 
 .login-card h2 {
-    font-size: 2.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
     margin-bottom: 40px;
-    font-weight: 500;
-    letter-spacing: 3px;
-    color: #1a1a1a;
+    color: #000000; 
 }
 
-/* Form Styling */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-}
+/* ================= FORM & BUTTON ================= */
+form { display: flex; flex-direction: column; gap: 20px; }
 
 input {
-    width: 70%;
-    padding: 12px 20px;
-    border-radius: 25px;
-    border: none;
-    background-color: #ffffff;
-    text-align: center;
+    width: 100%;
+    padding: 16px 25px;
+    border-radius: 15px;
+    border: 1px solid #000000;
+    background-color: #F8F9FA;
     font-size: 1rem;
     outline: none;
-    color: #666;
+    font-family: 'Poppins', sans-serif;
 }
 
-input::placeholder {
-    color: #aaa;
-    font-size: 0.9rem;
-}
-
-/* Tombol Login */
 .btn-login {
-    width: 70%;
-    padding: 12px;
-    margin-top: 15px;
-    border-radius: 25px;
-    border: none;
-    background-color: #d1b899; /* Warna cokelat pasir sesuai gambar */
-    color: #333;
-    font-size: 1rem;
-    font-weight: bold;
+    width: 100%;
+    padding: 16px;
+    margin-top: 10px;
+    border-radius: 15px;
+    border: 1;
+    background-color: #004e98; 
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: 0.3s;
+    transition: 0.3s ease;
+    font-family: 'Poppins', sans-serif;
 }
 
 .btn-login:hover {
-    background-color: #c4a785;
-    transform: translateY(-2px);
+    background-color: #004e98; 
+    opacity: 80%;
+    transform: scale(1.02);
 }
 
-/* Responsivitas untuk layar HP */
+/* ================= CUSTOM MODAL (LOGIN BERHASIL) ================= */
+/* Kita gunakan !important untuk memaksa perubahan pada library pop-up */
+.swal2-popup, .modal-content, .login-success-box {
+    border-radius: 30px !important;
+    padding: 2em !important;
+    background: #ffffff !important;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.2) !important;
+}
+
+.swal2-title, .modal-title {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
+}
+
+.swal2-confirm, .btn-ok-custom {
+    background-color: #004e98 !important; /* Biar match sama tema kamu */
+    color: #ffffff!important;
+    border-radius: 12px !important;
+    padding: 12px 35px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    box-shadow: 0 4px 15px #004e98 !important;
+}
+
+.swal2-success-ring {
+    border-color: rgba(74, 222, 128, 0.3) !important;
+}
+
+/* ================= ANIMASI TAMBAHAN ================= */
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInOnly {
+    to { opacity: 1; }
+}
+
+/* ================= RESPONSIVE ================= */
 @media (max-width: 992px) {
-    .content {
-        flex-direction: column;
-        text-align: center;
-        padding: 0 20px;
-    }
-    .welcome-text h1 {
-        font-size: 2.5rem;
-        margin-bottom: 30px;
-    }
-    .login-box-container {
-        justify-content: center;
-    }
-    .login-card {
-        width: 100%;
-        max-width: 350px;
-    }
+    .content { flex-direction: column; text-align: center; padding: 0 20px; }
+    .welcome-text h1 { font-size: 2.5rem; margin-top: 60px; }
+    .brand-logo { left: 50%; transform: translateX(-50%); }
 }
