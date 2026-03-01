@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - FindIt Universitas Nawasena</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="brand-section">
+            <div class="logo-wrapper">
+                <img src="images/logo.png" alt="Logo FindIt" class="header-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="logo-placeholder" style="display: none;">F</div>
+            </div>
+            <div class="header-title">
+                <h1>FindIt Universitas Nawasena</h1>
+            </div>
+        </div>
+        <div class="nav-controls">
+            <button class="btn-out" id="btnOut">OUT</button>
+        </div>
+    </header>
+
+   <section class="welcome-banner">
+    <div class="welcome-text">
+        <h2>Hello, Grace!</h2>
+        <p>Welcome to Find It Universitas Nawasena</p>
+    </div>
+
+    <img src="images/maskot.png" alt="Maskot" class="maskot-img">
+    </section>
+    <section class="search-section">
+        <h3>Cari Barangmu Disini</h3>
+        <div class="search-box">
+            <input type="text" class="search-bar" placeholder="Search Here">
+        </div>
+    </section>
+
+    <div class="main-container">
+        
+        <aside class="sidebar">
+            
+            <div class="side-box category-container">
+                <ul class="tree-menu">
+                    <li class="active-item">
+                        <div class="menu-label">
+                            <span>Fakultas</span>
+                            <span class="badge">32</span>
+                            <i class="fas fa-chevron-down arrow"></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li>
+                                <span>All</span>
+                            </li>
+                            <li>
+                                <span>Fisip</span>
+                            </li>
+                            <li>
+                                <span>Teknik</span>
+                            </li>
+                            <li>
+                                <span>Hukum</span>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <div class="menu-label">
+                            <span>Jenis Barang</span>
+                            <i class="fas fa-chevron-down arrow"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="menu-label">
+                            <i class="fas fa-star icon-main"></i>
+                            <span>Sering Hilang</span>
+                            <i class="fas fa-chevron-down arrow"></i>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="side-box">
+                <div class="calendar-img-mock">
+                    <i class="far fa-calendar-alt" style="font-size: 40px; color: var(--orange); margin-bottom: 10px;"></i>
+                    <p style="font-weight: 600; font-size: 14px;">CALENDAR</p>
+                    <div style="display: flex; gap: 5px; justify-content: center; margin-top: 10px; flex-wrap: wrap; padding: 0 20px;">
+                        <span style="width: 8px; height: 8px; background: var(--gray-mid); border-radius: 50%;"></span>
+                        <span style="width: 8px; height: 8px; background: var(--gray-mid); border-radius: 50%;"></span>
+                        <span style="width: 8px; height: 8px; background: var(--orange); border-radius: 50%;"></span>
+                        <span style="width: 8px; height: 8px; background: var(--gray-mid); border-radius: 50%;"></span>
+                    </div>
+                </div>
+                <button class="btn-reset">Reset</button>
+            </div>
+
+            <div class="side-box">
+                <h4 style="font-size: 11px; color: var(--text-dark); margin-bottom: 10px;">Data Diagram Berdasarkan Jenis Barang</h4>
+                <div class="pie-chart-mock"></div>
+            </div>
+        </aside>
+
+        <main class="items-grid">
+            
+            <div class="item-card">
+                <div class="image-placeholder"><i class="fas fa-motorcycle fa-2x"></i></div>
+                <div class="bubble-box title-bubble">Kunci Motor Honda</div>
+                <div class="bubble-box desc-bubble">Gedung FT Lantai 2</div>
+                <button class="btn-detail">Detail</button>
+            </div>
+
+            <div class="item-card">
+                <div class="image-placeholder"><i class="fas fa-id-card fa-2x"></i></div>
+                <div class="bubble-box title-bubble">KTM a.n Budi</div>
+                <div class="bubble-box desc-bubble">Kantin Utama</div>
+                <button class="btn-detail">Detail</button>
+            </div>
+
+            <div class="item-card">
+                <div class="image-placeholder"><i class="fas fa-tint fa-2x"></i></div>
+                <div class="bubble-box title-bubble">Botol Minum Biru</div>
+                <div class="bubble-box desc-bubble">Perpustakaan Lt. 1</div>
+                <button class="btn-detail">Detail</button>
+            </div>
+
+            <div class="item-card">
+                <div class="image-placeholder"><i class="fas fa-book fa-2x"></i></div>
+                <div class="bubble-box title-bubble">Buku Catatan MTK</div>
+                <div class="bubble-box desc-bubble">Ruang Kelas 304</div>
+                <button class="btn-detail">Detail</button>
+            </div>
+
+            <div class="item-card">
+                <div class="image-placeholder"><i class="fas fa-glasses fa-2x"></i></div>
+                <div class="bubble-box title-bubble">Kacamata Hitam</div>
+                <div class="bubble-box desc-bubble">Parkiran FEB</div>
+                <button class="btn-detail">Detail</button>
+            </div>
+
+            <div class="item-card">
+                <div class="image-placeholder"><i class="fas fa-usb fa-2x"></i></div>
+                <div class="bubble-box title-bubble">Flashdisk 32GB</div>
+                <div class="bubble-box desc-bubble">Lab Komputer</div>
+                <button class="btn-detail">Detail</button>
+            </div>
+
+        </main>
+
+    </div>
+
+    <script>
+        // Logika Logout
+        document.getElementById('btnOut').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: "Apakah Anda yakin ingin keluar?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#FF6700', // Sesuai palet
+                cancelButtonColor: '#3A6EA5',  // Sesuai palet
+                confirmButtonText: 'Ya, Keluar!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Logged Out!', 'Anda telah keluar dari sistem.', 'success').then(() => {
+                        window.location.href = "index.html"; // Arahkan kembali ke halaman login
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

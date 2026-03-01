@@ -1,144 +1,241 @@
-/* Reset Dasar */
+:root {
+    --orange: #FF6700;
+    --gray-light: #EBEBEB;
+    --gray-mid: #C0C0C0;
+    --blue-light: #3A6EA5;
+    --blue-dark: #004E98;
+    --text-dark: #333333;
+    --bg-white: #FFFFFF;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
-    background-color: #5b624b; /* Hijau zaitun luar */
-    min-height: 100vh;
+    background-color: var(--bg-white);
+    color: var(--text-dark);
+    padding: 20px 40px;
 }
 
-/* Navbar */
+/* NAVBAR */
 .navbar {
-    background-color: #a4ad8e;
-    padding: 15px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--gray-light);
 }
 
-.header-title {
-    text-align: center;
-    flex: 1;
-}
-
-.header-title h1 { font-size: 1.5rem; }
-.header-title h2 { font-size: 1.2rem; font-weight: 400; }
-
-.nav-controls {
-    display: flex;
-    gap: 10px;
-}
-
-.dropdown, .btn-out {
-    background-color: #c4ccb4;
-    border: 1px solid #99a385;
-    padding: 5px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-/* Layout Utama */
-.main-content {
-    display: flex; /* Kunci agar Sidebar ke samping */
-    padding: 25px;
-    gap: 25px;
-    align-items: flex-start;
-}
-
-/* Bagian Grid Barang (75% lebar) */
-.items-grid {
-    flex: 3;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 kolom */
-    gap: 20px;
-    background-color: white;
-    padding: 25px;
-    border-radius: 15px;
-}
-
-.item-card {
-    background-color: #a4ad8e;
-    padding: 15px;
-    border-radius: 15px;
-    text-align: center;
-}
-
-.image-placeholder {
-    background-color: #8c8c8c;
-    height: 130px;
-    border-radius: 10px;
+.brand-section {
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: white;
-    margin-bottom: 12px;
+    gap: 15px;
 }
 
-.bubble-box {
-    background-color: #eee0d5;
-    padding: 6px;
-    border-radius: 20px;
-    margin-bottom: 8px;
-    font-size: 13px;
-    color: #333;
+.header-logo {
+    height: 50px;
 }
 
-.btn-detail {
-    background-color: #d1b899; /* Cokelat pasir sesuai contoh */
+.header-title h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+}
+
+.btn-out {
+    background-color: var(--gray-light);
     border: none;
-    padding: 6px 20px;
-    border-radius: 15px;
-    font-weight: bold;
+    padding: 8px 25px;
+    border-radius: 20px;
+    font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
 }
 
-.btn-detail:hover { background-color: #c4a785; }
+.btn-out:hover {
+    background-color: var(--orange);
+    color: white;
+}
 
-/* Sidebar (25% lebar) */
+/* BANNER */
+.welcome-banner {
+    background-color: var(--gray-light);
+    border-radius: 15px;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.welcome-text h2 { font-size: 24px; }
+.maskot-img { height: 120px; object-fit: contain; }
+
+/* SEARCH */
+.search-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.search-bar {
+    background-color: var(--gray-light);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    width: 300px;
+    outline: none;
+}
+
+/* MAIN CONTAINER */
+.main-container {
+    display: flex;
+    gap: 30px;
+}
+
+/* SIDEBAR */
 .sidebar {
-    flex: 1;
+    width: 250px;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
 .side-box {
-    background-color: #8c947c;
-    padding: 20px;
+    background-color: var(--gray-light);
     border-radius: 15px;
-    text-align: center;
+    padding: 15px;
 }
 
-.calendar-header {
-    background-color: #ff5e5e;
-    color: white;
-    padding: 3px;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+.tree-menu { list-style: none; }
 
-.pie-chart-mock {
-    width: 120px;
-    height: 120px;
-    background-color: #f8e8f0;
-    border-radius: 50%;
-    margin: 15px auto;
+.menu-label {
     display: flex;
-    justify-content: space-around;
     align-items: center;
-    border: 2px solid #ddd;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.icon-main { margin-right: 10px; width: 20px; color: var(--blue-light); }
+
+.badge {
+    background-color: #FF4D4F;
+    color: white;
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-size: 10px;
+    margin-left: auto;
+}
+
+.sub-menu {
+    list-style: none;
+    padding-left: 25px;
+    border-left: 1px solid var(--gray-mid);
+    margin: 5px 0 15px 15px;
+}
+
+.sub-menu li {
+    font-size: 13px;
+    padding: 5px 0;
+    color: #666;
+    cursor: pointer;
+}
+
+.sub-menu li:hover { color: var(--orange); }
+
+/* GRID & CARDS */
+.items-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.item-card {
+    background-color: var(--gray-light);
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.item-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+.image-placeholder {
+    width: 100%;
+    height: 100px;
+    background-color: var(--gray-mid);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.bubble-box {
+    background-color: var(--bg-white);
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 11px;
+    margin-bottom: 8px;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+}
+
+.title-bubble { font-weight: 700; color: var(--blue-dark); }
+
+.btn-detail {
+    background-color: var(--blue-light);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.btn-detail:hover { background-color: var(--blue-dark); }
+
+/* MOCKUPS */
+.pie-chart-mock {
+    width: 100px;
+    height: 100px;
+    background: conic-gradient(var(--orange) 0% 40%, var(--blue-light) 40% 70%, var(--gray-mid) 70% 100%);
+    border-radius: 50%;
+    margin: 10px auto;
 }
 
 .btn-reset {
-    background-color: #d1b899;
-    border: none;
-    padding: 5px 25px;
+    width: 100%;
+    padding: 5px;
     border-radius: 10px;
+    border: 1px solid var(--gray-mid);
+    background: white;
     cursor: pointer;
 }
+
+.search-title-group { display: flex; align-items: center; gap: 20px; }
+.btn-add-page {
+    background-color: var(--orange);
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.3s;
+}
+.btn-add-page:hover { background-color: var(--blue-dark); }

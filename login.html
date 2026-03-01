@@ -54,9 +54,19 @@
                             >
                         </div>
 
-                        <div id="errorMsg" style="color:red; font-size:14px; margin-bottom: 10px;"></div>
+                        <div id="errorMsg"></div>
 
                         <button type="submit" class="btn-login">Login</button>
+
+                        <!-- Tombol Login Sarpras yang sudah diperbaiki -->
+                        <button type="button" class="btn-login btn-sarpras"
+                            onclick="window.location.href='login_sarpras.html'">
+                            Login Sarpras
+                        </button>
+
+                        <div class="forgot-password">
+                            Forgot Your Password? Please Contact Admin
+                        </div>
 
                     </form>
                 </div>
@@ -67,7 +77,7 @@
 
 <script>
 document.getElementById("loginForm").addEventListener("submit", function(e) {
-    e.preventDefault(); // prevent default submission
+    e.preventDefault();
 
     const nim = document.getElementById("nim").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -88,15 +98,13 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
         return;
     }
 
-    // Ganti alert bawaan dengan SweetAlert2
-    Swal.fire({
+   Swal.fire({
         icon: 'success',
         title: 'Login Valid!',
-        text: 'Menuju Dashboard...',
+        text: 'Selamat datang ' + nim,
         confirmButtonText: 'OK'
     }).then(() => {
-        // Bisa arahkan ke dashboard, misal:
-        // window.location.href = "dashboard.html";
+        window.location.href = "dashboard.html";
     });
 });
 </script>

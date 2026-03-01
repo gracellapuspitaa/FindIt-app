@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Barang - FindIt Nawasena</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="css/tambah-barang.css">
+</head>
+<body>
+
+    <div class="form-container">
+        <header class="form-header">
+            <a href="dashboard.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
+            <h1>Upload Barang Temuan</h1>
+        </header>
+
+        <form id="formTambah" class="main-form">
+            <div class="upload-section">
+                <div class="photo-box" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-camera fa-2x"></i>
+                    <p>Klik untuk Upload Foto Barang</p>
+                    <input type="file" id="fileInput" hidden accept="image/*">
+                </div>
+            </div>
+
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>Nama Barang</label>
+                    <input type="text" placeholder="Contoh: Kunci Motor Honda" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Fakultas / Lokasi Temu</label>
+                    <select required>
+                        <option value="">Pilih Lokasi</option>
+                        <option>FISIP</option>
+                        <option>Teknik</option>
+                        <option>FEB</option>
+                        <option>Hukum</option>
+                        <option>Fasilitas Umum</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Kategori</label>
+                    <select required>
+                        <option value="">Pilih Kategori</option>
+                        <option>Elektronik</option>
+                        <option>Dokumen</option>
+                        <option>Aksesoris</option>
+                        <option>Perlengkapan</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>No. Telepon (WhatsApp)</label>
+                    <input type="tel" placeholder="0812xxxxxx" required>
+                </div>
+            </div>
+
+            <div class="radio-section">
+                <div class="radio-card">
+                    <label>Jenis Barang</label>
+                    <div class="options">
+                        <label><input type="radio" name="jenis" value="tak-bertuan" checked onclick="toggleNamaField(false)"> Tak Bertuan</label>
+                        <label><input type="radio" name="jenis" value="bertuan" onclick="toggleNamaField(true)"> Bertuan</label>
+                    </div>
+                </div>
+
+                <div id="fieldNama" class="input-group" style="display: none; margin-top: 15px;">
+                    <label>Atas Nama Siapa?</label>
+                    <input type="text" id="inputNama" placeholder="Nama yang tertera di barang">
+                </div>
+
+                <div class="radio-card">
+                    <label>Status Keberadaan</label>
+                    <div class="options">
+                        <label><input type="radio" name="status" value="sarpras" checked> Di Sarpras</label>
+                        <label><input type="radio" name="status" value="penemu"> Dibawa Penemu</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Deskripsi Detail</label>
+                <textarea rows="4" placeholder="Contoh: Ditemukan di meja pojok, ada gantungan astronot..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">Simpan & Publikasikan</button>
+        </form>
+    </div>
+
+    <script>
+        // Logika Show/Hide Input Nama
+        function toggleNamaField(show) {
+            const field = document.getElementById('fieldNama');
+            const input = document.getElementById('inputNama');
+            if(show) {
+                field.style.display = 'block';
+                input.required = true;
+            } else {
+                field.style.display = 'none';
+                input.required = false;
+                input.value = "";
+            }
+        }
+
+        // Alert Sukses
+        document.getElementById('formTambah').addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Barang temuan telah di-upload.',
+                icon: 'success',
+                confirmButtonColor: '#FF6700'
+            }).then(() => {
+                window.location.href = "dashboard.html";
+            });
+        });
+    </script>
+</body>
+</html>
