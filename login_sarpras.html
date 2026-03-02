@@ -110,76 +110,44 @@
     </div>
 
 <script>
-document.getElementById("loginSarprasForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+    document.getElementById("loginSarprasForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
 
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const errorMsg = document.getElementById("errorMsg");
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
 
-    // Reset error message
-    errorMsg.textContent = "";
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
 
-    // Validasi input tidak kosong
-    if (username === "" || password === "") {
-        errorMsg.textContent = "Username dan Password harus diisi!";
-        return;
-    }
+        const result = await response.json();
 
-    // Validasi panjang minimal
-    if (username.length < 3) {
-        errorMsg.textContent = "Username minimal 3 karakter!";
-        return;
-    }
-
-    if (password.length < 4) {
-        errorMsg.textContent = "Password minimal 4 karakter!";
-        return;
-    }
-
-    // Kredensial login Sarpras (contoh - sesuaikan dengan kebutuhan)
-    // Format: username: sarpras, password: admin123
-    // Atau bisa ditambahkan multiple akun
-    
-    const validCredentials = [
-        { username: "sarpras", password: "admin123" },
-        { username: "admin", password: "sarpras123" },
-        { username: "kepala", password: "sarpras2024" },
-        { username: "staff", password: "staff123" }
-    ];
-
-    // Cek apakah username dan password cocok
-    const isValid = validCredentials.some(cred => 
-        cred.username === username && cred.password === password
-    );
-
-    if (isValid) {
-        // Login berhasil
-        Swal.fire({
-            icon: 'success',
-            title: 'Login Sarpras Berhasil!',
-            text: 'Selamat datang, ' + username,
-            confirmButtonText: 'Lanjut ke Dashboard',
-            confirmButtonColor: '#004e98',
-            background: '#ffffff',
-            backdrop: `rgba(0,0,0,0.4)`
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Redirect ke dashboard sarpras
+        if (result.success && result.user.role === 'admin') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Sarpras Berhasil!',
+                text: 'Selamat datang, ' + result.user.nama_lengkap,
+                confirmButtonText: 'Lanjut ke Dashboard',
+                confirmButtonColor: '#004e98'
+            }).then(() => {
                 window.location.href = "dashboard_sarpras.html";
-            }
-        });
-    } else {
-        // Login gagal
-        Swal.fire({
-            icon: 'error',
-            title: 'Login Gagal',
-            text: 'Username atau password salah!',
-            confirmButtonText: 'Coba Lagi',
-            confirmButtonColor: '#ff6b6b'
-        });
-    }
-});
+            });
+        } else if (result.success && result.user.role !== 'admin') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Akses Ditolak',
+                text: 'Anda bukan Admin Sarpras!'
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Gagal',
+                text: result.message
+            });
+        }
+    });
 </script>
 
 </body>

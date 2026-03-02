@@ -1,28 +1,44 @@
 const express = require('express');
 const path = require('path');
+const supabase = require('./js/supabaseClient'); // Memanggil koneksi Supabase
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Serve file statis (HTML, CSS, JS, images)
+app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-// Default route ke index.html
+// --- ROUTES UNTUK HALAMAN ---
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'login.html'));
 });
 
-// Route untuk halaman login sarpras
-app.get('/sarpras.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'sarpras.html'));
+app.get('/sarpras', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login_sarpras.html'));
 });
 
-// Alternatif: route dengan nama yang lebih simple
-app.get('/sarpras', (req, res) => {
-    res.sendFile(path.join(__dirname, 'sarpras.html'));
+// --- API UNTUK LOGIN (MENGHUBUNGKAN KE SUPABASE) ---
+app.post('/api/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        const { data, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('username', username)
+            .eq('password', password)
+            .single();
+
+        if (error || !data) {
+            return res.status(401).json({ success: false, message: "Username atau Password salah!" });
+        }
+
+        // Kirim data user ke frontend jika berhasil
+        res.json({ success: true, user: data });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Terjadi kesalahan server" });
+    }
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-    console.log(`- Login Mahasiswa: http://localhost:${PORT}/`);
-    console.log(`- Login Sarpras: http://localhost:${PORT}/sarpras`);
+    console.log(`Sistem FINDIT berjalan di http://localhost:${PORT}`);
 });

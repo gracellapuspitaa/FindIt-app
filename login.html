@@ -78,44 +78,38 @@
     </div>
 
 <script>
-/* Logika penanganan pengiriman form (Form Submission) */
-document.getElementById("loginForm").addEventListener("submit", function(e) {
-    e.preventDefault(); // Menghentikan reload halaman otomatis
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
 
-    // Mengambil data dari input dan menghapus spasi di awal/akhir
-    const nim = document.getElementById("nim").value.trim();
-    const password = document.getElementById("password").value.trim();
-    const errorMsg = document.getElementById("errorMsg");
+        const nim = document.getElementById("nim").value.trim();
+        const password = document.getElementById("password").value.trim();
 
-    // Definisi Aturan Validasi (Regex)
-    const nimRegex = /^[0-9]+$/; // Harus angka semua
-    const passRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/; // Harus ada huruf dan angka
+        // Kirim data ke server (Node.js)
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: nim, password: password })
+        });
 
-    errorMsg.textContent = ""; // Reset pesan error setiap kali tombol diklik
+        const result = await response.json();
 
-    // Validasi input NIM
-    if (!nimRegex.test(nim)) {
-        errorMsg.textContent = "NIM harus berupa angka saja!";
-        return; // Berhenti jika salah
-    }
-
-    // Validasi input Password
-    if (!passRegex.test(password)) {
-        errorMsg.textContent = "Password harus kombinasi huruf dan angka!";
-        return; // Berhenti jika salah
-    }
-
-    // Jika semua validasi lolos, tampilkan SweetAlert sukses
-    Swal.fire({
-        icon: 'success',
-        title: 'Login Valid!',
-        text: 'Selamat datang ' + nim,
-        confirmButtonText: 'OK'
-    }).then(() => {
-        // Redirect ke halaman dashboard setelah user klik OK
-        window.location.href = "dashboard.html";
+        if (result.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Berhasil!',
+                text: 'Selamat datang, ' + result.user.nama_lengkap,
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = "dashboard.html";
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Gagal',
+                text: result.message
+            });
+        }
     });
-});
 </script>
 
 </body>
