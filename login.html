@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FindIt Nawasena - Login</title>
+    
     <link rel="stylesheet" href="css/style.css">
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <!-- SweetAlert2 CDN -->
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -39,8 +41,9 @@
                                 id="nim"
                                 placeholder="NIM"
                                 required
-                                inputmode="numeric"
+                                inputmode="numeric" 
                                 pattern="[0-9]*"
+                                /* Fungsi JS inline untuk mencegah input selain angka secara real-time */
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                             >
                         </div>
@@ -58,7 +61,6 @@
 
                         <button type="submit" class="btn-login">Login</button>
 
-                        <!-- Tombol Login Sarpras yang sudah diperbaiki -->
                         <button type="button" class="btn-login btn-sarpras"
                             onclick="window.location.href='login_sarpras.html'">
                             Login Sarpras
@@ -76,34 +78,41 @@
     </div>
 
 <script>
+/* Logika penanganan pengiriman form (Form Submission) */
 document.getElementById("loginForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+    e.preventDefault(); // Menghentikan reload halaman otomatis
 
+    // Mengambil data dari input dan menghapus spasi di awal/akhir
     const nim = document.getElementById("nim").value.trim();
     const password = document.getElementById("password").value.trim();
     const errorMsg = document.getElementById("errorMsg");
 
-    const nimRegex = /^[0-9]+$/;
-    const passRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
+    // Definisi Aturan Validasi (Regex)
+    const nimRegex = /^[0-9]+$/; // Harus angka semua
+    const passRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/; // Harus ada huruf dan angka
 
-    errorMsg.textContent = "";
+    errorMsg.textContent = ""; // Reset pesan error setiap kali tombol diklik
 
+    // Validasi input NIM
     if (!nimRegex.test(nim)) {
         errorMsg.textContent = "NIM harus berupa angka saja!";
-        return;
+        return; // Berhenti jika salah
     }
 
+    // Validasi input Password
     if (!passRegex.test(password)) {
         errorMsg.textContent = "Password harus kombinasi huruf dan angka!";
-        return;
+        return; // Berhenti jika salah
     }
 
-   Swal.fire({
+    // Jika semua validasi lolos, tampilkan SweetAlert sukses
+    Swal.fire({
         icon: 'success',
         title: 'Login Valid!',
         text: 'Selamat datang ' + nim,
         confirmButtonText: 'OK'
     }).then(() => {
+        // Redirect ke halaman dashboard setelah user klik OK
         window.location.href = "dashboard.html";
     });
 });

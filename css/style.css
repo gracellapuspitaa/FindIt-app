@@ -1,47 +1,52 @@
-/* ================= RESET & GLOBAL FONT ================= */
+/* ================= RESET & GLOBAL FONT ================= 
+   Menghilangkan margin/padding bawaan browser agar layout presisi.
+   ========================================================= */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Menghitung padding ke dalam lebar elemen */
 }
 
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #ebebeb; 
-    height: 100vh;
+    height: 100vh; /* Memenuhi tinggi layar */
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: hidden; /* Mencegah scrollbar muncul saat animasi tirai jalan */
     position: relative;
 }
 
-/* ================= ANIMASI TIRAI (ULTRA SMOOTH OPTIMIZED) ================= */
+/* ================= ANIMASI TIRAI (ULTRA SMOOTH OPTIMIZED) ================= 
+   Layer ini berfungsi sebagai animasi pembuka saat halaman pertama kali dimuat.
+   ========================================================= */
 .layer-top, .layer-bottom {
     position: fixed;
     width: 160%; 
     height: 100vh;
-    z-index: 10000;
+    z-index: 10000; /* Berada di paling atas menutupi semua konten */
     top: 0;
-    will-change: transform, left, right;
+    will-change: transform, left, right; /* Mengoptimalkan render GPU untuk animasi mulus */
     backface-visibility: hidden;
     -webkit-font-smoothing: antialiased;
 }
 
 .layer-top {
-    background-color: #ff6700;
+    background-color: #ff6700; /* Warna Orange */
     left: -160%;
-    transform: skewX(-25deg); 
+    transform: skewX(-25deg); /* Membuat efek miring pada tirai */
     animation: slideCrossLeft 2.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
 }
 
 .layer-bottom {
-    background-color: #3a6ea5;
+    background-color: #3a6ea5; /* Warna Biru */
     right: -160%;
-    transform: skewX(-25deg); 
+    transform: skewX(-25deg);
     animation: slideCrossRight 2.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
 }
 
+/* Keyframes Tirai: Masuk dari samping, berhenti di tengah sebentar, lalu lanjut keluar */
 @keyframes slideCrossLeft {
     0% { left: -160%; }
     40%, 60% { left: -30%; } 
@@ -54,7 +59,9 @@ body {
     100% { right: -180%; visibility: hidden; } 
 }
 
-/* ================= MAIN WRAPPER (REVEAL) ================= */
+/* ================= MAIN WRAPPER (REVEAL) ================= 
+   Kotak abu-abu besar yang muncul setelah tirai terbuka.
+   ========================================================= */
 .main-wrapper {
     position: relative;
     width: 95%;
@@ -67,6 +74,7 @@ body {
     justify-content: center;
     box-shadow: 0 20px 50px rgba(0,0,0,0.3);
     opacity: 0%;
+    /* Animasi muncul (fade in) yang dipending sampai tirai selesai bergerak */
     animation: smoothReveal 1s ease-out 1.8s forwards;
     transition: transform 0.5s ease, box-shadow 0.8s ease;
 }
@@ -91,7 +99,9 @@ body {
     height: auto;
 }
 
-/* ================= CONTENT AREA ================= */
+/* ================= CONTENT AREA ================= 
+   Layout pembagi antara teks welcome dan card login.
+   ========================================================= */
 .content {
     display: flex;
     width: 100%;
@@ -115,7 +125,9 @@ body {
     line-height: 1.1;
 }
 
-/* ================= LOGIN CARD ================= */
+/* ================= LOGIN CARD ================= 
+   Kotak putih tempat input form berada.
+   ========================================================= */
 .login-card {
     background-color: #ffffff;
     padding: 60px 45px;
@@ -181,8 +193,9 @@ input {
 .btn-sarpras {
     margin-top: 5px;
     background-color: #004e98;
-    width: 70%; height: 20%;              /* Diperkecil 30% */
-    align-self: center;      /* Supaya tetap di tengah */
+    width: 70%; 
+    height: 20%;             /* Ukuran tinggi tombol diperkecil */
+    align-self: center;      /* Penempatan di tengah secara horizontal */
 }
 
 .btn-sarpras:hover {
@@ -198,8 +211,9 @@ input {
     color: #555;
 }
 
-/* ================= CUSTOM MODAL (LOGIN BERHASIL) ================= */
-/* Kita gunakan !important untuk memaksa perubahan pada library pop-up */
+/* ================= CUSTOM MODAL (SWEETALERT2 OVERRIDE) ================= 
+   Memaksa style library pop-up agar menyatu dengan desain FindIt.
+   ========================================================= */
 .swal2-popup, .modal-content, .login-success-box {
     border-radius: 30px !important;
     padding: 2em !important;
@@ -214,7 +228,7 @@ input {
 }
 
 .swal2-confirm, .btn-ok-custom {
-    background-color: #004e98 !important; /* Biar match sama tema kamu */
+    background-color: #004e98 !important; 
     color: #ffffff!important;
     border-radius: 12px !important;
     padding: 12px 35px !important;
@@ -237,7 +251,9 @@ input {
     to { opacity: 1; }
 }
 
-/* ================= RESPONSIVE ================= */
+/* ================= RESPONSIVE ================= 
+   Penyesuaian layout jika dibuka di layar yang lebih kecil (Tablet/HP).
+   ========================================================= */
 @media (max-width: 992px) {
     .content { flex-direction: column; text-align: center; padding: 0 20px; }
     .welcome-text h1 { font-size: 2.5rem; margin-top: 60px; }

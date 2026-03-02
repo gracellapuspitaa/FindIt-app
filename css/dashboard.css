@@ -1,3 +1,6 @@
+/* ==========================================================
+   1. GLOBAL VARIABLES (:root)
+   ========================================================== */
 :root {
     --orange: #FF6700;
     --gray-light: #EBEBEB;
@@ -8,6 +11,9 @@
     --bg-white: #FFFFFF;
 }
 
+/* ==========================================================
+   2. BASIC RESET
+   ========================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -21,7 +27,9 @@ body {
     padding: 20px 40px;
 }
 
-/* NAVBAR */
+/* ==========================================================
+   3. NAVBAR (HEADER)
+   ========================================================== */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -29,21 +37,52 @@ body {
     padding-bottom: 15px;
     margin-bottom: 20px;
     border-bottom: 1px solid var(--gray-light);
+    position: relative;
+    height: 80px;
 }
 
 .brand-section {
     display: flex;
     align-items: center;
     gap: 15px;
+    z-index: 2;
 }
 
 .header-logo {
+    height: 60px;
+}
+
+.logo-placeholder {
+    width: 50px;
     height: 50px;
+    background-color: var(--orange);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    white-space: nowrap;
 }
 
 .header-title h1 {
     font-family: 'Playfair Display', serif;
     font-size: 22px;
+    margin: 0;
+    color: var(--blue-dark);
+}
+
+.nav-controls {
+    z-index: 2;
 }
 
 .btn-out {
@@ -61,7 +100,9 @@ body {
     color: white;
 }
 
-/* BANNER */
+/* ==========================================================
+   4. WELCOME BANNER
+   ========================================================== */
 .welcome-banner {
     background-color: var(--gray-light);
     border-radius: 15px;
@@ -72,10 +113,23 @@ body {
     margin-bottom: 30px;
 }
 
-.welcome-text h2 { font-size: 24px; }
-.maskot-img { height: 120px; object-fit: contain; }
+.welcome-text h2 { 
+    font-size: 24px; 
+    margin-bottom: 10px;
+}
 
-/* SEARCH */
+.welcome-text p {
+    margin-bottom: 5px;
+}
+
+.maskot-img { 
+    height: 120px; 
+    object-fit: contain; 
+}
+
+/* ==========================================================
+   5. SEARCH & ACTION BAR
+   ========================================================== */
 .search-section {
     display: flex;
     justify-content: space-between;
@@ -83,24 +137,63 @@ body {
     margin-bottom: 30px;
 }
 
+.search-title-group { 
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+}
+
+.search-title-group h3 {
+    color: var(--blue-dark);
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+}
+
 .search-bar {
     background-color: var(--gray-light);
     border: none;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border-radius: 10px;
     width: 300px;
     outline: none;
+    font-size: 14px;
 }
 
-/* MAIN CONTAINER */
+.search-bar:focus {
+    border: 2px solid var(--orange);
+}
+
+.btn-add-page {
+    background-color: var(--orange);
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-add-page:hover { 
+    background-color: var(--blue-dark); 
+}
+
+/* ==========================================================
+   6. MAIN CONTAINER & SIDEBAR
+   ========================================================== */
 .main-container {
     display: flex;
     gap: 30px;
 }
 
-/* SIDEBAR */
 .sidebar {
-    width: 250px;
+    width: 280px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -112,18 +205,40 @@ body {
     padding: 15px;
 }
 
-.tree-menu { list-style: none; }
+.category-container {
+    padding: 10px 0;
+}
+
+/* Menu Bertingkat (Tree Menu) */
+.tree-menu { 
+    list-style: none; 
+}
+
+.tree-menu li {
+    margin-bottom: 5px;
+}
 
 .menu-label {
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 12px 15px;
     cursor: pointer;
     font-size: 14px;
     font-weight: 600;
+    border-radius: 10px;
+    transition: background-color 0.3s;
 }
 
-.icon-main { margin-right: 10px; width: 20px; color: var(--blue-light); }
+.menu-label:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.icon-main { 
+    margin-right: 12px; 
+    width: 20px; 
+    color: var(--blue-light);
+    font-size: 16px;
+}
 
 .badge {
     background-color: #FF4D4F;
@@ -131,26 +246,73 @@ body {
     border-radius: 10px;
     padding: 2px 8px;
     font-size: 10px;
+    margin-left: 10px;
+}
+
+.arrow {
+    transition: transform 0.3s ease;
     margin-left: auto;
+    font-size: 12px;
+    color: var(--blue-dark);
+}
+
+.menu-label.active .arrow {
+    transform: rotate(180deg);
 }
 
 .sub-menu {
     list-style: none;
-    padding-left: 25px;
-    border-left: 1px solid var(--gray-mid);
-    margin: 5px 0 15px 15px;
+    padding-left: 47px;
+    margin: 0 0 10px 0;
+    display: none;
+}
+
+.sub-menu.show {
+    display: block;
 }
 
 .sub-menu li {
     font-size: 13px;
-    padding: 5px 0;
+    padding: 8px 10px;
     color: #666;
     cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
 }
 
-.sub-menu li:hover { color: var(--orange); }
+.sub-menu li:hover { 
+    background-color: var(--orange);
+    color: white;
+    padding-left: 15px;
+}
 
-/* GRID & CARDS */
+.calendar-img-mock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.btn-reset {
+    width: 100%;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid var(--gray-mid);
+    background: white;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-reset:hover {
+    background-color: var(--orange);
+    color: white;
+    border-color: var(--orange);
+}
+
+/* ==========================================================
+   7. ITEMS GRID & CARDS
+   ========================================================== */
 .items-grid {
     flex: 1;
     display: grid;
@@ -161,39 +323,52 @@ body {
 .item-card {
     background-color: var(--gray-light);
     border-radius: 15px;
-    padding: 20px;
+    padding: 20px 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
     transition: 0.3s;
 }
 
-.item-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.item-card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+}
 
 .image-placeholder {
     width: 100%;
     height: 100px;
-    background-color: var(--gray-mid);
+    background: linear-gradient(135deg, var(--blue-light), var(--blue-dark));
     border-radius: 10px;
     margin-bottom: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
+    font-size: 24px;
 }
 
 .bubble-box {
     background-color: var(--bg-white);
-    padding: 5px 15px;
-    border-radius: 15px;
-    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
     margin-bottom: 8px;
     width: 100%;
     text-align: center;
     font-weight: 500;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.title-bubble { font-weight: 700; color: var(--blue-dark); }
+.title-bubble { 
+    font-weight: 700; 
+    color: var(--blue-dark);
+    background-color: #fff3e0;
+}
+
+.desc-bubble {
+    color: var(--text-dark);
+}
 
 .btn-detail {
     background-color: var(--blue-light);
@@ -204,38 +379,42 @@ body {
     cursor: pointer;
     font-weight: 600;
     width: 100%;
-    margin-top: 5px;
+    margin-top: 8px;
+    transition: 0.3s;
+    font-size: 13px;
 }
 
-.btn-detail:hover { background-color: var(--blue-dark); }
+.btn-detail:hover { 
+    background-color: var(--blue-dark);
+    transform: scale(1.02);
+}
 
-/* MOCKUPS */
+/* ==========================================================
+   8. MISC / MOCKUPS
+   ========================================================== */
 .pie-chart-mock {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     background: conic-gradient(var(--orange) 0% 40%, var(--blue-light) 40% 70%, var(--gray-mid) 70% 100%);
     border-radius: 50%;
-    margin: 10px auto;
+    margin: 15px auto;
+    border: 3px solid white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.btn-reset {
-    width: 100%;
-    padding: 5px;
-    border-radius: 10px;
-    border: 1px solid var(--gray-mid);
-    background: white;
-    cursor: pointer;
+/* ==========================================================
+   9. RESPONSIVE DESIGN
+   ========================================================== */
+@media (max-width: 1024px) {
+    body { padding: 15px 20px; }
+    .main-container { flex-direction: column; }
+    .sidebar { width: 100%; }
+    .items-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
 }
 
-.search-title-group { display: flex; align-items: center; gap: 20px; }
-.btn-add-page {
-    background-color: var(--orange);
-    color: white;
-    text-decoration: none;
-    padding: 8px 15px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: 0.3s;
+@media (max-width: 768px) {
+    .search-section { flex-direction: column; gap: 15px; align-items: stretch; }
+    .search-box { width: 100%; }
+    .search-bar { width: 100%; }
+    .header-title h1 { font-size: 18px; }
 }
-.btn-add-page:hover { background-color: var(--blue-dark); }

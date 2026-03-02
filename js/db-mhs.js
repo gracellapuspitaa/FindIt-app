@@ -14,7 +14,9 @@ function showPopup(nama, status, jenis, pemilik, desc, telp) {
                 <p><b>Deskripsi:</b><br>${desc}</p>
                 <hr style="margin: 15px 0;">
                 <p style="text-align: center;"><b>Hubungi Penemu/Admin:</b></p>
-                <a href="https://wa.me/${telp}" target="_blank" style="display: block; background: #25D366; color: white; text-align: center; padding: 10px; border-radius: 10px; text-decoration: none; font-weight: 600;">
+                <a href="https://wa.me/${telp}" target="_blank"
+                   style="display:block;background:#25D366;color:white;text-align:center;
+                          padding:10px;border-radius:10px;text-decoration:none;font-weight:600;">
                     <i class="fab fa-whatsapp"></i> Hubungi via WhatsApp
                 </a>
             </div>
@@ -25,34 +27,37 @@ function showPopup(nama, status, jenis, pemilik, desc, telp) {
     });
 }
 
-// SIDEBAR ACCORDION FUNCTION
-document.addEventListener('DOMContentLoaded', function() {
-    // Sidebar accordion functionality
+document.addEventListener('DOMContentLoaded', function () {
+
+    // SIDEBAR ACCORDION
     const labels = document.querySelectorAll('.menu-label');
-    
+
     labels.forEach(label => {
-        label.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            // Ambil sub-menu di bawahnya
+        label.addEventListener('click', function () {
+
             const subMenu = this.nextElementSibling;
-            
+
             if (subMenu && subMenu.classList.contains('sub-menu')) {
-                // Toggle class 'active' untuk putar panah
+
+                // Tutup semua menu lain (optional biar rapi)
+                document.querySelectorAll('.sub-menu').forEach(menu => {
+                    if (menu !== subMenu) {
+                        menu.classList.remove('show');
+                        menu.previousElementSibling.classList.remove('active');
+                    }
+                });
+
+                // Toggle menu ini
                 this.classList.toggle('active');
-                
-                // Toggle class 'show' untuk munculkan menu
                 subMenu.classList.toggle('show');
-                
-                console.log("Menu diklik:", this.querySelector('span').textContent);
             }
         });
     });
 
-    // Logout functionality
+    // Logout
     const btnOut = document.getElementById('btnOut');
     if (btnOut) {
-        btnOut.addEventListener('click', function() {
+        btnOut.addEventListener('click', function () {
             Swal.fire({
                 title: 'Konfirmasi',
                 text: "Apakah Anda yakin ingin keluar?",
@@ -70,27 +75,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Reset button functionality
-    const resetBtn = document.querySelector('.btn-reset');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', function() {
-            Swal.fire({
-                title: 'Reset Filter',
-                text: 'Semua filter akan direset',
-                icon: 'info',
-                confirmButtonColor: '#3A6EA5',
-                timer: 1500,
-                showConfirmButton: false
-            });
-        });
-    }
-
-    // Search functionality
-    const searchBar = document.querySelector('.search-bar');
-    if (searchBar) {
-        searchBar.addEventListener('input', function(e) {
-            console.log('Searching for:', e.target.value);
-            // Add your search logic here
-        });
-    }
 });

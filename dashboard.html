@@ -12,25 +12,28 @@
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="brand-section">
-            <div class="logo-wrapper">
-                <img src="images/logo.png" alt="Logo FindIt" class="header-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="logo-placeholder" style="display: none;">F</div>
-            </div>
-            <div class="header-title">
-                <h1>FindIt Universitas Nawasena</h1>
-            </div>
+<header class="navbar">
+    <div class="brand-section">
+        <div class="logo-wrapper">
+            <img src="images/logo.png" alt="Logo FindIt" class="header-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="logo-placeholder" style="display: none;">F</div>
         </div>
-        <div class="nav-controls">
-            <button class="btn-out" id="btnOut">OUT</button>
-        </div>
-    </header>
+    </div>
+
+    <div class="header-title">
+        <h1>FindIt Universitas Nawasena</h1>
+    </div>
+
+    <div class="nav-controls">
+        <button class="btn-out" id="btnOut">OUT</button>
+    </div>
+</header>
 
     <section class="welcome-banner">
         <div class="welcome-text">
-            <h2>Hello, Grace!</h2>
+            <h2>Hello, Grace! 👋</h2>
             <p>Welcome to Find It Universitas Nawasena</p>
+            <p>Kehilangan sesuatu? Jangan panik. Mari telusuri barang temuan hari ini atau bantu temanmu menemukan miliknya.</p>
         </div>
         <img src="images/maskot.png" alt="Maskot" class="maskot-img">
     </section>
@@ -60,9 +63,12 @@
                         </div>
                         <ul class="sub-menu">
                             <li><span>All</span></li>
-                            <li><span>Fisip</span></li>
-                            <li><span>Teknik</span></li>
-                            <li><span>Hukum</span></li>
+                            <li><span>FEB</span></li>
+                            <li><span>FISIP</span></li>
+                            <li><span>FK</span></li>
+                            <li><span>FPSI</span></li>
+                            <li><span>FIB</span></li>
+                            <li><span>FT</span></li>
                             <li><span>Fasilitas Umum</span></li>
                         </ul>
                     </li>
@@ -89,14 +95,8 @@
                             <li><span>Elektronik</span></li>
                             <li><span>Dokumen</span></li>
                             <li><span>Aksesoris</span></li>
+                            <li><span>Perlengkapan</span></li>
                         </ul>
-                    </li>
-
-                    <li>
-                        <div class="menu-label">
-                            <i class="fas fa-star icon-main"></i>
-                            <span>Sering Hilang</span>
-                        </div>
                     </li>
                 </ul>
             </div>
@@ -226,7 +226,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = "index.html";
+                    window.location.href = "login.html";
                 }
             });
         });
