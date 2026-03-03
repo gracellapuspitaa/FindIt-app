@@ -49,6 +49,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    const welcomeUser = document.getElementById('welcomeUser');
+    const savedName = localStorage.getItem("namaUser");
+
+    if (savedName && welcomeUser) {
+        welcomeUser.innerHTML = `Hello, ${savedName} 👋`;
+    }
+
     // Logout functionality
     const btnOut = document.getElementById('btnOut');
     if (btnOut) {
@@ -94,3 +101,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+

@@ -93,7 +93,11 @@
 
         const result = await response.json();
 
+            // ... kode fetch sebelumnya ...
         if (result.success) {
+            // SIMPAN NAMA USER KE LOCAL STORAGE
+            localStorage.setItem("namaUser", result.user.nama_lengkap);
+
             Swal.fire({
                 icon: 'success',
                 title: 'Login Berhasil!',
@@ -102,6 +106,7 @@
             }).then(() => {
                 window.location.href = "dashboard.html";
             });
+        // ... kode error sebelumnya ...
         } else {
             Swal.fire({
                 icon: 'error',

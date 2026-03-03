@@ -29,14 +29,14 @@
     </div>
 </header>
 
-    <section class="welcome-banner">
-        <div class="welcome-text">
-            <h2>Hello, Grace! 👋</h2>
-            <p>Welcome to Find It Universitas Nawasena</p>
-            <p>Kehilangan sesuatu? Jangan panik. Mari telusuri barang temuan hari ini atau bantu temanmu menemukan miliknya.</p>
-        </div>
-        <img src="images/maskot.png" alt="Maskot" class="maskot-img">
-    </section>
+<section class="welcome-banner">
+    <div class="welcome-text">
+        <h2 id="welcomeUser"> </h2> <!-- diambil dari script.js dengan id yang tertera -->
+        <p>Welcome to Find It Universitas Nawasena</p>
+        <p>Kehilangan sesuatu? Jangan panik. Mari telusuri barang temuan hari ini atau bantu temanmu menemukan miliknya.</p>
+    </div>
+    <img src="images/maskot.png" alt="Maskot" class="maskot-img">
+</section>
 
 <section class="search-section">
     <div class="search-title-group">
@@ -46,190 +46,92 @@
         </a>
     </div>
     <div class="search-box">
-        <input type="text" class="search-bar" placeholder="Search Here">
+        <input type="text" class="search-bar" id="searchBar" placeholder="Search Here">
     </div>
 </section>
 
-    <div class="main-container">
-        <aside class="sidebar">
-            <div class="side-box category-container">
-                <ul class="tree-menu">
-                    <li class="active-item">
-                        <div class="menu-label">
-                            <i class="fas fa-university icon-main"></i>
-                            <span>Fakultas</span>
-                            <span class="badge">32</span>
-                            <i class="fas fa-chevron-down arrow"></i>
-                        </div>
-                        <ul class="sub-menu">
-                            <li><span>All</span></li>
-                            <li><span>FEB</span></li>
-                            <li><span>FISIP</span></li>
-                            <li><span>FK</span></li>
-                            <li><span>FPSI</span></li>
-                            <li><span>FIB</span></li>
-                            <li><span>FT</span></li>
-                            <li><span>Fasilitas Umum</span></li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <div class="menu-label">
-                            <i class="fas fa-tags icon-main"></i>
-                            <span>Jenis Barang</span>
-                            <i class="fas fa-chevron-down arrow"></i>
-                        </div>
-                        <ul class="sub-menu">
-                            <li><span>Bertuan</span></li>
-                            <li><span>Tak Bertuan</span></li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <div class="menu-label">
-                            <i class="fas fa-th-large icon-main"></i>
-                            <span>Kategori</span>
-                            <i class="fas fa-chevron-down arrow"></i>
-                        </div>
-                        <ul class="sub-menu">
-                            <li><span>Elektronik</span></li>
-                            <li><span>Dokumen</span></li>
-                            <li><span>Aksesoris</span></li>
-                            <li><span>Perlengkapan</span></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="side-box">
-                <div class="calendar-img-mock">
-                    <i class="far fa-calendar-alt" style="font-size: 40px; color: var(--orange); margin-bottom: 10px;"></i>
-                    <p style="font-weight: 600; font-size: 14px;">CALENDAR</p>
-                </div>
-                <button class="btn-reset">Reset</button>
-            </div>
-
-            <div class="side-box">
-                <h4 style="font-size: 11px; color: var(--text-dark); margin-bottom: 10px;">Data Diagram Berdasarkan Kategori</h4>
-                <div class="pie-chart-mock"></div>
-            </div>
-        </aside>
-
-        <main class="items-grid">
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-id-card fa-3x"></i></div>
-                <div class="bubble-box title-bubble">KTM Mahasiswa</div>
-                <div class="bubble-box desc-bubble">Kantin FISIP</div>
-                <button class="btn-detail" 
-                    onclick="showPopup('KTM Mahasiswa', 'Di Sarpras', 'Bertuan', 'Budi Tabuti', 'Ditemukan di meja kantin pojok, kondisi mulus.', '081244567701')">
-                    Detail
-                </button>
-            </div>
-
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-motorcycle fa-3x"></i></div>
-                <div class="bubble-box title-bubble">Kunci Honda</div>
-                <div class="bubble-box desc-bubble">Parkiran GOR</div>
-                <button class="btn-detail" 
-                    onclick="showPopup('Kunci Honda', 'Dibawa Penemu', 'Tak Bertuan', '-', 'Kunci motor dengan gantungan tali hitam.', '081355678851')">
-                    Detail
-                </button>
-            </div>
-
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-tint fa-3x"></i></div>
-                <div class="bubble-box title-bubble">Tumblr Blue</div>
-                <div class="bubble-box desc-bubble">Lab Teknik</div>
-                <button class="btn-detail" 
-                    onclick="showPopup('Tumblr Blue', 'Di Sarpras', 'Tak Bertuan', '-', 'Merk T*pperware, isi masih setengah.', '085711223303')">
-                    Detail
-                </button>
-            </div>
-
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-wallet fa-3x"></i></div>
-                <div class="bubble-box title-bubble">Dompet Kulit</div>
-                <div class="bubble-box desc-bubble">Masjid Kampus</div>
-                <button class="btn-detail" onclick="showPopup('Dompet Kulit', 'Di Sarpras', 'Bertuan', 'Siti Aminah', 'Dompet kulit cokelat berisi STNK.', '081299887719')">Detail</button>
-            </div>
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-plug fa-3x"></i></div>
-                <div class="bubble-box title-bubble">Charger ASUS</div>
-                <div class="bubble-box desc-bubble">Gedung FEB</div>
-                <button class="btn-detail" onclick="showPopup('Charger ASUS', 'Dibawa Penemu', 'Tak Bertuan', '-', 'Charger laptop tipe lama.', '085266778805')">Detail</button>
-            </div>
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-glasses fa-3x"></i></div>
-                <div class="bubble-box title-bubble">Kacamata Hitam</div>
-                <div class="bubble-box desc-bubble">Taman Tengah</div>
-                <button class="btn-detail" onclick="showPopup('Kacamata Hitam', 'Di Sarpras', 'Tak Bertuan', '-', 'Frame bulat, lensa hitam pekat.', '081122334441')">Detail</button>
-            </div>
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-book fa-3x"></i></div>
-                <div class="bubble-box title-bubble">Buku Catatan</div>
-                <div class="bubble-box desc-bubble">Perpus Pusat</div>
-                <button class="btn-detail" onclick="showPopup('Buku Catatan', 'Di Sarpras', 'Bertuan', 'Grace S.', 'Sampul cokelat ada tulisan Logika.', '081344556614')">Detail</button>
-            </div>
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-hdd fa-3x"></i></div>
-                <div class="bubble-box title-bubble">Flashdisk 64GB</div>
-                <div class="bubble-box desc-bubble">Lab Hukum</div>
-                <button class="btn-detail" onclick="showPopup('Flashdisk 64GB', 'Dibawa Penemu', 'Tak Bertuan', '-', 'Merk Sandisk warna merah.', '085677889961')">Detail</button>
-            </div>
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-tshirt fa-3x"></i></div>
-                <div class="bubble-box title-bubble">Jaket Almamater</div>
-                <div class="bubble-box desc-bubble">Rektorat</div>
-                <button class="btn-detail" onclick="showPopup('Jaket Almamater', 'Di Sarpras', 'Tak Bertuan', '-', 'Ukuran L, ada noda pulpen.', '081233445570')">Detail</button>
-            </div>
-        </main>
-    </div>
-
-    <script>
-        // FUNGSI POP-UP DETAIL
-        function showPopup(nama, status, jenis, pemilik, desc, telp) {
-            let infoPemilik = jenis === 'Bertuan' ? `<p><b>Atas Nama:</b> ${pemilik}</p>` : '';
-            
-            Swal.fire({
-                title: `<span style="color: var(--blue-dark)">${nama}</span>`,
-                html: `
-                    <div style="text-align: left; font-family: 'Poppins'; font-size: 14px;">
-                        <div style="background: #f0f0f0; padding: 10px; border-radius: 10px; margin-bottom: 10px;">
-                            <p><b>Status Keberadaan:</b> <span style="color: var(--orange)">${status}</span></p>
-                            <p><b>Jenis:</b> ${jenis}</p>
-                            ${infoPemilik}
-                        </div>
-                        <p><b>Deskripsi:</b><br>${desc}</p>
-                        <hr style="margin: 15px 0;">
-                        <p style="text-align: center;"><b>Hubungi Penemu/Admin:</b></p>
-                        <a href="https://wa.me/${telp}" target="_blank" style="display: block; background: #25D366; color: white; text-align: center; padding: 10px; border-radius: 10px; text-decoration: none; font-weight: 600;">
-                            <i class="fab fa-whatsapp"></i> Hubungi via WhatsApp
-                        </a>
+<div class="main-container">
+    <aside class="sidebar">
+        <div class="side-box category-container">
+            <ul class="tree-menu">
+                <li class="menu-item">
+                    <div class="menu-label">
+                        <i class="fas fa-university icon-main"></i>
+                        <span>Fakultas</span>
+                        <span class="badge">32</span>
+                        <i class="fas fa-chevron-down arrow"></i>
                     </div>
-                `,
-                showCloseButton: true,
-                confirmButtonText: 'Tutup',
-                confirmButtonColor: '#3A6EA5'
-            });
-        }
+                    <ul class="sub-menu">
+                        <li><span class="filter-opt">All</span></li>
+                        <li><span class="filter-opt">FEB</span></li>
+                        <li><span class="filter-opt">FISIP</span></li>
+                        <li><span class="filter-opt">FK</span></li>
+                        <li><span class="filter-opt">FPSI</span></li>
+                        <li><span class="filter-opt">FIB</span></li>
+                        <li><span class="filter-opt">FT</span></li>
+                        <li><span class="filter-opt">Fasilitas Umum</span></li>
+                    </ul>
+                </li>
 
-        // Logika Logout
-        document.getElementById('btnOut').addEventListener('click', function() {
-            Swal.fire({
-                title: 'Konfirmasi',
-                text: "Apakah Anda yakin ingin keluar?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#FF6700',
-                cancelButtonColor: '#3A6EA5',
-                confirmButtonText: 'Ya, Keluar!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "login.html";
-                }
-            });
-        });
-    </script>
+                <li class="menu-item">
+                    <div class="menu-label">
+                        <i class="fas fa-tags icon-main"></i>
+                        <span>Jenis Barang</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><span class="filter-opt">Bertuan</span></li>
+                        <li><span class="filter-opt">Tak Bertuan</span></li>
+                    </ul>
+                </li>
+
+                <li class="menu-item">
+                    <div class="menu-label">
+                        <i class="fas fa-th-large icon-main"></i>
+                        <span>Kategori</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><span class="filter-opt">Elektronik</span></li>
+                        <li><span class="filter-opt">Dokumen</span></li>
+                        <li><span class="filter-opt">Aksesoris</span></li>
+                        <li><span class="filter-opt">Perlengkapan</span></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="side-box">
+            <div class="calendar-img-mock">
+                <i class="far fa-calendar-alt" style="font-size: 40px; color: #FF6700; margin-bottom: 10px;"></i>
+                <p style="font-weight: 600; font-size: 14px;">CALENDAR</p>
+                <input type="date" id="calendarFilter" style="margin-top: 10px; border-radius: 5px; border: 1px solid #ddd; padding: 5px;">
+            </div>
+            <button class="btn-reset" id="btnReset">Reset</button>
+        </div>
+
+        <div class="side-box">
+            <h4 style="font-size: 11px; color: #333; margin-bottom: 10px;">Data Diagram Berdasarkan Kategori</h4>
+            <div class="pie-chart-mock"></div>
+        </div>
+    </aside>
+
+    <main class="items-grid" id="itemsGrid">
+        <div class="item-card">
+            <div class="image-placeholder"><i class="fas fa-id-card fa-3x"></i></div>
+            <div class="bubble-box title-bubble">KTM Mahasiswa</div>
+            <div class="bubble-box desc-bubble">Kantin FISIP</div>
+            <button class="btn-detail" 
+                onclick="showPopup('KTM Mahasiswa', 'Di Sarpras', 'Bertuan', 'Budi Tabuti', 'Ditemukan di meja kantin pojok.', '081244567701')">
+                Detail
+            </button>
+        </div>
+        </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/script.js"></script>
+
 </body>
 </html>
