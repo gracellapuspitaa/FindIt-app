@@ -4,22 +4,33 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSidebarAccordion();
     setupLogout();
 
-    // 2. LOGIKA SIDEBAR ACCORDION (Perbaikan agar bisa buka-tutup)
+    // ==========================================
+    // TAMBAHKAN KODE INI UNTUK WELCOME BANNER
+    // ==========================================
+    const welcomeUser = document.getElementById('welcomeUser');
+    const savedName = localStorage.getItem("namaUser"); // Pastikan key ini sama dengan yang kamu set saat login
+
+    if (savedName && welcomeUser) {
+        welcomeUser.innerHTML = `Hello, ${savedName} 👋`;
+    } else if (welcomeUser) {
+        // Fallback jika tidak ada nama di localStorage
+        welcomeUser.innerHTML = `Hello, Nawasena! 👋`;
+    }
+    // ==========================================
+
+    // 2. LOGIKA SIDEBAR ACCORDION 
     function setupSidebarAccordion() {
         const labels = document.querySelectorAll('.menu-label');
         labels.forEach(label => {
             label.addEventListener('click', function() {
                 const subMenu = this.parentElement.querySelector('.sub-menu');
                 
-                // Toggle Menu
                 if (subMenu) {
                     const isShowing = subMenu.classList.contains('show');
                     
-                    // Tutup semua menu lain dulu (Optional: biar rapi)
                     document.querySelectorAll('.sub-menu').forEach(s => s.classList.remove('show'));
                     document.querySelectorAll('.menu-label').forEach(l => l.classList.remove('active'));
 
-                    // Jika sebelumnya tertutup, sekarang buka
                     if (!isShowing) {
                         subMenu.classList.add('show');
                         this.classList.add('active');
@@ -28,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Logika Klik pada Pilihan di dalam Sub-Menu (Filter)
+        // Logika Filter (Bisa kamu kembangkan nanti)
         const filterOpts = document.querySelectorAll('.sub-menu li');
         filterOpts.forEach(opt => {
             opt.addEventListener('click', function() {
@@ -39,7 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (value === 'All') {
                     fetchItems();
                 } else {
-                    fetchItemsFiltered(type, value);
+                    // Jika kamu sudah punya fungsi fetchItemsFiltered, panggil di sini
+                    // fetchItemsFiltered(type, value);
                 }
             });
         });
@@ -48,9 +60,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 3. AMBIL DATA DARI SUPABASE
     async function fetchItems() {
         const grid = document.getElementById('itemsGrid');
+        if (!grid) return; 
+        
         grid.innerHTML = '<p>Memuat data barang...</p>';
 
-        const { data, error } = await _supabase
+        // UBAH DISINI: Gunakan supabaseClient
+        const { data, error } = await supabaseClient 
             .from('items')
             .select('*')
             .order('created_at', { ascending: false });
@@ -63,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 4. FUNGSI RENDER KARTU (Sesuai Style CSS kamu)
+    // 4. FUNGSI RENDER KARTU
     function renderCards(items) {
         const grid = document.getElementById('itemsGrid');
         grid.innerHTML = '';
@@ -74,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         items.forEach(item => {
-            // Gunakan placeholder icon jika tidak ada image_url
             const imageHtml = item.image_url 
                 ? `<img src="${item.image_url}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">`
                 : `<i class="fas fa-box fa-3x"></i>`;
@@ -119,25 +133,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// 6. FUNGSI POPUP DETAIL (Di luar DOMContentLoaded agar bisa dipanggil onclick)
+// 6. FUNGSI POPUP DETAIL
 function showPopupDetail(id) {
     const item = window.allProducts.find(i => i.id_item == id);
     if (!item) return;
+
+    let infoPemilik = item.jenis_barang === 'Bertuan' && item.nama_pemilik ? `<p><b>Atas Nama:</b> ${item.nama_pemilik}</p>` : '';
+
+    let waNumber = item.id_penemu || '';
+    if(waNumber.startsWith('0')) {
+        waNumber = '62' + waNumber.substring(1);
+    }
 
     Swal.fire({
         title: `<span style="color: #004E98">${item.nama_barang}</span>`,
         html: `
             <div style="text-align: left; font-family: 'Poppins'; font-size: 14px;">
                 <div style="background: #f0f0f0; padding: 10px; border-radius: 10px; margin-bottom: 10px;">
-                    <p><b>Status:</b> <span style="color: #FF6700">${item.status_barang}</span></p>
+                    <p><b>Status Keberadaan:</b> <span style="color: #FF6700">${item.status_lokasi}</span></p>
                     <p><b>Kategori:</b> ${item.kategori}</p>
-                    <p><b>Lokasi:</b> ${item.lokasi_temuan}</p>
+                    <p><b>Lokasi Temu:</b> ${item.lokasi_temuan}</p>
+                    <p><b>Jenis:</b> ${item.jenis_barang}</p>
+                    ${infoPemilik}
                 </div>
                 <p><b>Deskripsi:</b><br>${item.deskripsi}</p>
                 <hr style="margin: 15px 0;">
                 <p style="text-align: center;"><b>Hubungi via WhatsApp:</b></p>
-                <a href="https://wa.me/628123456789" target="_blank" style="display: block; background: #25D366; color: white; text-align: center; padding: 10px; border-radius: 10px; text-decoration: none; font-weight: 600;">
-                    <i class="fab fa-whatsapp"></i> Chat Admin
+                <a href="https://wa.me/${waNumber}" target="_blank" style="display: block; background: #25D366; color: white; text-align: center; padding: 10px; border-radius: 10px; text-decoration: none; font-weight: 600;">
+                    <i class="fab fa-whatsapp"></i> Chat Penemu/Admin
                 </a>
             </div>
         `,

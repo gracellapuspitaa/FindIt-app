@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const supabase = require('./js/supabaseClient'); // Memanggil koneksi Supabase
+const supabase = require('./js/supabaseClient'); // Memanggil koneksi Supabase Backend
 const app = express();
 const PORT = process.env.PORT || 3000;
 

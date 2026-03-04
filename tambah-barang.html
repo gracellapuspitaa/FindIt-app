@@ -28,7 +28,7 @@
             <div class="input-grid">
                 <div class="input-group">
                     <label>Nama Barang</label>
-                    <input type="text" placeholder="Kunci Motor Honda, Dompet, dll" required>
+                    <input type="text" id="namaBarang" placeholder="Kunci Motor Honda, Dompet, dll" required>
                 </div>
 
                 <div class="input-group">
@@ -62,7 +62,7 @@
 
                 <div class="input-group">
                     <label>WhatsApp Penemu</label>
-                    <input type="tel" placeholder="0812xxxxxx" required>
+                    <input type="tel" id="waPenemu" placeholder="0812xxxxxx" required>
                 </div>
             </div>
 
@@ -70,11 +70,11 @@
                 <label>Jenis Barang</label>
                 <div class="options-row">
                     <label class="radio-option">
-                        <input type="radio" name="jenis" value="tak-bertuan" checked onclick="toggleNamaField(false)">
+                        <input type="radio" name="jenis" value="Tak Bertuan" checked onclick="toggleNamaField(false)">
                         <span>Tak Bertuan</span>
                     </label>
                     <label class="radio-option">
-                        <input type="radio" name="jenis" value="bertuan" onclick="toggleNamaField(true)">
+                        <input type="radio" name="jenis" value="Bertuan" onclick="toggleNamaField(true)">
                         <span>Bertuan</span>
                     </label>
                 </div>
@@ -89,11 +89,11 @@
                 <label>Status Keberadaan</label>
                 <div class="options-row">
                     <label class="radio-option">
-                        <input type="radio" name="status" value="sarpras" checked>
+                        <input type="radio" name="status" value="Di Sarpras" checked>
                         <span>Di Sarpras</span>
                     </label>
                     <label class="radio-option">
-                        <input type="radio" name="status" value="penemu">
+                        <input type="radio" name="status" value="Dibawa Penemu">
                         <span>Dibawa Penemu</span>
                     </label>
                 </div>
@@ -101,12 +101,15 @@
 
             <div class="input-group">
                 <label>Deskripsi Detail</label>
-                <textarea rows="3" placeholder="Jelaskan detail barangnya..."></textarea>
+                <textarea id="deskripsi" rows="3" placeholder="Jelaskan detail barangnya..."></textarea>
             </div>
 
             <button type="submit" class="btn-submit">Simpan & Publikasikan</button>
         </form>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-frontend.js"></script>
 
     <script>
         // LOGIKA CUSTOM DROPDOWN
@@ -170,14 +173,81 @@
             document.getElementById('inputNama').required = show;
         }
 
-        document.getElementById('formTambah').addEventListener('submit', function(e) {
+        // PROSES SUBMIT KE SUPABASE
+        document.getElementById('formTambah').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
             if (!fileInput.files[0]) {
                 Swal.fire({ title: 'Foto Kosong', text: 'Mohon upload foto barang.', icon: 'warning' });
                 return;
             }
-            Swal.fire({ title: 'Berhasil!', text: 'Barang telah dipublikasikan.', icon: 'success' })
-            .then(() => { window.location.href = "dashboard.html"; });
+
+            Swal.fire({
+                title: 'Mengupload Data...',
+                text: 'Mohon tunggu sebentar.',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading() }
+            });
+
+            try {
+                // 1. Ambil Nilai dari Form
+                const file = fileInput.files[0];
+                const namaBarang = document.getElementById('namaBarang').value;
+                const lokasi = document.querySelector('input[name="lokasi"]').value;
+                const kategori = document.querySelector('input[name="kategori"]').value;
+                const waPenemu = document.getElementById('waPenemu').value;
+                const jenis = document.querySelector('input[name="jenis"]:checked').value;
+                const inputNama = document.getElementById('inputNama').value;
+                const statusLokasi = document.querySelector('input[name="status"]:checked').value;
+                const deskripsi = document.getElementById('deskripsi').value;
+
+                // 2. Upload Gambar ke Bucket 'items-images'
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+                
+                // UBAH DISINI: menggunakan supabaseClient
+                const { error: uploadError } = await supabaseClient.storage
+                    .from('items-images')
+                    .upload(fileName, file);
+
+                if (uploadError) throw uploadError;
+
+                // 3. Ambil URL Publik Gambar
+                // UBAH DISINI: menggunakan supabaseClient
+                const { data: publicUrlData } = supabaseClient.storage
+                    .from('items-images')
+                    .getPublicUrl(fileName);
+                
+                const imageUrl = publicUrlData.publicUrl;
+
+                // 4. Insert Data ke Tabel 'items'
+                // UBAH DISINI: menggunakan supabaseClient
+                const { error: insertError } = await supabaseClient
+                    .from('items')
+                    .insert([
+                        {
+                            nama_barang: namaBarang,
+                            lokasi_temuan: lokasi,
+                            kategori: kategori,
+                            jenis_barang: jenis, 
+                            nama_pemilik: jenis === 'Bertuan' ? inputNama : null,
+                            status_lokasi: statusLokasi, 
+                            deskripsi: deskripsi,
+                            image_url: imageUrl,
+                            id_penemu: waPenemu, 
+                            status_barang: 'Ditemukan' 
+                        }
+                    ]);
+
+                if (insertError) throw insertError;
+
+                Swal.fire({ title: 'Berhasil!', text: 'Barang telah dipublikasikan.', icon: 'success' })
+                .then(() => { window.location.href = "dashboard.html"; });
+
+            } catch (error) {
+                console.error("Error:", error);
+                Swal.fire({ title: 'Gagal!', text: error.message || 'Terjadi kesalahan saat upload.', icon: 'error' });
+            }
         });
     </script>
 </body>
