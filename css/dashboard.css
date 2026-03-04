@@ -418,3 +418,127 @@ body {
     .search-bar { width: 100%; }
     .header-title h1 { font-size: 18px; }
 }
+
+
+/* =========================================
+   PERBAIKAN DESAIN CARD BARANG
+========================================= */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    align-items: start; 
+}
+
+.item-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #f0f0f0;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.card-img-container {
+    width: 100%;
+    height: 180px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.card-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Agar gambar tidak gepeng */
+}
+
+.card-img-container .fa-box {
+    color: #cbd5e1;
+}
+
+.card-content {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-desc {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0 0 10px 0;
+}
+
+.badge-kategori {
+    display: inline-block;
+    background: #e1effe;
+    color: #1e429f;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.btn-detail {
+    width: 100%;
+    padding: 12px;
+    background: #004E98;
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 14px;
+}
+
+.btn-detail:hover {
+    background: #FF6700; /* Warna orange FindIt */
+}
+
+/* =========================================
+   GAYA UNTUK MULTI-SELECT SIDEBAR (CHECKBOX STYLE)
+========================================= */
+.filter-opt {
+    cursor: pointer;
+    transition: color 0.2s;
+    display: inline-block;
+    width: 100%;
+}
+
+.filter-opt:hover {
+    color: #FF6700;
+}
+
+/* Gaya saat menu diklik (Terpilih) */
+.selected-filter {
+    font-weight: 700;
+    color: #FF6700;
+}
+
+/* Menambahkan icon centang dari FontAwesome secara otomatis */
+.selected-filter::before {
+    content: '\f00c'; /* Kode Unicode untuk fa-check */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    margin-right: 8px;
+    color: #FF6700;
+}
