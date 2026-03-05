@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lapor Kehilangan - FindIt Nawasena</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="css/tambah-barang.css">
+</head>
+<body>
+
+    <div class="form-container">
+        <header class="form-header">
+            <a href="dashboard.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
+            <h1 style="color: #FF4D4F;">Lapor Kehilangan Barang</h1> 
+            <p style="text-align: center; color: #64748b; font-size: 13px; margin-top: 5px;">Tenang, mari kita cari bersama-sama.</p>
+        </header>
+
+        <form id="formHilang">
+            <div class="photo-box" onclick="document.getElementById('fileInput').click()" style="border-color: #FF4D4F; background-color: #fff1f0;">
+                <i class="fas fa-image fa-2x" style="color: #FF4D4F;"></i>
+                <p id="fileNameDisplay" style="color: #FF4D4F;">Upload Foto Referensi (Opsional)</p>
+                <small>Foto barang yang mirip dari internet/galeri lama</small>
+                <input type="file" id="fileInput" hidden accept="image/*">
+            </div>
+
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>Nama Barang yang Hilang</label>
+                    <input type="text" id="namaBarang" placeholder="Contoh: Dompet Hitam Eiger" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Kategori</label>
+                    <select id="kategori" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; font-family: 'Poppins';">
+                        <option value="" disabled selected>Pilih Kategori</option>
+                        <option value="Elektronik">Elektronik</option>
+                        <option value="Dokumen">Dokumen</option>
+                        <option value="Aksesoris">Aksesoris</option>
+                        <option value="Perlengkapan">Perlengkapan</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Lokasi Terakhir Dilihat</label>
+                    <input type="text" id="lokasi" placeholder="Contoh: Kantin FEB meja pojok" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Tanggal Kehilangan</label>
+                    <input type="date" id="tanggalHilang" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; font-family: 'Poppins';">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>WhatsApp Pelapor</label>
+                <input type="tel" id="waPelapor" placeholder="0812xxxxxx (Untuk dihubungi jika ditemukan)" required>
+            </div>
+
+            <div class="input-group">
+                <label>Ciri-ciri Khusus / Deskripsi</label>
+                <textarea id="ciriCiri" rows="4" placeholder="Jelaskan ciri spesifik barangmu (misal: ada goresan di pojok kanan, berisi KTP atas nama Budi...)" required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit" style="background-color: #FF4D4F;">Publikasikan Laporan</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-frontend.js"></script> <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files[0]) {
+                fileNameDisplay.textContent = `Terpilih: ${this.files[0].name}`;
+            }
+        });
+
+        document.getElementById('formHilang').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Menyimpan Laporan...',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading() }
+            });
+
+            try {
+                const namaBarang = document.getElementById('namaBarang').value;
+                const kategori = document.getElementById('kategori').value;
+                const lokasi = document.getElementById('lokasi').value;
+                const tanggalHilang = document.getElementById('tanggalHilang').value;
+                const waPelapor = document.getElementById('waPelapor').value;
+                const ciriCiri = document.getElementById('ciriCiri').value;
+                const file = fileInput.files[0];
+
+                let imageUrl = null;
+
+                if (file) {
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `lost-${Date.now()}.${fileExt}`;
+                    
+                    const { error: uploadError } = await supabaseClient.storage
+                        .from('items-images')
+                        .upload(fileName, file);
+
+                    if (uploadError) throw uploadError;
+
+                    const { data: publicUrlData } = supabaseClient.storage
+                        .from('items-images')
+                        .getPublicUrl(fileName);
+                    
+                    imageUrl = publicUrlData.publicUrl;
+                }
+
+                const { error: insertError } = await supabaseClient
+                    .from('barang_hilang')
+                    .insert([{
+                        nama_barang: namaBarang,
+                        kategori: kategori,
+                        lokasi_terakhir: lokasi,
+                        tanggal_hilang: tanggalHilang,
+                        wa_pelapor: waPelapor,
+                        ciri_ciri: ciriCiri,
+                        image_url: imageUrl
+                    }]);
+
+                if (insertError) throw insertError;
+
+                Swal.fire({ title: 'Laporan Diterima', text: 'Semoga barangmu segera ditemukan!', icon: 'success' })
+                .then(() => { window.location.href = "dashboard.html"; });
+
+            } catch (error) {
+                console.error("Error:", error);
+                Swal.fire({ title: 'Gagal!', text: error.message, icon: 'error' });
+            }
+        });
+    </script>
+</body>
+</html>

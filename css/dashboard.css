@@ -286,13 +286,6 @@ body {
     padding-left: 15px;
 }
 
-.calendar-img-mock {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
 .btn-reset {
     width: 100%;
     padding: 8px;
@@ -316,77 +309,97 @@ body {
 .items-grid {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
+    padding: 20px;
+    align-items: start; 
 }
 
 .item-card {
-    background-color: var(--gray-light);
-    border-radius: 15px;
-    padding: 20px 15px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    transition: 0.3s;
+    align-items: stretch; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #f0f0f0;
 }
 
 .item-card:hover { 
     transform: translateY(-5px); 
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
 }
 
-.image-placeholder {
+.card-img-container {
     width: 100%;
-    height: 100px;
-    background: linear-gradient(135deg, var(--blue-light), var(--blue-dark));
-    border-radius: 10px;
-    margin-bottom: 15px;
+    height: 180px;
+    background: #f8f9fa;
     display: flex;
-    justify-content: center;
     align-items: center;
-    color: white;
-    font-size: 24px;
+    justify-content: center;
+    overflow: hidden;
 }
 
-.bubble-box {
-    background-color: var(--bg-white);
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    margin-bottom: 8px;
+.card-img-container img {
     width: 100%;
-    text-align: center;
-    font-weight: 500;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    height: 100%;
+    object-fit: cover; 
 }
 
-.title-bubble { 
-    font-weight: 700; 
-    color: var(--blue-dark);
-    background-color: #fff3e0;
+.card-img-container .fa-box {
+    color: #cbd5e1;
 }
 
-.desc-bubble {
-    color: var(--text-dark);
+.card-content {
+    padding: 15px;
+    flex-grow: 1;
+    width: 100%; 
+    text-align: left; 
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left; 
+}
+
+.card-desc {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0 0 10px 0;
+}
+
+.badge-kategori {
+    display: inline-block;
+    background: #e1effe;
+    color: #1e429f;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
 }
 
 .btn-detail {
-    background-color: var(--blue-light);
+    width: 100%;
+    padding: 12px;
+    background: #004E98;
     color: white;
     border: none;
-    padding: 8px 20px;
-    border-radius: 20px;
-    cursor: pointer;
     font-weight: 600;
-    width: 100%;
-    margin-top: 8px;
-    transition: 0.3s;
-    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 14px;
 }
 
-.btn-detail:hover { 
-    background-color: var(--blue-dark);
-    transform: scale(1.02);
+.btn-detail:hover {
+    background: #FF6700; 
 }
 
 /* ==========================================================
@@ -419,103 +432,8 @@ body {
     .header-title h1 { font-size: 18px; }
 }
 
-
 /* =========================================
-   PERBAIKAN DESAIN CARD BARANG
-========================================= */
-.items-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    align-items: start; 
-}
-
-.item-card {
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid #f0f0f0;
-}
-
-.item-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-}
-
-.card-img-container {
-    width: 100%;
-    height: 180px;
-    background: #f8f9fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.card-img-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Agar gambar tidak gepeng */
-}
-
-.card-img-container .fa-box {
-    color: #cbd5e1;
-}
-
-.card-content {
-    padding: 15px;
-    flex-grow: 1;
-}
-
-.card-title {
-    font-size: 16px;
-    font-weight: 700;
-    margin: 0 0 8px 0;
-    color: #1e293b;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.card-desc {
-    font-size: 13px;
-    color: #64748b;
-    margin: 0 0 10px 0;
-}
-
-.badge-kategori {
-    display: inline-block;
-    background: #e1effe;
-    color: #1e429f;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 600;
-}
-
-.btn-detail {
-    width: 100%;
-    padding: 12px;
-    background: #004E98;
-    color: white;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    font-size: 14px;
-}
-
-.btn-detail:hover {
-    background: #FF6700; /* Warna orange FindIt */
-}
-
-/* =========================================
-   GAYA UNTUK MULTI-SELECT SIDEBAR (CHECKBOX STYLE)
+   GAYA UNTUK MULTI-SELECT SIDEBAR
 ========================================= */
 .filter-opt {
     cursor: pointer;
@@ -528,17 +446,147 @@ body {
     color: #FF6700;
 }
 
-/* Gaya saat menu diklik (Terpilih) */
 .selected-filter {
     font-weight: 700;
     color: #FF6700;
 }
 
-/* Menambahkan icon centang dari FontAwesome secara otomatis */
 .selected-filter::before {
-    content: '\f00c'; /* Kode Unicode untuk fa-check */
+    content: '\f00c'; 
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     margin-right: 8px;
     color: #FF6700;
 }
+
+/* =========================================
+   GAYA TOMBOL DUAL ACTION
+========================================= */
+.btn-temuan { background-color: var(--blue-light); }
+.btn-temuan:hover { background-color: var(--blue-dark); }
+.btn-hilang { background-color: #FF4D4F; }
+.btn-hilang:hover { background-color: #d9363e; }
+
+/* =========================================
+   GAYA TAB / TOGGLE SWITCH
+========================================= */
+.tab-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+    padding: 0 20px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    background-color: #f1f5f9;
+    color: #64748b;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.tab-btn:hover {
+    background-color: #e2e8f0;
+}
+
+.tab-btn.active#tabTemuan {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    border-color: #0284c7;
+}
+
+.tab-btn.active#tabHilang {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border-color: #ef4444;
+}
+
+/* =========================================
+   GAYA CARD KHUSUS BARANG HILANG
+========================================= */
+.item-card.card-hilang {
+    border-top: 4px solid #ef4444;
+}
+.item-card.card-hilang .btn-detail {
+    background-color: #ef4444;
+}
+.item-card.card-hilang .btn-detail:hover {
+    background-color: #b91c1c;
+}
+
+/* =========================================
+   DESAIN WIDGET KALENDER UTUH
+========================================= */
+.custom-calendar {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 15px 10px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+    border: 1px solid #f1f5f9;
+    font-family: 'Poppins', sans-serif;
+}
+.calendar-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 15px; 
+    padding: 0 10px; 
+}
+.calendar-header h3 { 
+    margin: 0; 
+    font-size: 15px; 
+    font-weight: 500; 
+    color: #0f172a; 
+}
+.cal-nav { 
+    cursor: pointer; 
+    color: #94a3b8; 
+    font-size: 13px; 
+    padding: 5px; 
+    transition: color 0.2s; 
+}
+.cal-nav:hover { color: #004E98; }
+.calendar-weekdays { 
+    display: grid; 
+    grid-template-columns: repeat(7, 1fr); 
+    text-align: center; 
+    font-weight: 500; 
+    font-size: 12px; 
+    color: #0f172a; 
+    margin-bottom: 10px; 
+}
+.calendar-days { 
+    display: grid; 
+    grid-template-columns: repeat(7, 1fr); 
+    gap: 4px 0; 
+}
+.calendar-day { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    width: 32px; 
+    height: 32px; 
+    margin: auto; 
+    font-size: 13px; 
+    color: #334155; 
+    cursor: pointer; 
+    border-radius: 6px; 
+    transition: background-color 0.2s; 
+}
+.calendar-day:hover:not(.faded) { background-color: #f1f5f9; }
+.calendar-day.faded { color: #cbd5e1; cursor: default; }
+.calendar-day.faded:hover { background-color: transparent; }
+.calendar-day.selected { 
+    background-color: #004E98; 
+    color: white; 
+    font-weight: 500; 
+    box-shadow: 0 4px 8px rgba(0, 78, 152, 0.3); 
+}
+.calendar-day.today:not(.selected) { color: #FF6700; font-weight: 700; }

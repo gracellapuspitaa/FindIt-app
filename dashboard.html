@@ -31,8 +31,7 @@
 
 <section class="welcome-banner">
     <div class="welcome-text">
-        <h2 id="welcomeUser"> </h2> <!-- diambil dari script.js dengan id yang tertera -->
-        <p>Welcome to Find It Universitas Nawasena</p>
+        <h2 id="welcomeUser"> </h2> <p>Welcome to Find It Universitas Nawasena</p>
         <p>Kehilangan sesuatu? Jangan panik. Mari telusuri barang temuan hari ini atau bantu temanmu menemukan miliknya.</p>
     </div>
     <img src="images/maskot.png" alt="Maskot" class="maskot-img">
@@ -41,9 +40,14 @@
 <section class="search-section">
     <div class="search-title-group">
         <h3>Cari Barangmu Disini</h3>
-        <a href="tambah-barang.html" class="btn-add-page">
-            <i class="fas fa-plus-circle"></i> Tambah Barang
-        </a>
+        <div class="action-buttons" style="display: flex; gap: 10px;">
+            <a href="tambah-barang.html" class="btn-add-page btn-temuan">
+                <i class="fas fa-hand-holding-heart"></i> Lapor Temuan
+            </a>
+            <a href="lapor-kehilangan.html" class="btn-add-page btn-hilang">
+                <i class="fas fa-search"></i> Lapor Kehilangan
+            </a>
+        </div>
     </div>
     <div class="search-box">
         <input type="text" class="search-bar" id="searchBar" placeholder="Search Here">
@@ -101,12 +105,20 @@
         </div>
         
         <div class="side-box">
-            <div class="calendar-img-mock">
-                <i class="far fa-calendar-alt" style="font-size: 40px; color: #FF6700; margin-bottom: 10px;"></i>
-                <p style="font-weight: 600; font-size: 14px;">CALENDAR</p>
-                <input type="date" id="calendarFilter" style="margin-top: 10px; border-radius: 5px; border: 1px solid #ddd; padding: 5px;">
+            <h4 style="font-size: 14px; color: #1e293b; margin-bottom: 12px; font-weight: 700;">Kalender Akademik</h4>
+            <div class="custom-calendar">
+                <div class="calendar-header">
+                    <i class="fas fa-chevron-left cal-nav" id="prevMonth"></i>
+                    <h3 id="monthYear">Month, Year</h3>
+                    <i class="fas fa-chevron-right cal-nav" id="nextMonth"></i>
+                </div>
+                <div class="calendar-weekdays">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                </div>
+                <div class="calendar-days" id="calendarDays">
+                    </div>
             </div>
-            <button class="btn-reset" id="btnReset">Reset</button>
+            <button class="btn-reset" id="btnReset" style="margin-top: 15px; width: 100%;">Reset Filter</button>
         </div>
 
         <div class="side-box">
@@ -115,17 +127,17 @@
         </div>
     </aside>
 
-    <main class="items-grid" id="itemsGrid">
-        <div class="item-card">
-            <div class="image-placeholder"><i class="fas fa-id-card fa-3x"></i></div>
-            <div class="bubble-box title-bubble">KTM Mahasiswa</div>
-            <div class="bubble-box desc-bubble">Kantin FISIP</div>
-            <button class="btn-detail" 
-                onclick="showPopup('KTM Mahasiswa', 'Di Sarpras', 'Bertuan', 'Budi Tabuti', 'Ditemukan di meja kantin pojok.', '081244567701')">
-                Detail
-            </button>
+    <div class="content-wrapper" style="flex: 1; display: flex; flex-direction: column;">
+        
+        <div class="tab-container" style="display: flex; gap: 15px; margin-bottom: 20px; padding: 0;">
+            <button class="tab-btn active" id="tabTemuan"><i class="fas fa-box"></i> Barang Temuan</button>
+            <button class="tab-btn" id="tabHilang"><i class="fas fa-search"></i> Sedang Dicari</button>
         </div>
-        </main>
+        
+        <main class="items-grid" id="itemsGrid" style="padding: 0;">
+            </main>
+
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
