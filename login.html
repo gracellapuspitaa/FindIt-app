@@ -6,9 +6,7 @@
     <title>FindIt Nawasena - Login</title>
     
     <link rel="stylesheet" href="css/style.css">
-    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -17,13 +15,11 @@
     <div class="layer-bottom"></div>
 
     <div class="main-wrapper">
-        
         <div class="brand-logo">
             <img src="images/logo.png" alt="Logo FindIt" class="logo-img">
         </div>
 
         <div class="content">
-            
             <div class="welcome-text">
                 <h1>Welcome To</h1>
                 <h1>FindIt Nawasena</h1>
@@ -34,7 +30,6 @@
                     <h2>LOGIN</h2>
 
                     <form id="loginForm">
-
                         <div class="input-group">
                             <input 
                                 type="text"
@@ -43,7 +38,6 @@
                                 required
                                 inputmode="numeric" 
                                 pattern="[0-9]*"
-                                /* Fungsi JS inline untuk mencegah input selain angka secara real-time */
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                             >
                         </div>
@@ -69,11 +63,9 @@
                         <div class="forgot-password">
                             Forgot Your Password? Please Contact Admin
                         </div>
-
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -93,10 +85,16 @@
 
         const result = await response.json();
 
-            // ... kode fetch sebelumnya ...
         if (result.success) {
-            // SIMPAN NAMA USER KE LOCAL STORAGE
+            // SIMPAN DATA PENTING KE LOCAL STORAGE UNTUK PROFIL
+            localStorage.setItem("userLoggedIn", "true");
             localStorage.setItem("namaUser", result.user.nama_lengkap);
+            localStorage.setItem("username", nim); // Simpan NIM sebagai kunci utama
+            
+            // Simpan no_telp jika backend mengirimkannya, jika tidak biarkan kosong
+            if(result.user.no_telp) {
+                localStorage.setItem("userPhone", result.user.no_telp);
+            }
 
             Swal.fire({
                 icon: 'success',
@@ -106,7 +104,6 @@
             }).then(() => {
                 window.location.href = "dashboard.html";
             });
-        // ... kode error sebelumnya ...
         } else {
             Swal.fire({
                 icon: 'error',

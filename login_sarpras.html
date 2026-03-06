@@ -125,6 +125,12 @@
         const result = await response.json();
 
         if (result.success && result.user.role === 'admin') {
+            
+            // --- TAMBAHKAN 2 BARIS INI AGAR ADMIN.JS BISA MEMBACANYA ---
+            localStorage.setItem("namaUser", result.user.nama_lengkap);
+            localStorage.setItem("userLoggedIn", "true");
+            // -----------------------------------------------------------
+
             Swal.fire({
                 icon: 'success',
                 title: 'Login Sarpras Berhasil!',
@@ -134,6 +140,7 @@
             }).then(() => {
                 window.location.href = "dashboard_sarpras.html";
             });
+        
         } else if (result.success && result.user.role !== 'admin') {
             Swal.fire({
                 icon: 'warning',

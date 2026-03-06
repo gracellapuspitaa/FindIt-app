@@ -3,180 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - FindIt Universitas Nawasena</title>
+    <title>Admin Sarpras - FindIt Nawasena</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <div class="modal-overlay" id="modalMhs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tambah Mahasiswa Baru</h3>
+                <button class="btn-close" onclick="tutupModal('modalMhs')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formTambahMhs">
+                    <div class="form-group">
+                        <label>NIM (Username)</label>
+                        <input type="text" id="mhsNim" class="form-control" required pattern="[0-9]+">
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Lengkap</label>
+                        <input type="text" id="mhsNama" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>No. Telp / WA (Opsional)</label>
+                        <input type="text" id="mhsTelp" class="form-control" placeholder="0812...">
+                    </div>
+                    <div class="form-group">
+                        <label>Password Default</label>
+                        <input type="text" id="mhsPass" class="form-control" value="123456" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" style="background:#64748b;" onclick="tutupModal('modalMhs')">Batal</button>
+                <button class="btn-primary" onclick="simpanMahasiswaBaru()">Simpan Data</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalDetail">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="detTitle">Detail Barang</h3>
+                <button class="btn-close" onclick="tutupModal('modalDetail')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="detail-img-box" id="detImgBox">
+                    </div>
+                <div class="detail-info" id="detInfo">
+                    </div>
+            </div>
+            <div class="modal-footer" id="detFooter">
+                </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="css/style_sarpras.css">
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="brand-section">
-            <div class="logo-wrapper">
-                <img src="images/logo.png" alt="Logo FindIt" class="header-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="logo-placeholder" style="display: none;">F</div>
-            </div>
-            <div class="header-title">
-                <h1>FindIt Universitas Nawasena</h1>
-            </div>
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-shield-alt"></i> Sarpras Panel
         </div>
-        <div class="nav-controls">
-            <button class="btn-out" id="btnOut">OUT</button>
-        </div>
-    </header>
+        <ul class="sidebar-menu">
+            <li class="active" data-target="sec-dashboard">
+                <i class="fas fa-chart-pie"></i> Dashboard
+            </li>
+            <li data-target="sec-mahasiswa">
+                <i class="fas fa-users"></i> Data Mahasiswa
+            </li>
+            <li data-target="sec-temuan">
+                <i class="fas fa-box-open"></i> Data Barang Temuan
+            </li>
+            <li data-target="sec-hilang">
+                <i class="fas fa-search"></i> Laporan Kehilangan
+            </li>
+        </ul>
+    </aside>
 
-   <section class="welcome-banner">
-    <div class="welcome-text">
-        <h2>Hello, Grace!</h2>
-        <p>Welcome to Find It Universitas Nawasena</p>
-    </div>
-
-    <img src="images/maskot.png" alt="Maskot" class="maskot-img">
-    </section>
-    <section class="search-section">
-        <h3>Cari Barangmu Disini</h3>
-        <div class="search-box">
-            <input type="text" class="search-bar" placeholder="Search Here">
-        </div>
-    </section>
-
-    <div class="main-container">
-        
-        <aside class="sidebar">
-            
-            <div class="side-box category-container">
-                <ul class="tree-menu">
-                    <li class="active-item">
-                        <div class="menu-label">
-                            <span>Fakultas</span>
-                            <span class="badge">32</span>
-                            <i class="fas fa-chevron-down arrow"></i>
-                        </div>
-                        <ul class="sub-menu">
-                            <li>
-                                <span>All</span>
-                            </li>
-                            <li>
-                                <span>Fisip</span>
-                            </li>
-                            <li>
-                                <span>Teknik</span>
-                            </li>
-                            <li>
-                                <span>Hukum</span>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <div class="menu-label">
-                            <span>Jenis Barang</span>
-                            <i class="fas fa-chevron-down arrow"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="menu-label">
-                            <i class="fas fa-star icon-main"></i>
-                            <span>Sering Hilang</span>
-                            <i class="fas fa-chevron-down arrow"></i>
-                        </div>
-                    </li>
-                </ul>
+    <main class="admin-main">
+        <header class="admin-header">
+            <div class="header-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="adminSearch" placeholder="Cari data di halaman ini...">
             </div>
-            
-            <div class="side-box">
-                <div class="calendar-img-mock">
-                    <i class="far fa-calendar-alt" style="font-size: 40px; color: var(--orange); margin-bottom: 10px;"></i>
-                    <p style="font-weight: 600; font-size: 14px;">CALENDAR</p>
-                    <div style="display: flex; gap: 5px; justify-content: center; margin-top: 10px; flex-wrap: wrap; padding: 0 20px;">
-                        <span style="width: 8px; height: 8px; background: var(--gray-mid); border-radius: 50%;"></span>
-                        <span style="width: 8px; height: 8px; background: var(--gray-mid); border-radius: 50%;"></span>
-                        <span style="width: 8px; height: 8px; background: var(--orange); border-radius: 50%;"></span>
-                        <span style="width: 8px; height: 8px; background: var(--gray-mid); border-radius: 50%;"></span>
+            <div class="header-profile" id="adminProfileBtn">
+                <div class="profile-text">
+                    <span id="adminName">Admin FindIt</span>
+                    <small>Administrator</small>
+                </div>
+                <div class="profile-avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="profile-dropdown" id="adminDropdown">
+                    <a href="#" id="btnAdminLogout"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+                </div>
+            </div>
+        </header>
+
+        <section id="sec-dashboard" class="content-section active">
+            <div class="welcome-banner-admin">
+                <div class="welcome-text">
+                    <h2 id="greetingText">Selamat Pagi, Admin!</h2>
+                    <p>Berikut adalah ringkasan aktivitas FindIt Universitas Nawasena saat ini.</p>
+                </div>
+                <i class="fas fa-chart-line fa-4x" style="color: rgba(255,255,255,0.2);"></i>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e0f2fe; color: #0369a1;"><i class="fas fa-users"></i></div>
+                    <div class="stat-info">
+                        <p>Total Mahasiswa</p>
+                        <h3 id="countMhs">0</h3>
                     </div>
                 </div>
-                <button class="btn-reset">Reset</button>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #dcfce7; color: #0369a1;"><i class="fas fa-box"></i></div>
+                    <div class="stat-info">
+                        <p>Barang Ditemukan</p>
+                        <h3 id="countTemuan">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fee2e2; color: #b91c1c;"><i class="fas fa-search"></i></div>
+                    <div class="stat-info">
+                        <p>Laporan Kehilangan</p>
+                        <h3 id="countHilang">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #dcfce7; color: #15803d;"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info">
+                        <p>Kasus Selesai</p>
+                        <h3 id="countSelesai">0</h3>
+                    </div>
+                </div>
             </div>
 
-            <div class="side-box">
-                <h4 style="font-size: 11px; color: var(--text-dark); margin-bottom: 10px;">Data Diagram Berdasarkan Jenis Barang</h4>
-                <div class="pie-chart-mock"></div>
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h4>Status Keberadaan Barang</h4>
+                    <canvas id="chartStatus"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h4>Barang Berdasarkan Kategori</h4>
+                    <canvas id="chartKategori"></canvas>
+                </div>
+                <div class="chart-container" style="grid-column: 1 / -1;">
+                    <h4>Lokasi Paling Sering Terjadi Kehilangan/Temuan</h4>
+                    <canvas id="chartLokasi"></canvas>
+                </div>
             </div>
-        </aside>
+        </section>
 
-        <main class="items-grid">
-            
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-motorcycle fa-2x"></i></div>
-                <div class="bubble-box title-bubble">Kunci Motor Honda</div>
-                <div class="bubble-box desc-bubble">Gedung FT Lantai 2</div>
-                <button class="btn-detail">Detail</button>
+        <section id="sec-mahasiswa" class="content-section">
+            <div class="section-header">
+                <h2>Data Mahasiswa</h2>
+                <div class="action-group">
+                    <button class="btn-primary" onclick="bukaModalMhs()"><i class="fas fa-plus"></i> Tambah Manual</button>
+                    <button class="btn-success" onclick="document.getElementById('fileCsv').click()"><i class="fas fa-file-excel"></i> Import CSV</button>
+                    <input type="file" id="fileCsv" accept=".csv" style="display: none;" onchange="prosesImportCSV(event)">
+                </div>
             </div>
-
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-id-card fa-2x"></i></div>
-                <div class="bubble-box title-bubble">KTM a.n Budi</div>
-                <div class="bubble-box desc-bubble">Kantin Utama</div>
-                <button class="btn-detail">Detail</button>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>NIM (Username)</th>
+                            <th>Nama Lengkap</th>
+                            <th>No. Telp / WA</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableMahasiswa">
+                        </tbody>
+                </table>
             </div>
+        </section>
 
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-tint fa-2x"></i></div>
-                <div class="bubble-box title-bubble">Botol Minum Biru</div>
-                <div class="bubble-box desc-bubble">Perpustakaan Lt. 1</div>
-                <button class="btn-detail">Detail</button>
+        <section id="sec-temuan" class="content-section">
+            <div class="section-header">
+                <h2>Data Barang Temuan</h2>
             </div>
-
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-book fa-2x"></i></div>
-                <div class="bubble-box title-bubble">Buku Catatan MTK</div>
-                <div class="bubble-box desc-bubble">Ruang Kelas 304</div>
-                <button class="btn-detail">Detail</button>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama Barang</th>
+                            <th>Kategori</th>
+                            <th>Lokasi Temu</th>
+                            <th>Status Keberadaan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableTemuan">
+                        </tbody>
+                </table>
             </div>
+        </section>
 
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-glasses fa-2x"></i></div>
-                <div class="bubble-box title-bubble">Kacamata Hitam</div>
-                <div class="bubble-box desc-bubble">Parkiran FEB</div>
-                <button class="btn-detail">Detail</button>
+        <section id="sec-hilang" class="content-section">
+            <div class="section-header">
+                <h2>Data Laporan Kehilangan</h2>
             </div>
-
-            <div class="item-card">
-                <div class="image-placeholder"><i class="fas fa-usb fa-2x"></i></div>
-                <div class="bubble-box title-bubble">Flashdisk 32GB</div>
-                <div class="bubble-box desc-bubble">Lab Komputer</div>
-                <button class="btn-detail">Detail</button>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama Barang</th>
+                            <th>Kategori</th>
+                            <th>Lokasi Terakhir</th>
+                            <th>Tanggal Hilang</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableHilang">
+                        </tbody>
+                </table>
             </div>
+        </section>
+    </main>
 
-        </main>
-
-    </div>
-
-    <script>
-        // Logika Logout
-        document.getElementById('btnOut').addEventListener('click', function() {
-            Swal.fire({
-                title: 'Konfirmasi',
-                text: "Apakah Anda yakin ingin keluar?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#FF6700', // Sesuai palet
-                cancelButtonColor: '#3A6EA5',  // Sesuai palet
-                confirmButtonText: 'Ya, Keluar!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire('Logged Out!', 'Anda telah keluar dari sistem.', 'success').then(() => {
-                        window.location.href = "login.html"; // Arahkan kembali ke halaman login
-                    });
-                }
-            });
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-frontend.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 </html>

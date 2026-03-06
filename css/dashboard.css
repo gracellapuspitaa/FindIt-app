@@ -590,3 +590,105 @@ body {
     box-shadow: 0 4px 8px rgba(0, 78, 152, 0.3); 
 }
 .calendar-day.today:not(.selected) { color: #FF6700; font-weight: 700; }
+
+/* Tab Aktif untuk Laporan Saya (Ungu) */
+.tab-btn.active#tabLaporanku {
+    background-color: #f3e8ff;
+    color: #7e22ce;
+    border-color: #a855f7;
+}
+
+/* Tombol Khusus Hapus Laporan */
+.btn-delete {
+    width: 100%;
+    padding: 12px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 14px;
+}
+.btn-delete:hover {
+    background: #b91c1c;
+}
+
+/* Tab Aktif untuk Laporan Saya (Ungu) */
+.tab-btn.active#tabLaporanku {
+    background-color: #f3e8ff;
+    color: #7e22ce;
+    border-color: #a855f7;
+}
+
+/* Tombol Khusus Hapus Laporan */
+.btn-delete {
+    width: 100%;
+    padding: 12px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 14px;
+}
+.btn-delete:hover {
+    background: #b91c1c;
+}
+
+/* =========================================
+   GAYA PROFIL DROPDOWN
+========================================= */
+.profile-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-icon:hover {
+    box-shadow: 0 0 10px rgba(0, 78, 152, 0.4);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background-color: #ffffff;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    z-index: 1000;
+    border: 1px solid #f1f5f9;
+    overflow: hidden;
+}
+
+.dropdown-content.show {
+    display: block;
+    animation: fadeInDown 0.2s ease-out;
+}
+
+.dropdown-header {
+    padding: 12px 16px;
+    background-color: #f8f9fa;
+}
+
+.dropdown-content a {
+    color: #334155;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f5f9;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -25,13 +25,29 @@
     </div>
 
     <div class="nav-controls">
-        <button class="btn-out" id="btnOut">OUT</button>
+        <div class="profile-menu">
+            <div class="profile-icon" id="profileBtn" style="background-color: #004E98; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-weight: bold; font-size: 18px; transition: 0.3s;">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="dropdown-content" id="profileDropdown">
+                <div class="dropdown-header">
+                    <p style="font-size: 14px; font-weight: bold; color: #333;" id="dropName">Mahasiswa</p>
+                    <p style="font-size: 11px; color: #666;" id="dropNim">NIM</p>
+                </div>
+                <hr style="margin: 5px 0; border: 0; border-top: 1px solid #eee;">
+                <a href="#" id="btnUbahWa"><i class="fas fa-phone-alt" style="color: #25D366; width: 20px; text-align: center; margin-right: 8px;"></i> Ubah No WA</a>
+                <a href="#" id="btnUbahPass"><i class="fas fa-lock" style="color: #FF6700; width: 20px; text-align: center; margin-right: 8px;"></i> Ubah Password</a>
+                <hr style="margin: 5px 0; border: 0; border-top: 1px solid #eee;">
+                <a href="#" id="btnLogout"><i class="fas fa-sign-out-alt" style="color: #ef4444; width: 20px; text-align: center; margin-right: 8px;"></i> Logout</a>
+            </div>
+        </div>
     </div>
 </header>
 
 <section class="welcome-banner">
     <div class="welcome-text">
-        <h2 id="welcomeUser"> </h2> <p>Welcome to Find It Universitas Nawasena</p>
+        <h2 id="welcomeUser"> </h2> 
+        <p>Welcome to Find It Universitas Nawasena</p>
         <p>Kehilangan sesuatu? Jangan panik. Mari telusuri barang temuan hari ini atau bantu temanmu menemukan miliknya.</p>
     </div>
     <img src="images/maskot.png" alt="Maskot" class="maskot-img">
@@ -115,8 +131,7 @@
                 <div class="calendar-weekdays">
                     <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                 </div>
-                <div class="calendar-days" id="calendarDays">
-                    </div>
+                <div class="calendar-days" id="calendarDays"></div>
             </div>
             <button class="btn-reset" id="btnReset" style="margin-top: 15px; width: 100%;">Reset Filter</button>
         </div>
@@ -132,6 +147,7 @@
         <div class="tab-container" style="display: flex; gap: 15px; margin-bottom: 20px; padding: 0;">
             <button class="tab-btn active" id="tabTemuan"><i class="fas fa-box"></i> Barang Temuan</button>
             <button class="tab-btn" id="tabHilang"><i class="fas fa-search"></i> Sedang Dicari</button>
+            <button class="tab-btn" id="tabLaporanku"><i class="fas fa-user-clock"></i> Laporan Saya</button>
         </div>
         
         <main class="items-grid" id="itemsGrid" style="padding: 0;">

@@ -11,14 +11,18 @@ let currentDate = new Date();
 let selectedDate = null; 
 let nomorAdminSarpras = ""; 
 
+// Mengambil nomor WA user dan NIM dari localStorage
+let currentUserPhone = localStorage.getItem("userPhone") || null;
+const savedNim = localStorage.getItem("username"); 
+
 document.addEventListener('DOMContentLoaded', function() {
     fetchAdminPhone(); 
     fetchItems();
     setupTabs(); 
     setupSidebarAccordion();
     setupSearch();
-    setupLogout();
     setupCalendar(); 
+    setupProfileMenu(); // Inisialisasi menu dropdown profil
 
     const welcomeUser = document.getElementById('welcomeUser');
     const savedName = localStorage.getItem("namaUser");
@@ -33,12 +37,12 @@ document.addEventListener('DOMContentLoaded', function() {
 async function fetchAdminPhone() {
     const { data, error } = await supabaseClient 
         .from('users')
-        .select('no_tlp')
+        .select('no_telp') // PERBAIKAN: Ejaan sesuai database (pakai 'e')
         .eq('role', 'admin')
         .limit(1); 
 
     if (!error && data && data.length > 0) {
-        nomorAdminSarpras = data[0].no_tlp; 
+        nomorAdminSarpras = data[0].no_telp; 
     }
 }
 
@@ -48,12 +52,14 @@ async function fetchAdminPhone() {
 function setupTabs() {
     const tabTemuan = document.getElementById('tabTemuan');
     const tabHilang = document.getElementById('tabHilang');
+    const tabLaporanku = document.getElementById('tabLaporanku');
 
-    if(tabTemuan && tabHilang) {
+    if(tabTemuan && tabHilang && tabLaporanku) {
         tabTemuan.addEventListener('click', () => {
             currentTab = 'temuan';
             tabTemuan.classList.add('active');
             tabHilang.classList.remove('active');
+            tabLaporanku.classList.remove('active');
             terapkanSemuaFilter(); 
         });
 
@@ -61,6 +67,34 @@ function setupTabs() {
             currentTab = 'hilang';
             tabHilang.classList.add('active');
             tabTemuan.classList.remove('active');
+            tabLaporanku.classList.remove('active');
+            terapkanSemuaFilter(); 
+        });
+
+        tabLaporanku.addEventListener('click', async () => {
+            // Jika nomor WA belum ada, tanyakan sekali saja
+            if (!currentUserPhone) {
+                const { value: waInput } = await Swal.fire({
+                    title: 'Verifikasi Nomor WA',
+                    text: 'Masukkan nomor WhatsApp Anda untuk melihat laporan milik Anda:',
+                    input: 'text',
+                    inputPlaceholder: '0812xxxxxx',
+                    showCancelButton: true,
+                    confirmButtonColor: '#004E98'
+                });
+                
+                if (waInput) {
+                    currentUserPhone = waInput;
+                    localStorage.setItem("userPhone", currentUserPhone);
+                } else {
+                    return; // Batal masuk tab jika cancel
+                }
+            }
+
+            currentTab = 'laporanku';
+            tabLaporanku.classList.add('active');
+            tabTemuan.classList.remove('active');
+            tabHilang.classList.remove('active');
             terapkanSemuaFilter(); 
         });
     }
@@ -86,11 +120,16 @@ async function fetchItems() {
         .order('created_at', { ascending: false });
 
     if (errTemu || errHilang) {
-        console.error("Error fetching data:", errTemu || errHilang);
         grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Gagal memuat data.</p>';
     } else {
-        allDataBarang = dataTemu || [];
-        allDataHilang = dataHilang || [];
+        let dtTemu = dataTemu || [];
+        dtTemu.forEach(d => d.tabel_asal = 'temuan');
+        
+        let dtHilang = dataHilang || [];
+        dtHilang.forEach(d => d.tabel_asal = 'hilang');
+
+        allDataBarang = dtTemu;
+        allDataHilang = dtHilang;
         terapkanSemuaFilter(); 
     }
 }
@@ -107,25 +146,36 @@ function renderCards(items) {
         return;
     }
 
-    const isTemuan = currentTab === 'temuan';
-
     items.forEach(item => {
+        const isTemuan = item.tabel_asal === 'temuan';
         const idBarang = isTemuan ? item.id_item : item.id_hilang;
         const prefixId = isTemuan ? "BR-" : "HL-";
         const formatId = prefixId + String(idBarang).padStart(3, '0');
         const lokasi = isTemuan ? item.lokasi_temuan : item.lokasi_terakhir;
-        const cardStyle = isTemuan ? "" : "card-hilang";
+        
+        let cardStyle = "";
+        if (currentTab === 'laporanku') cardStyle = "border-top: 4px solid #a855f7;"; 
+        else if (!isTemuan) cardStyle = "border-top: 4px solid #ef4444;"; 
+        
         const iconFallback = isTemuan ? "fa-box" : "fa-search";
         const badgeBg = isTemuan ? "#f1f5f9" : "#fee2e2";
         const badgeColor = isTemuan ? "#94a3b8" : "#ef4444";
-        const locColor = isTemuan ? "#FF6700" : "#ef4444";
+        const locColor = currentTab === 'laporanku' ? "#a855f7" : (isTemuan ? "#FF6700" : "#ef4444");
 
         const imageHtml = item.image_url 
             ? `<img src="${item.image_url}" alt="Foto ${item.nama_barang}">`
             : `<i class="fas ${iconFallback} fa-3x" style="color: #cbd5e1;"></i>`;
 
+        let tombolAksi = "";
+        if (currentTab === 'laporanku') {
+            tombolAksi = `<button class="btn-delete" onclick="window.hapusLaporanKu('${idBarang}', '${item.tabel_asal}')"><i class="fas fa-check-circle"></i> Selesai / Hapus</button>`;
+        } else {
+            tombolAksi = `<button class="btn-detail" onclick="window.bukaPopupDetail('${idBarang}', '${item.tabel_asal}')">Detail Laporan</button>`;
+        }
+
         const card = document.createElement('div');
-        card.className = `item-card ${cardStyle}`;
+        card.className = `item-card`;
+        card.style = cardStyle;
         card.innerHTML = `
             <div class="card-img-container">${imageHtml}</div>
             <div class="card-content">
@@ -136,17 +186,51 @@ function renderCards(items) {
                 <p class="card-desc"><i class="fas fa-map-marker-alt" style="color:${locColor};"></i> ${lokasi}</p>
                 <span class="badge-kategori">${item.kategori}</span>
             </div>
-            <button class="btn-detail" onclick="window.bukaPopupDetail('${idBarang}')">Detail ${isTemuan ? 'Barang' : 'Laporan'}</button>
+            ${tombolAksi}
         `;
         grid.appendChild(card);
     });
 }
 
 // ==========================================
-// 5. FUNGSI POPUP DETAIL
+// 5. FUNGSI HAPUS LAPORAN (TAB LAPORANKU)
 // ==========================================
-window.bukaPopupDetail = function(id) {
-    const isTemuan = currentTab === 'temuan';
+window.hapusLaporanKu = function(id, tabelAsal) {
+    Swal.fire({
+        title: 'Tandai Selesai?',
+        text: "Laporan ini akan dihapus dari sistem secara permanen.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#25D366',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Sudah Selesai!'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            Swal.fire({ title: 'Menghapus...', didOpen: () => { Swal.showLoading() }});
+            
+            const tabelSupabase = tabelAsal === 'temuan' ? 'items' : 'barang_hilang';
+            const kolomId = tabelAsal === 'temuan' ? 'id_item' : 'id_hilang';
+
+            const { error } = await supabaseClient
+                .from(tabelSupabase)
+                .delete()
+                .eq(kolomId, id);
+
+            if (error) {
+                Swal.fire('Error!', 'Gagal menghapus laporan.', 'error');
+            } else {
+                Swal.fire('Berhasil!', 'Laporan telah diselesaikan dan dihapus.', 'success');
+                fetchItems(); 
+            }
+        }
+    });
+};
+
+// ==========================================
+// 6. FUNGSI POPUP DETAIL 
+// ==========================================
+window.bukaPopupDetail = function(id, tabelAsal) {
+    const isTemuan = tabelAsal === 'temuan';
     
     const item = isTemuan 
         ? allDataBarang.find(i => String(i.id_item) === String(id))
@@ -232,7 +316,7 @@ window.bukaPopupDetail = function(id) {
 };
 
 // ==========================================
-// 6. GABUNGAN PENCARIAN & FILTER
+// 7. GABUNGAN PENCARIAN & FILTER
 // ==========================================
 function setupSearch() {
     const searchBar = document.getElementById('searchBar');
@@ -245,10 +329,20 @@ function setupSearch() {
 }
 
 function terapkanSemuaFilter() {
-    let dataSumber = currentTab === 'temuan' ? allDataBarang : allDataHilang;
+    let dataSumber = [];
+    
+    if (currentTab === 'temuan') {
+        dataSumber = allDataBarang;
+    } else if (currentTab === 'hilang') {
+        dataSumber = allDataHilang;
+    } else if (currentTab === 'laporanku') {
+        let myTemuan = allDataBarang.filter(i => i.id_penemu === currentUserPhone);
+        let myHilang = allDataHilang.filter(i => i.wa_pelapor === currentUserPhone);
+        dataSumber = [...myTemuan, ...myHilang]; 
+    }
+
     let hasilFilter = dataSumber;
 
-    // A. Filter Pencarian Teks
     if (pencarianAktif !== "") {
         hasilFilter = hasilFilter.filter(item => {
             const semuaInfoBarang = Object.values(item).join(" ").toLowerCase();
@@ -256,15 +350,15 @@ function terapkanSemuaFilter() {
         });
     }
 
-    // B. Filter Sidebar
     for (const [kategoriUtama, daftarPilihan] of Object.entries(filterAktif)) {
         if (daftarPilihan.length > 0) {
             hasilFilter = hasilFilter.filter(item => {
+                let isTemu = item.tabel_asal === 'temuan';
                 if (kategoriUtama === 'Fakultas') {
-                    let loc = currentTab === 'temuan' ? item.lokasi_temuan : item.lokasi_terakhir;
+                    let loc = isTemu ? item.lokasi_temuan : item.lokasi_terakhir;
                     return daftarPilihan.includes(loc);
                 }
-                if (kategoriUtama === 'Jenis Barang' && currentTab === 'temuan') {
+                if (kategoriUtama === 'Jenis Barang' && isTemu) {
                     return daftarPilihan.includes(item.jenis_barang);
                 }
                 if (kategoriUtama === 'Kategori') return daftarPilihan.includes(item.kategori);
@@ -273,10 +367,9 @@ function terapkanSemuaFilter() {
         }
     }
 
-    // C. Filter Tanggal Kalender
     if (selectedDate !== null) {
         hasilFilter = hasilFilter.filter(item => {
-            let targetDateStr = currentTab === 'temuan' ? item.created_at : item.tanggal_hilang;
+            let targetDateStr = item.tabel_asal === 'temuan' ? item.created_at : item.tanggal_hilang;
             if (!targetDateStr) return false;
             
             let itemDate = new Date(targetDateStr);
@@ -290,7 +383,7 @@ function terapkanSemuaFilter() {
 }
 
 // ==========================================
-// 7. FUNGSI SIDEBAR & RESET
+// 8. FUNGSI SIDEBAR & RESET
 // ==========================================
 function setupSidebarAccordion() {
     const labels = document.querySelectorAll('.menu-label');
@@ -343,7 +436,7 @@ function setupSidebarAccordion() {
 }
 
 // ==========================================
-// 8. FUNGSI KALENDER
+// 9. FUNGSI KALENDER
 // ==========================================
 function setupCalendar() {
     const monthYearText = document.getElementById('monthYear');
@@ -385,7 +478,6 @@ function setupCalendar() {
 
         daysContainer.innerHTML = daysHTML;
 
-        // EVENT KLIK PADA TANGGAL
         daysContainer.querySelectorAll('.calendar-day:not(.faded)').forEach(dayEl => {
             dayEl.addEventListener('click', () => {
                 const clickedDay = parseInt(dayEl.getAttribute('data-day'));
@@ -395,7 +487,7 @@ function setupCalendar() {
                     selectedDate = new Date(year, month, clickedDay);
                 }
                 renderCalendar(currentDate); 
-                terapkanSemuaFilter(); // Render ulang kartu berdasarkan tanggal yang diklik
+                terapkanSemuaFilter(); 
             });
         });
     }
@@ -420,26 +512,125 @@ function setupCalendar() {
 }
 
 // ==========================================
-// 9. FUNGSI LOGOUT
+// 10. MANAJEMEN PROFIL & DROPDOWN
 // ==========================================
-function setupLogout() {
-    const btnOut = document.getElementById('btnOut');
-    if (btnOut) {
-        btnOut.addEventListener('click', function() {
-            Swal.fire({
-                title: 'Konfirmasi',
-                text: "Apakah Anda yakin ingin keluar?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#FF6700',
-                cancelButtonColor: '#3A6EA5',
-                confirmButtonText: 'Ya, Keluar!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    localStorage.removeItem('userLoggedIn');
-                    window.location.href = "login.html";
-                }
-            });
+function setupProfileMenu() {
+    const profileBtn = document.getElementById('profileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+    const dropName = document.getElementById('dropName');
+    const dropNim = document.getElementById('dropNim');
+
+    const savedName = localStorage.getItem("namaUser");
+    
+    if (dropName && savedName) dropName.innerText = savedName;
+    if (dropNim && savedNim) dropNim.innerText = savedNim;
+
+    if (profileBtn) {
+        profileBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('show');
         });
     }
+
+    window.addEventListener('click', function() {
+        if (profileDropdown && profileDropdown.classList.contains('show')) {
+            profileDropdown.classList.remove('show');
+        }
+    });
+
+    // 10A. UBAH NO WA
+    document.getElementById('btnUbahWa')?.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const { value: waInput } = await Swal.fire({
+            title: 'Atur Nomor WhatsApp',
+            text: 'Masukkan nomor yang aktif untuk dihubungi jika barang ditemukan:',
+            input: 'text',
+            inputValue: currentUserPhone || "",
+            inputPlaceholder: '0812xxxxxx',
+            showCancelButton: true,
+            confirmButtonColor: '#25D366'
+        });
+
+        if (waInput && savedNim) {
+            Swal.fire({ title: 'Menyimpan...', didOpen: () => Swal.showLoading() });
+            const { error } = await supabaseClient
+                .from('users')
+                .update({ no_telp: waInput }) // Ejaan no_telp sesuai database
+                .eq('username', savedNim);
+
+            if (!error) {
+                localStorage.setItem("userPhone", waInput);
+                currentUserPhone = waInput; 
+                Swal.fire('Berhasil!', 'Nomor WhatsApp berhasil diperbarui.', 'success');
+            } else {
+                Swal.fire('Gagal!', 'Terjadi kesalahan saat menyimpan.', 'error');
+            }
+        }
+    });
+
+    // 10B. UBAH PASSWORD
+    document.getElementById('btnUbahPass')?.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const { value: formValues } = await Swal.fire({
+            title: 'Ubah Password',
+            html:
+                '<input id="oldPass" class="swal2-input" placeholder="Password Lama" type="password">' +
+                '<input id="newPass" class="swal2-input" placeholder="Password Baru" type="password">',
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonColor: '#004E98',
+            preConfirm: () => {
+                return [
+                    document.getElementById('oldPass').value,
+                    document.getElementById('newPass').value
+                ]
+            }
+        });
+
+        if (formValues && savedNim) {
+            const [oldPass, newPass] = formValues;
+            
+            const { data, error: errCek } = await supabaseClient
+                .from('users')
+                .select('password')
+                .eq('username', savedNim)
+                .single();
+
+            if (data && data.password === oldPass) {
+                const { error: errUpdate } = await supabaseClient
+                    .from('users')
+                    .update({ password: newPass })
+                    .eq('username', savedNim);
+
+                if (!errUpdate) {
+                    Swal.fire('Sukses!', 'Password berhasil diubah. Silakan login kembali.', 'success')
+                    .then(() => {
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                    });
+                }
+            } else {
+                Swal.fire('Gagal!', 'Password lama yang Anda masukkan salah.', 'error');
+            }
+        }
+    });
+
+    // 10C. LOGOUT
+    document.getElementById('btnLogout')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: "Apakah Anda yakin ingin keluar?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#FF6700',
+            cancelButtonColor: '#3A6EA5',
+            confirmButtonText: 'Ya, Keluar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.clear();
+                window.location.href = "login.html";
+            }
+        });
+    });
 }
