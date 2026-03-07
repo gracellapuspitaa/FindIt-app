@@ -101,7 +101,7 @@ function setupTabs() {
 }
 
 // ==========================================
-// 3. AMBIL DATA DARI 2 TABEL SEKALIGUS
+// 3. AMBIL DATA DARI 2 TABEL SEKALIGUS (DIPERBARUI)
 // ==========================================
 async function fetchItems() {
     const grid = document.getElementById('itemsGrid');
@@ -122,14 +122,22 @@ async function fetchItems() {
     if (errTemu || errHilang) {
         grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Gagal memuat data.</p>';
     } else {
+        // TANDAI ASAL TABEL
         let dtTemu = dataTemu || [];
         dtTemu.forEach(d => d.tabel_asal = 'temuan');
         
         let dtHilang = dataHilang || [];
         dtHilang.forEach(d => d.tabel_asal = 'hilang');
 
-        allDataBarang = dtTemu;
-        allDataHilang = dtHilang;
+        // ==========================================
+        // FILTER: SEMBUNYIKAN YANG SUDAH SELESAI
+        // ==========================================
+        // Untuk temuan: Sembunyikan jika statusnya 'Sudah Dikembalikan'
+        allDataBarang = dtTemu.filter(item => item.status_lokasi !== 'Sudah Dikembalikan');
+        
+        // Untuk kehilangan: Sembunyikan jika statusnya 'Selesai' atau 'Case Closed'
+        allDataHilang = dtHilang.filter(item => item.status !== 'Selesai' && item.status !== 'Case Closed');
+
         terapkanSemuaFilter(); 
     }
 }
@@ -142,7 +150,7 @@ function renderCards(items) {
     grid.innerHTML = '';
 
     if (items.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: #666;">Tidak ada data yang sesuai.</p>';
+        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: #666;">Belum ada barang hilang.</p>';
         return;
     }
 

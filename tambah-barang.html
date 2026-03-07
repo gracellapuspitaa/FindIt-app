@@ -112,54 +112,38 @@
     <script src="js/supabase-frontend.js"></script>
 
     <script>
-        // LOGIKA CUSTOM DROPDOWN
+        // Logika Dropdown (Sama)
         document.querySelectorAll('.custom-select').forEach(select => {
             const btn = select.querySelector('.select-button');
             const list = select.querySelector('.dropdown-list');
             const hiddenInput = select.querySelector('input[type="hidden"]');
-
-            btn.addEventListener('click', () => {
-                select.classList.toggle('open');
-                btn.classList.toggle('active');
-            });
-
+            btn.addEventListener('click', () => { select.classList.toggle('open'); btn.classList.toggle('active'); });
             list.querySelectorAll('div').forEach(option => {
                 option.addEventListener('click', () => {
                     btn.innerText = option.innerText;
                     hiddenInput.value = option.getAttribute('data-value');
-                    select.classList.remove('open');
-                    btn.classList.remove('active');
+                    select.classList.remove('open'); btn.classList.remove('active');
                 });
             });
         });
 
-        // Tutup dropdown jika klik di luar
         window.addEventListener('click', (e) => {
             if (!e.target.closest('.custom-select')) {
                 document.querySelectorAll('.custom-select').forEach(s => {
-                    s.classList.remove('open');
-                    s.querySelector('.select-button').classList.remove('active');
+                    s.classList.remove('open'); s.querySelector('.select-button').classList.remove('active');
                 });
             }
         });
 
-        // VALIDASI FILE & DISPLAY NAMA
         const fileInput = document.getElementById('fileInput');
         const fileNameDisplay = document.getElementById('fileNameDisplay');
-
         fileInput.addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
                 const fileSizeInMB = (file.size / (1024 * 1024)).toFixed(2);
                 if (file.size > 2 * 1024 * 1024) {
-                    Swal.fire({ 
-                        title: 'File Terlalu Besar', 
-                        text: `Ukuran file: ${fileSizeInMB} MB. Maksimal 2MB!`, 
-                        icon: 'error',
-                        confirmButtonColor: '#FF6700'
-                    });
-                    this.value = "";
-                    fileNameDisplay.textContent = "Klik untuk Upload Foto Barang";
+                    Swal.fire({ title: 'File Terlalu Besar', text: `Ukuran file: ${fileSizeInMB} MB. Maksimal 2MB!`, icon: 'error', confirmButtonColor: '#FF6700' });
+                    this.value = ""; fileNameDisplay.textContent = "Klik untuk Upload Foto Barang";
                 } else {
                     fileNameDisplay.textContent = `Terpilih: ${file.name} (${fileSizeInMB} MB)`;
                     fileNameDisplay.style.color = "#004E98";
@@ -182,15 +166,9 @@
                 return;
             }
 
-            Swal.fire({
-                title: 'Mengupload Data...',
-                text: 'Mohon tunggu sebentar.',
-                allowOutsideClick: false,
-                didOpen: () => { Swal.showLoading() }
-            });
+            Swal.fire({ title: 'Mengupload Data...', text: 'Mohon tunggu sebentar.', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
 
             try {
-                // 1. Ambil Nilai dari Form
                 const file = fileInput.files[0];
                 const namaBarang = document.getElementById('namaBarang').value;
                 const lokasi = document.querySelector('input[name="lokasi"]').value;
@@ -201,27 +179,16 @@
                 const statusLokasi = document.querySelector('input[name="status"]:checked').value;
                 const deskripsi = document.getElementById('deskripsi').value;
 
-                // 2. Upload Gambar ke Bucket 'items-images'
                 const fileExt = file.name.split('.').pop();
                 const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
                 
-                // UBAH DISINI: menggunakan supabaseClient
-                const { error: uploadError } = await supabaseClient.storage
-                    .from('items-images')
-                    .upload(fileName, file);
-
+                const { error: uploadError } = await supabaseClient.storage.from('items-images').upload(fileName, file);
                 if (uploadError) throw uploadError;
 
-                // 3. Ambil URL Publik Gambar
-                // UBAH DISINI: menggunakan supabaseClient
-                const { data: publicUrlData } = supabaseClient.storage
-                    .from('items-images')
-                    .getPublicUrl(fileName);
-                
+                const { data: publicUrlData } = supabaseClient.storage.from('items-images').getPublicUrl(fileName);
                 const imageUrl = publicUrlData.publicUrl;
 
-                // 4. Insert Data ke Tabel 'items'
-                // UBAH DISINI: menggunakan supabaseClient
+                // INSERT DATA: Menyisipkan nim_pengupload dari localStorage
                 const { error: insertError } = await supabaseClient
                     .from('items')
                     .insert([
@@ -235,7 +202,8 @@
                             deskripsi: deskripsi,
                             image_url: imageUrl,
                             id_penemu: waPenemu, 
-                            status_barang: 'Ditemukan' 
+                            status_barang: 'Ditemukan',
+                            nim_pengupload: localStorage.getItem("username") // <--- BARIS PENTING
                         }
                     ]);
 

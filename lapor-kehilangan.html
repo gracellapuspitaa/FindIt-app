@@ -69,7 +69,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase-frontend.js"></script> <script>
+    <script src="js/supabase-frontend.js"></script> 
+    
+    <script>
         const fileInput = document.getElementById('fileInput');
         const fileNameDisplay = document.getElementById('fileNameDisplay');
 
@@ -116,6 +118,7 @@
                     imageUrl = publicUrlData.publicUrl;
                 }
 
+                // INSERT DATA: Menyisipkan nim_pengupload dari localStorage
                 const { error: insertError } = await supabaseClient
                     .from('barang_hilang')
                     .insert([{
@@ -125,7 +128,8 @@
                         tanggal_hilang: tanggalHilang,
                         wa_pelapor: waPelapor,
                         ciri_ciri: ciriCiri,
-                        image_url: imageUrl
+                        image_url: imageUrl,
+                        nim_pengupload: localStorage.getItem("username") // <--- BARIS PENTING
                     }]);
 
                 if (insertError) throw insertError;
