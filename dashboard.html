@@ -137,8 +137,10 @@
         </div>
 
         <div class="side-box">
-            <h4 style="font-size: 11px; color: #333; margin-bottom: 10px;">Data Diagram Berdasarkan Kategori</h4>
-            <div class="pie-chart-mock"></div>
+            <h4 style="font-size: 12px; color: #1e293b; margin-bottom: 15px; font-weight: 700;">Statistik Kategori</h4>
+            <div style="position: relative; height: 160px; width: 100%;">
+                <canvas id="kategoriChart"></canvas>
+            </div>
         </div>
     </aside>
 
@@ -156,6 +158,7 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-frontend.js"></script>
 <script src="js/db-mhs.js"></script>

@@ -11,6 +11,8 @@ let currentDate = new Date();
 let selectedDate = null; 
 let nomorAdminSarpras = ""; 
 
+let myKategoriChart = null; // Menyimpan instansi grafik
+
 // Mengambil nomor WA user dan NIM dari localStorage
 let currentUserPhone = localStorage.getItem("userPhone") || null;
 const savedNim = localStorage.getItem("username"); 
@@ -139,6 +141,8 @@ async function fetchItems() {
         allDataHilang = dtHilang.filter(item => item.status !== 'Selesai' && item.status !== 'Case Closed');
 
         terapkanSemuaFilter(); 
+
+        updateDiagramKategori();
     }
 }
 
@@ -640,5 +644,75 @@ function setupProfileMenu() {
                 window.location.href = "login.html";
             }
         });
+    });
+}
+
+// ==========================================
+// 11. RENDER DIAGRAM KATEGORI
+// ==========================================
+function updateDiagramKategori() {
+    const ctx = document.getElementById('kategoriChart');
+    if (!ctx) return;
+
+    // Siapkan wadah hitungan
+    const catCounts = { 'Elektronik': 0, 'Dokumen': 0, 'Aksesoris': 0, 'Perlengkapan': 0 };
+    
+    // Gabungkan data yang masih aktif (belum Case Closed)
+    const semuaDataAktif = [...allDataBarang, ...allDataHilang];
+    
+    // Hitung jumlah per kategori
+    semuaDataAktif.forEach(item => {
+        if(item.kategori) {
+            if(catCounts[item.kategori] !== undefined) {
+                catCounts[item.kategori]++;
+            } else {
+                catCounts[item.kategori] = 1; // Jika ada kategori tak terduga
+            }
+        }
+    });
+
+    const labels = Object.keys(catCounts);
+    const dataValues = Object.values(catCounts);
+    const totalData = dataValues.reduce((a, b) => a + b, 0);
+
+    // Mencegah grafik error jika database masih kosong
+    const chartData = totalData === 0 ? [1] : dataValues;
+    const chartLabels = totalData === 0 ? ['Belum ada data'] : labels;
+    const chartColors = totalData === 0 ? ['#e2e8f0'] : ['#4A90E2', '#FFCA28', '#FF6B6B', '#66C12E', '#9d4edd'];
+
+    // Hancurkan grafik lama sebelum menggambar ulang (Mencegah bug tumpuk)
+    if (myKategoriChart) {
+        myKategoriChart.destroy();
+    }
+
+    // Gambar grafik baru
+    myKategoriChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                data: chartData,
+                backgroundColor: chartColors,
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+                legend: {
+                    position: 'right', // Posisi keterangan di sebelah kanan
+                    labels: {
+                        boxWidth: 10,
+                        padding: 10,
+                        font: { size: 10, family: 'Poppins' }
+                    }
+                },
+                tooltip: {
+                    enabled: totalData !== 0 // Matikan tooltip jika kosong
+                }
+            }
+        }
     });
 }

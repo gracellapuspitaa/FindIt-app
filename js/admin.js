@@ -96,7 +96,20 @@ function renderDashboardStats() {
 
     renderDonutChart('chartStatus', ['Di Sarpras', 'Dibawa Penemu', 'Selesai / Closed'], Object.values(statusCounts), ['#0284c7', '#ca8a04', '#16a34a']);
     renderBarChart('chartKategori', Object.keys(catCounts), Object.values(catCounts), '#f97316');
-    renderHorizontalBar('chartLokasi', ['FEB', 'Kantin Pusat', 'Perpustakaan', 'FASILKOM'], [12, 8, 5, 3], '#3b82f6');
+    // === MENGHITUNG LOKASI PALING SERING ===
+    let locCounts = {};
+    // Hitung dari tabel temuan
+    globalTemuan.forEach(i => { if(i.lokasi_temuan) locCounts[i.lokasi_temuan] = (locCounts[i.lokasi_temuan] || 0) + 1; });
+    // Hitung dari tabel hilang
+    globalHilang.forEach(i => { if(i.lokasi_terakhir) locCounts[i.lokasi_terakhir] = (locCounts[i.lokasi_terakhir] || 0) + 1; });
+
+    // Urutkan dari yang terbanyak dan ambil 5 teratas
+    let sortedLocs = Object.entries(locCounts).sort((a,b) => b[1] - a[1]).slice(0, 5);
+    let locLabels = sortedLocs.length > 0 ? sortedLocs.map(i => i[0]) : ['Belum ada data'];
+    let locData = sortedLocs.length > 0 ? sortedLocs.map(i => i[1]) : [0];
+
+    // Gambar grafiknya
+    renderHorizontalBar('chartLokasi', locLabels, locData, '#FF6B6B');
 }
 
 function renderDonutChart(cId, lbl, data, col) {

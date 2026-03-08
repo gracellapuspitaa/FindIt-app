@@ -11,17 +11,20 @@
 </head>
 <body>
 
-    <div class="form-container">
+    <div class="form-container theme-hilang">
         <header class="form-header">
             <a href="dashboard.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
-            <h1 style="color: #FF4D4F;">Lapor Kehilangan Barang</h1> 
-            <p style="text-align: center; color: #64748b; font-size: 13px; margin-top: 5px;">Tenang, mari kita cari bersama-sama.</p>
+            
+            <div class="header-teks">
+                <h1>Lapor Kehilangan Barang</h1> 
+                <p>Tenang, mari kita cari bersama-sama.</p>
+            </div>
         </header>
 
         <form id="formHilang">
-            <div class="photo-box" onclick="document.getElementById('fileInput').click()" style="border-color: #FF4D4F; background-color: #fff1f0;">
-                <i class="fas fa-image fa-2x" style="color: #FF4D4F;"></i>
-                <p id="fileNameDisplay" style="color: #FF4D4F;">Upload Foto Referensi (Opsional)</p>
+            <div class="photo-box" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-image fa-2x"></i>
+                <p id="fileNameDisplay">Upload Foto Referensi (Opsional)</p>
                 <small>Foto barang yang mirip dari internet/galeri lama</small>
                 <input type="file" id="fileInput" hidden accept="image/*">
             </div>
@@ -64,7 +67,7 @@
                 <textarea id="ciriCiri" rows="4" placeholder="Jelaskan ciri spesifik barangmu (misal: ada goresan di pojok kanan, berisi KTP atas nama Budi...)" required></textarea>
             </div>
 
-            <button type="submit" class="btn-submit" style="background-color: #FF4D4F;">Publikasikan Laporan</button>
+            <button type="submit" class="btn-submit">Publikasikan Laporan</button>
         </form>
     </div>
 
@@ -72,6 +75,10 @@
     <script src="js/supabase-frontend.js"></script> 
     
     <script>
+        // === BATASI TANGGAL MAKSIMAL HARI INI ===
+        const hariIni = new Date().toISOString().split("T")[0];
+        document.getElementById('tanggalHilang').setAttribute('max', hariIni);
+
         const fileInput = document.getElementById('fileInput');
         const fileNameDisplay = document.getElementById('fileNameDisplay');
 
@@ -118,7 +125,6 @@
                     imageUrl = publicUrlData.publicUrl;
                 }
 
-                // INSERT DATA: Menyisipkan nim_pengupload dari localStorage
                 const { error: insertError } = await supabaseClient
                     .from('barang_hilang')
                     .insert([{
@@ -129,10 +135,13 @@
                         wa_pelapor: waPelapor,
                         ciri_ciri: ciriCiri,
                         image_url: imageUrl,
-                        nim_pengupload: localStorage.getItem("username") // <--- BARIS PENTING
+                        nim_pengupload: localStorage.getItem("username")
                     }]);
 
                 if (insertError) throw insertError;
+
+                // === SIMPAN NO WA AGAR LANGSUNG MASUK TAB LAPORANKU ===
+                localStorage.setItem("userPhone", waPelapor);
 
                 Swal.fire({ title: 'Laporan Diterima', text: 'Semoga barangmu segera ditemukan!', icon: 'success' })
                 .then(() => { window.location.href = "dashboard.html"; });
