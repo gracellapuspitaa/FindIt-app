@@ -9,7 +9,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #ebebeb; 
+    background-color: #F1F0E8; 
     height: 100vh; /* Memenuhi tinggi layar */
     display: flex;
     justify-content: center;
@@ -33,14 +33,14 @@ body {
 }
 
 .layer-top {
-    background-color: #ff6700; /* Warna Orange */
+    background-color: #E5E1DA; /* Warna Orange */
     left: -160%;
     transform: skewX(-25deg); /* Membuat efek miring pada tirai */
     animation: slideCrossLeft 2.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
 }
 
 .layer-bottom {
-    background-color: #3a6ea5; /* Warna Biru */
+    background-color: #89A8B2; /* Warna Biru */
     right: -160%;
     transform: skewX(-25deg);
     animation: slideCrossRight 2.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
@@ -67,7 +67,7 @@ body {
     width: 95%;
     max-width: 1200px;
     height: 90vh;
-    background-color: #ebebeb; 
+    background-color: #E5E1DA; 
     border-radius: 40px;
     display: flex;
     align-items: center;
@@ -129,7 +129,7 @@ body {
    Kotak putih tempat input form berada.
    ========================================================= */
 .login-card {
-    background-color: #ffffff;
+    background-color: #F1F0E8;
     padding: 60px 45px;
     border-radius: 40px;
     width: 430px;
@@ -166,7 +166,7 @@ input {
     margin-top: 10px;
     border-radius: 15px;
     border: 1;
-    background-color: #004e98; 
+    background-color: #B3C8CF; 
     color: #ffffff;
     font-size: 1.1rem;
     font-weight: 700;
@@ -176,7 +176,7 @@ input {
 }
 
 .btn-login:hover {
-    background-color: #004e98; 
+    background-color: #B3C8CF; 
     opacity: 80%;
     transform: scale(1.02);
 }
@@ -192,14 +192,14 @@ input {
 /* ================= BUTTON SARPRAS ================= */
 .btn-sarpras {
     margin-top: 5px;
-    background-color: #004e98;
+    background-color: #B3C8CF;
     width: 70%; 
     height: 20%;             /* Ukuran tinggi tombol diperkecil */
     align-self: center;      /* Penempatan di tengah secara horizontal */
 }
 
 .btn-sarpras:hover {
-    background-color:#004e98;
+    background-color:#B3C8CF;
     opacity: 80%;
 }
 
