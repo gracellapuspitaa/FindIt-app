@@ -24,7 +24,7 @@
 body {
     background-color: var(--bg-white);
     color: var(--text-dark);
-    padding: 20px 40px;
+    /* padding: 20px 40px; Dihapus agar tidak ada jarak */
 }
 
 /* ==========================================================
@@ -39,6 +39,9 @@ body {
     border-bottom: 1px solid var(--gray-light);
     position: relative;
     height: 80px;
+    background-color: #3C6E71; /* warna header */
+    padding-left: 40px; /* Ditambahkan agar isi navbar tidak menempel ke pinggir */
+    padding-right: 40px;
 }
 
 .brand-section {
@@ -75,10 +78,10 @@ body {
 }
 
 .header-title h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
+    font-family: 'inter', serif;
+    font-size: 30px;
     margin: 0;
-    color: var(--blue-dark);
+    color: #ffffff;
 }
 
 .nav-controls {
@@ -104,13 +107,15 @@ body {
    4. WELCOME BANNER
    ========================================================== */
 .welcome-banner {
-    background-color: var(--gray-light);
+    background-color: #D9D9D9;
     border-radius: 15px;
     padding: 20px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
+    margin-left: 40px; /* Padding manual pengganti body */
+    margin-right: 40px;
 }
 
 .welcome-text h2 { 
@@ -135,6 +140,8 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 .search-title-group { 
@@ -144,7 +151,7 @@ body {
 }
 
 .search-title-group h3 {
-    color: var(--blue-dark);
+    color: var(--black);
 }
 
 .search-box {
@@ -163,7 +170,7 @@ body {
 }
 
 .search-bar:focus {
-    border: 2px solid var(--orange);
+    border: 2px solid #284b63;
 }
 
 .btn-add-page {
@@ -190,6 +197,8 @@ body {
 .main-container {
     display: flex;
     gap: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 .sidebar {
@@ -200,7 +209,7 @@ body {
 }
 
 .side-box {
-    background-color: var(--gray-light);
+    background-color: #3c6e71;
     border-radius: 15px;
     padding: 15px;
 }
@@ -208,6 +217,22 @@ body {
 .category-container {
     padding: 10px 0;
 }
+
+/* Hapus atau modifikasi .side-box lama jika perlu, 
+   lalu tambahkan class ini */
+
+.sidebar-group {
+    background-color: #3C6E71; /* Warna dasar sidebar */
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 20px; /* Jarak antar grup */
+}
+
+/* Jika ingin memberikan kesan warna yang berbeda seperti di gambar, 
+   Anda bisa menggunakan background yang sedikit lebih gelap/terang per grup */
+.group-fakultas { background-color: #3C6E71; }
+.group-jenis    { background-color: #2F5A5C; }
+.group-kategori { background-color: #284B63; }
 
 /* Menu Bertingkat (Tree Menu) */
 .tree-menu { 
@@ -227,6 +252,7 @@ body {
     font-weight: 600;
     border-radius: 10px;
     transition: background-color 0.3s;
+     color: white; /* warna tulisan Fakultas / Jenis Barang */
 }
 
 .menu-label:hover {
@@ -274,7 +300,7 @@ body {
 .sub-menu li {
     font-size: 13px;
     padding: 8px 10px;
-    color: #666;
+    color: #ffffff;
     cursor: pointer;
     border-radius: 8px;
     transition: all 0.2s;
@@ -419,7 +445,7 @@ body {
    9. RESPONSIVE DESIGN
    ========================================================== */
 @media (max-width: 1024px) {
-    body { padding: 15px 20px; }
+    body { padding: 0; }
     .main-container { flex-direction: column; }
     .sidebar { width: 100%; }
     .items-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
@@ -462,10 +488,22 @@ body {
 /* =========================================
    GAYA TOMBOL DUAL ACTION
 ========================================= */
-.btn-temuan { background-color: var(--blue-light); }
-.btn-temuan:hover { background-color: var(--blue-dark); }
-.btn-hilang { background-color: #FF4D4F; }
-.btn-hilang:hover { background-color: #d9363e; }
+.btn-temuan { 
+    background-color: #284B63; 
+    transition: 0.3s;
+}
+.btn-temuan:hover { 
+    background-color: #284B63;
+    opacity: 0.8; 
+}
+.btn-hilang { 
+    background-color: #284B63; 
+    transition: 0.3s;
+}
+.btn-hilang:hover { 
+    background-color: #284B63; 
+    opacity: 0.8; 
+}
 
 /* =========================================
    GAYA TAB / TOGGLE SWITCH
@@ -497,15 +535,15 @@ body {
 }
 
 .tab-btn.active#tabTemuan {
-    background-color: #e0f2fe;
-    color: #0369a1;
-    border-color: #0284c7;
+    background-color: #3c6e71;
+    color: #ffffff;
+    border: 3px solid #353535;
 }
 
 .tab-btn.active#tabHilang {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    border-color: #ef4444;
+    background-color: #3c6e71;
+    color: #ffffff;
+    border: 3px solid #353535;
 }
 
 /* =========================================
@@ -593,32 +631,9 @@ body {
 
 /* Tab Aktif untuk Laporan Saya (Ungu) */
 .tab-btn.active#tabLaporanku {
-    background-color: #f3e8ff;
-    color: #7e22ce;
-    border-color: #a855f7;
-}
-
-/* Tombol Khusus Hapus Laporan */
-.btn-delete {
-    width: 100%;
-    padding: 12px;
-    background: #ef4444;
-    color: white;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    font-size: 14px;
-}
-.btn-delete:hover {
-    background: #b91c1c;
-}
-
-/* Tab Aktif untuk Laporan Saya (Ungu) */
-.tab-btn.active#tabLaporanku {
-    background-color: #f3e8ff;
-    color: #7e22ce;
-    border-color: #a855f7;
+    background-color: #3c6e71;
+    color: #ffffff;
+    border: 3px #353535;
 }
 
 /* Tombol Khusus Hapus Laporan */
@@ -691,4 +706,26 @@ body {
 @keyframes fadeInDown {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* Warna untuk sub-menu Fakultas */
+.menu-item:nth-child(1) .sub-menu {
+    background-color: #2D585A; 
+}
+
+/* Warna untuk sub-menu Jenis Barang */
+.menu-item:nth-child(2) .sub-menu {
+    background-color: #356063;
+}
+
+/* Warna untuk sub-menu Kategori */
+.menu-item:nth-child(3) .sub-menu {
+    background-color: #3C6E71;
+}
+
+/* Styling tambahan agar terlihat rapi setelah diberi background */
+.sub-menu {
+    padding: 10px 15px; /* Mengatur jarak dalam sub-menu */
+    border-radius: 0 0 10px 10px; /* Lengkung hanya di bawah */
+    margin-top: -5px; /* Menempel ke menu utama */
 }

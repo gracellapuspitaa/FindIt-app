@@ -26,7 +26,7 @@
 
     <div class="nav-controls">
         <div class="profile-menu">
-            <div class="profile-icon" id="profileBtn" style="background-color: #004E98; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-weight: bold; font-size: 18px; transition: 0.3s;">
+            <div class="profile-icon" id="profileBtn" style="background-color: #D9D9D9; color: #284B63; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-weight: bold; font-size: 18px; transition: 0.3s;">
                 <i class="fas fa-user"></i>
             </div>
             <div class="dropdown-content" id="profileDropdown">
@@ -72,76 +72,67 @@
 
 <div class="main-container">
     <aside class="sidebar">
-        <div class="side-box category-container">
-            <ul class="tree-menu">
-                <li class="menu-item">
-                    <div class="menu-label">
-                        <i class="fas fa-university icon-main"></i>
-                        <span>Fakultas</span>
-                        <i class="fas fa-chevron-down arrow"></i>
-                    </div>
-                    <ul class="sub-menu">
-                        <li><span class="filter-opt">All</span></li>
-                        <li><span class="filter-opt">FEB</span></li>
-                        <li><span class="filter-opt">FISIP</span></li>
-                        <li><span class="filter-opt">FK</span></li>
-                        <li><span class="filter-opt">FPSI</span></li>
-                        <li><span class="filter-opt">FIB</span></li>
-                        <li><span class="filter-opt">FT</span></li>
-                        <li><span class="filter-opt">Fasilitas Umum</span></li>
-                    </ul>
-                </li>
+        <div class="side-box">
+            
+            <div class="sidebar-group group-fakultas">
+                <ul class="tree-menu">
+                    <li class="menu-item">
+                        <div class="menu-label">
+                            <i class="fas fa-university icon-main"></i>
+                            <span>Fakultas</span>
+                            <i class="fas fa-chevron-down arrow"></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li><span class="filter-opt">All</span></li>
+                            <li><span class="filter-opt">FEB</span></li>
+                            <li><span class="filter-opt">FISIP</span></li>
+                            <li><span class="filter-opt">FK</span></li>
+                            <li><span class="filter-opt">FPSI</span></li>
+                            <li><span class="filter-opt">FIB</span></li>
+                            <li><span class="filter-opt">FT</span></li>
+                            <li><span class="filter-opt">Fasilitas Umum</span></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
 
-                <li class="menu-item">
-                    <div class="menu-label">
-                        <i class="fas fa-tags icon-main"></i>
-                        <span>Jenis Barang</span>
-                        <i class="fas fa-chevron-down arrow"></i>
-                    </div>
-                    <ul class="sub-menu">
-                        <li><span class="filter-opt">Bertuan</span></li>
-                        <li><span class="filter-opt">Tak Bertuan</span></li>
-                    </ul>
-                </li>
+            <div class="sidebar-group group-jenis">
+                <ul class="tree-menu">
+                    <li class="menu-item">
+                        <div class="menu-label">
+                            <i class="fas fa-tags icon-main"></i>
+                            <span>Jenis Barang</span>
+                            <i class="fas fa-chevron-down arrow"></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li><span class="filter-opt">Bertuan</span></li>
+                            <li><span class="filter-opt">Tak Bertuan</span></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
 
-                <li class="menu-item">
-                    <div class="menu-label">
-                        <i class="fas fa-th-large icon-main"></i>
-                        <span>Kategori</span>
-                        <i class="fas fa-chevron-down arrow"></i>
-                    </div>
-                    <ul class="sub-menu">
-                        <li><span class="filter-opt">Elektronik</span></li>
-                        <li><span class="filter-opt">Dokumen</span></li>
-                        <li><span class="filter-opt">Aksesoris</span></li>
-                        <li><span class="filter-opt">Perlengkapan</span></li>
-                    </ul>
-                </li>
-            </ul>
+            <div class="sidebar-group group-kategori">
+                <ul class="tree-menu">
+                    <li class="menu-item">
+                        <div class="menu-label">
+                            <i class="fas fa-th-large icon-main"></i>
+                            <span>Kategori</span>
+                            <i class="fas fa-chevron-down arrow"></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li><span class="filter-opt">Elektronik</span></li>
+                            <li><span class="filter-opt">Dokumen</span></li>
+                            <li><span class="filter-opt">Aksesoris</span></li>
+                            <li><span class="filter-opt">Perlengkapan</span></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
         
         <div class="side-box">
-            <h4 style="font-size: 14px; color: #1e293b; margin-bottom: 12px; font-weight: 700;">Kalender Akademik</h4>
-            <div class="custom-calendar">
-                <div class="calendar-header">
-                    <i class="fas fa-chevron-left cal-nav" id="prevMonth"></i>
-                    <h3 id="monthYear">Month, Year</h3>
-                    <i class="fas fa-chevron-right cal-nav" id="nextMonth"></i>
-                </div>
-                <div class="calendar-weekdays">
-                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-                </div>
-                <div class="calendar-days" id="calendarDays"></div>
             </div>
-            <button class="btn-reset" id="btnReset" style="margin-top: 15px; width: 100%;">Reset Filter</button>
-        </div>
-
-        <div class="side-box">
-            <h4 style="font-size: 12px; color: #1e293b; margin-bottom: 15px; font-weight: 700;">Statistik Kategori</h4>
-            <div style="position: relative; height: 160px; width: 100%;">
-                <canvas id="kategoriChart"></canvas>
-            </div>
-        </div>
     </aside>
 
     <div class="content-wrapper" style="flex: 1; display: flex; flex-direction: column;">

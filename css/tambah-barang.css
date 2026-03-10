@@ -1,9 +1,15 @@
 :root {
-    --orange: #FF6700;
-    --blue-dark: #004E98;
-    --bg-body: #F3F4F6;
-    --text-main: #1F2937;
-    --border-color: #E5E7EB;
+    --primary:      #3C6E71;
+    --primary-dark: #284B63;
+    --dark:         #353535;
+    --gray-light:   #D9D9D9;
+    --bg-body:      #f4f6f7;
+    --text-main:    #353535;
+    --border-color: #D9D9D9;
+
+    /* Legacy aliases */
+    --orange:    #3C6E71;
+    --blue-dark: #284B63;
 }
 
 body {
@@ -22,7 +28,8 @@ body {
     max-width: 700px;
     border-radius: 24px;
     padding: 40px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    box-shadow: 0 10px 30px rgba(40,75,99,0.10);
+    border: 1px solid var(--gray-light);
 }
 
 .form-header {
@@ -37,24 +44,27 @@ body {
     position: absolute;
     left: 0;
     text-decoration: none;
-    color: var(--blue-dark);
+    color: var(--primary-dark);
     font-weight: 700;
     font-size: 14px;
     display: flex;
     align-items: center;
     gap: 5px;
+    transition: color 0.2s;
 }
+.btn-back:hover { color: var(--primary); }
 
 .form-header h1 {
     font-size: 20px;
     font-weight: 800;
     margin: 0;
+    color: var(--dark);
 }
 
 /* UPLOAD BOX */
 .photo-box {
-    background: #F9FAFB;
-    border: 2px dashed #D1D5DB;
+    background: #f4f6f7;
+    border: 2px dashed var(--gray-light);
     border-radius: 20px;
     padding: 35px;
     text-align: center;
@@ -62,14 +72,12 @@ body {
     transition: 0.3s;
     margin-bottom: 25px;
 }
-
 .photo-box:hover {
-    border-color: var(--orange);
-    background: #FFF7ED;
+    border-color: var(--primary);
+    background: #eaf3f3;
 }
-
-.photo-box i { color: var(--orange); margin-bottom: 10px; }
-.photo-box p { margin: 5px 0; font-weight: 600; }
+.photo-box i     { color: var(--primary); margin-bottom: 10px; }
+.photo-box p     { margin: 5px 0; font-weight: 600; }
 
 /* INPUT & GRID */
 .input-grid {
@@ -78,21 +86,15 @@ body {
     gap: 20px;
     margin-bottom: 20px;
 }
-
 @media (max-width: 600px) { .input-grid { grid-template-columns: 1fr; } }
 
-.input-group { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 8px; 
-    margin-bottom: 15px; 
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
 }
-
-.input-group label { 
-    font-size: 13px; 
-    font-weight: 700; 
-    color: #4B5563; 
-}
+.input-group label { font-size: 13px; font-weight: 700; color: #4B5563; }
 
 input, textarea {
     padding: 14px 18px;
@@ -105,10 +107,9 @@ input, textarea {
     width: 100%;
     box-sizing: border-box;
 }
-
 input:focus, textarea:focus {
-    border-color: var(--blue-dark);
-    box-shadow: 0 0 0 4px rgba(0, 78, 152, 0.1);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(60, 110, 113, 0.12);
 }
 
 /* CUSTOM DROPDOWN */
@@ -126,71 +127,54 @@ input:focus, textarea:focus {
     cursor: pointer;
     transition: 0.2s;
 }
-
 .select-button:after {
     content: "\f078";
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
     font-size: 12px;
-    color: var(--blue-dark);
+    color: var(--primary-dark);
 }
-
-.select-button.active { 
-    border-color: var(--blue-dark); 
-    box-shadow: 0 0 0 4px rgba(0, 78, 152, 0.1); 
+.select-button.active {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(60, 110, 113, 0.12);
 }
 
 .dropdown-list {
-    position: absolute;
-    top: 100%; left: 0; right: 0;
-    background: white;
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    margin-top: 8px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    display: none;
-    z-index: 100;
-    padding: 8px;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: white; border: 1px solid var(--border-color);
+    border-radius: 14px; margin-top: 8px;
+    box-shadow: 0 10px 25px rgba(40,75,99,0.10);
+    display: none; z-index: 100; padding: 8px;
 }
-
 .custom-select.open .dropdown-list { display: block; }
-
 .dropdown-list div {
-    padding: 12px 15px;
-    cursor: pointer;
-    border-radius: 10px;
-    font-size: 14px;
+    padding: 12px 15px; cursor: pointer;
+    border-radius: 10px; font-size: 14px;
 }
-
-.dropdown-list div:hover { background: #F3F4F6; color: var(--blue-dark); font-weight: 600; }
+.dropdown-list div:hover {
+    background: #eaf3f3; color: var(--primary-dark); font-weight: 600;
+}
 
 /* MODERN RADIO BUTTONS */
 .options-row { display: flex; gap: 10px; margin-top: 5px; }
 .radio-option { flex: 1; cursor: pointer; }
 .radio-option input { display: none; }
 .radio-option span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px;
-    background: #F3F4F6;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #6B7280;
-    transition: 0.3s;
+    display: flex; align-items: center; justify-content: center;
+    padding: 12px; background: #f4f6f7;
+    border-radius: 12px; font-size: 14px; font-weight: 600;
+    color: #6B7280; transition: 0.3s;
 }
-
 .radio-option input:checked + span {
-    background: var(--blue-dark);
+    background: var(--primary-dark);
     color: white;
-    box-shadow: 0 4px 12px rgba(0, 78, 152, 0.2);
+    box-shadow: 0 4px 12px rgba(40,75,99,0.2);
 }
 
 /* SUBMIT BUTTON */
 .btn-submit {
     width: 100%;
-    background: var(--blue-dark);
+    background: var(--primary-dark);
     color: white;
     border: none;
     padding: 18px;
@@ -201,37 +185,28 @@ input:focus, textarea:focus {
     margin-top: 20px;
     transition: 0.3s;
 }
-
 .btn-submit:hover {
-    background: var(--orange);
+    background: var(--primary);
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px rgba(255, 103, 0, 0.2);
+    box-shadow: 0 10px 20px rgba(60, 110, 113, 0.25);
 }
 
 /* =======================================================
    TEMA KHUSUS: LAPOR KEHILANGAN (MERAH)
    ======================================================= */
 :root {
-    --red-main: #FF4D4F;
-    --red-dark: #cf1322;
+    --red-main:  #c0392b;
+    --red-dark:  #96281b;
     --red-light: #fff1f0;
     --red-hover: #ffe6e6;
 }
 
-/* Memperbaiki Header agar teks turun ke bawah (berlaku untuk kedua form jika dipakai) */
-.header-teks {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
+.header-teks { display: flex; flex-direction: column; align-items: center; width: 100%; }
 .header-teks h1 { margin: 0; }
-.header-teks p { margin: 5px 0 0 0; color: #64748b; font-size: 13px; font-weight: 500;}
+.header-teks p  { margin: 5px 0 0 0; color: #64748b; font-size: 13px; font-weight: 500; }
 
-/* Warna Teks Judul */
 .theme-hilang .header-teks h1 { color: var(--red-main); }
 
-/* Warna Upload Box */
 .theme-hilang .photo-box {
     border-color: var(--red-main);
     background-color: var(--red-light);
@@ -240,22 +215,18 @@ input:focus, textarea:focus {
     border-color: var(--red-dark);
     background-color: var(--red-hover);
 }
-.theme-hilang .photo-box i, 
-.theme-hilang .photo-box p {
-    color: var(--red-main);
-}
+.theme-hilang .photo-box i,
+.theme-hilang .photo-box p { color: var(--red-main); }
 
-/* Warna Fokus Input & Dropdown */
-.theme-hilang input:focus, 
-.theme-hilang textarea:focus, 
+.theme-hilang input:focus,
+.theme-hilang textarea:focus,
 .theme-hilang select:focus {
     border-color: var(--red-main);
-    box-shadow: 0 0 0 4px rgba(255, 77, 79, 0.1);
+    box-shadow: 0 0 0 4px rgba(192, 57, 43, 0.1);
 }
 
-/* Warna Tombol Submit */
 .theme-hilang .btn-submit { background-color: var(--red-main); }
-.theme-hilang .btn-submit:hover { 
-    background-color: var(--red-dark); 
-    box-shadow: 0 10px 15px rgba(255, 77, 79, 0.2); 
+.theme-hilang .btn-submit:hover {
+    background-color: var(--red-dark);
+    box-shadow: 0 10px 15px rgba(192, 57, 43, 0.2);
 }
