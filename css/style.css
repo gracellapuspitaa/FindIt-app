@@ -33,14 +33,14 @@ body {
 }
 
 .layer-top {
-    background-color: #E5E1DA; /* Warna Orange */
+    background-color: #284b63; /* Warna Orange */
     left: -160%;
     transform: skewX(-25deg); /* Membuat efek miring pada tirai */
     animation: slideCrossLeft 2.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
 }
 
 .layer-bottom {
-    background-color: #89A8B2; /* Warna Biru */
+    background-color: #3c6e71; /* Warna Biru */
     right: -160%;
     transform: skewX(-25deg);
     animation: slideCrossRight 2.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
@@ -258,4 +258,34 @@ input {
     .content { flex-direction: column; text-align: center; padding: 0 20px; }
     .welcome-text h1 { font-size: 2.5rem; margin-top: 60px; }
     .brand-logo { left: 50%; transform: translateX(-50%); }
+}
+/* Styling Wrapper Sidebar */
+.sidebar-group {
+    border-radius: 15px;
+    margin-bottom: 15px;
+    padding: 5px;
+    overflow: hidden; /* Agar border-radius pada sub-menu terlihat rapi */
+}
+
+/* Warna unik per kategori */
+.group-fakultas { background-color: #3C6E71; }
+.group-jenis    { background-color: #284B63; }
+.group-kategori { background-color: #FF6700; }
+
+/* Warna teks agar terbaca jelas di background berwarna */
+.group-fakultas .menu-label, .group-jenis .menu-label, .group-kategori .menu-label {
+    color: white;
+}
+.group-fakultas .icon-main, .group-jenis .icon-main, .group-kategori .icon-main {
+    color: white !important;
+}
+
+/* Styling Sub-Menu agar menyatu dengan grup */
+.sub-menu {
+    background-color: rgba(255, 255, 255, 0.1); /* Efek transparansi */
+    padding: 10px 15px 10px 45px;
+}
+
+.sub-menu li {
+    color: #f8f9fa !important;
 }

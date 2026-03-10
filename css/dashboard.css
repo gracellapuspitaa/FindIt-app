@@ -24,7 +24,7 @@
 body {
     background-color: var(--bg-white);
     color: var(--text-dark);
-    padding: 20px 40px;
+    /* padding: 20px 40px; Dihapus agar tidak ada jarak */
 }
 
 /* ==========================================================
@@ -39,6 +39,9 @@ body {
     border-bottom: 1px solid var(--gray-light);
     position: relative;
     height: 80px;
+    background-color: #3C6E71; /* warna header */
+    padding-left: 40px; /* Ditambahkan agar isi navbar tidak menempel ke pinggir */
+    padding-right: 40px;
 }
 
 .brand-section {
@@ -75,10 +78,10 @@ body {
 }
 
 .header-title h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
+    font-family: 'inter', serif;
+    font-size: 30px;
     margin: 0;
-    color: var(--blue-dark);
+    color: #ffffff;
 }
 
 .nav-controls {
@@ -111,6 +114,8 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
+    margin-left: 40px; /* Padding manual pengganti body */
+    margin-right: 40px;
 }
 
 .welcome-text h2 { 
@@ -135,6 +140,8 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 .search-title-group { 
@@ -190,6 +197,8 @@ body {
 .main-container {
     display: flex;
     gap: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 .sidebar {
@@ -419,7 +428,7 @@ body {
    9. RESPONSIVE DESIGN
    ========================================================== */
 @media (max-width: 1024px) {
-    body { padding: 15px 20px; }
+    body { padding: 0; }
     .main-container { flex-direction: column; }
     .sidebar { width: 100%; }
     .items-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
@@ -590,29 +599,6 @@ body {
     box-shadow: 0 4px 8px rgba(0, 78, 152, 0.3); 
 }
 .calendar-day.today:not(.selected) { color: #FF6700; font-weight: 700; }
-
-/* Tab Aktif untuk Laporan Saya (Ungu) */
-.tab-btn.active#tabLaporanku {
-    background-color: #f3e8ff;
-    color: #7e22ce;
-    border-color: #a855f7;
-}
-
-/* Tombol Khusus Hapus Laporan */
-.btn-delete {
-    width: 100%;
-    padding: 12px;
-    background: #ef4444;
-    color: white;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    font-size: 14px;
-}
-.btn-delete:hover {
-    background: #b91c1c;
-}
 
 /* Tab Aktif untuk Laporan Saya (Ungu) */
 .tab-btn.active#tabLaporanku {
