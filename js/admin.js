@@ -56,6 +56,12 @@ async function reloadAllData() {
 function setupSPARouting() {
     const menus = document.querySelectorAll('.sidebar-menu li');
     const sections = document.querySelectorAll('.content-section');
+    const searchContainer = document.getElementById('headerSearchContainer'); // Ambil elemen search
+
+    // 1. Sembunyikan search bar saat pertama kali web dibuka (karena menu awalnya Dashboard)
+    if (searchContainer) {
+        searchContainer.style.visibility = 'hidden'; 
+    }
 
     menus.forEach(menu => {
         menu.addEventListener('click', function() {
@@ -65,8 +71,19 @@ function setupSPARouting() {
             const targetId = this.getAttribute('data-target');
             sections.forEach(sec => sec.classList.remove('active'));
             document.getElementById(targetId).classList.add('active');
-            document.getElementById('adminSearch').value = '';
-            setupSearchBar(); 
+            
+            // 2. LOGIKA TAMPIL/SEMBUNYI SEARCH BAR
+            if (searchContainer) {
+                if (targetId === 'sec-dashboard') {
+                    // Jika buka Dashboard, sembunyikan search bar (tapi letak profil tetap aman)
+                    searchContainer.style.visibility = 'hidden';
+                } else {
+                    // Jika buka menu lain (Mahasiswa/Temuan/Hilang), munculkan search bar
+                    searchContainer.style.visibility = 'visible';
+                    document.getElementById('adminSearch').value = ''; // Kosongkan isi ketikan lama
+                    setupSearchBar(); // Aktifkan fungsi pencariannya
+                }
+            }
         });
     });
 }
@@ -96,6 +113,7 @@ function renderDashboardStats() {
 
     renderDonutChart('chartStatus', ['Di Sarpras', 'Dibawa Penemu', 'Selesai / Closed'], Object.values(statusCounts), ['#0284c7', '#ca8a04', '#16a34a']);
     renderBarChart('chartKategori', Object.keys(catCounts), Object.values(catCounts), '#f97316');
+    
     // === MENGHITUNG LOKASI PALING SERING ===
     let locCounts = {};
     // Hitung dari tabel temuan
@@ -126,7 +144,7 @@ function renderHorizontalBar(cId, lbl, data, col) {
 }
 
 // ==========================================
-// CRUD MAHASISWA & IMPORT CSV (DIKEMBALIKAN!)
+// CRUD MAHASISWA & IMPORT CSV 
 // ==========================================
 function renderTableMahasiswa() {
     const tbody = document.getElementById('tableMahasiswa');
@@ -440,7 +458,7 @@ window.aksiSelesaikanKasus = async (id, tipe) => {
             Swal.fire('Berhasil!', 'Kasus telah diselesaikan (Case Closed).', 'success').then(() => {
                 // Trik: Jika admin sedang mencari barang di Search Bar, terapkan filternya lagi
                 const searchInput = document.getElementById('adminSearch');
-                if(searchInput.value) searchInput.dispatchEvent(new Event('keyup'));
+                if(searchInput && searchInput.value) searchInput.dispatchEvent(new Event('keyup'));
             });
         }
     }
@@ -456,6 +474,8 @@ async function confirmAction(text) {
 // ==========================================
 function setupSearchBar() {
     const searchInput = document.getElementById('adminSearch');
+    if (!searchInput) return;
+
     const newSearch = searchInput.cloneNode(true);
     searchInput.parentNode.replaceChild(newSearch, searchInput);
 
