@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lapor Kehilangan - FindIt Nawasena</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="css/tambah-barang.css">
 </head>
 <body>
 
-    <div class="form-container theme-hilang">
+    <div class="form-container">
         <header class="form-header">
             <a href="dashboard.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
             
@@ -37,29 +37,44 @@
 
                 <div class="input-group">
                     <label>Kategori</label>
-                    <select id="kategori" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; font-family: 'Poppins';">
-                        <option value="" disabled selected>Pilih Kategori</option>
-                        <option value="Elektronik">Elektronik</option>
-                        <option value="Dokumen">Dokumen</option>
-                        <option value="Aksesoris">Aksesoris</option>
-                        <option value="Perlengkapan">Perlengkapan</option>
-                    </select>
+                    <div class="custom-select" id="selectKategori">
+                        <div class="select-button">Pilih Kategori</div>
+                        <div class="dropdown-list">
+                            <div data-value="Elektronik">Elektronik</div>
+                            <div data-value="Dokumen">Dokumen</div>
+                            <div data-value="Aksesoris">Aksesoris</div>
+                            <div data-value="Perlengkapan">Perlengkapan</div>
+                        </div>
+                        <input type="hidden" name="kategori" required>
+                    </div>
                 </div>
 
                 <div class="input-group">
                     <label>Lokasi Terakhir Dilihat</label>
-                    <input type="text" id="lokasi" placeholder="Contoh: Kantin FEB meja pojok" required>
+                    <div class="custom-select" id="selectLokasi">
+                        <div class="select-button">Pilih Lokasi</div>
+                        <div class="dropdown-list">
+                            <div data-value="FEB">FEB</div>
+                            <div data-value="FISIP">FISIP</div>
+                            <div data-value="FK">FK</div>
+                            <div data-value="FPSI">FPSI</div>
+                            <div data-value="FIB">FIB</div>
+                            <div data-value="FT">FT</div>
+                            <div data-value="FASILITAS UMUM">FASILITAS UMUM</div>
+                        </div>
+                        <input type="hidden" name="lokasi" required>
+                    </div>
                 </div>
 
                 <div class="input-group">
                     <label>Tanggal Kehilangan</label>
-                    <input type="date" id="tanggalHilang" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; font-family: 'Poppins';">
+                    <input type="date" id="tanggalHilang" required style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; outline: none; font-family: 'Outfit', sans-serif;">
                 </div>
             </div>
 
             <div class="input-group">
                 <label>WhatsApp Pelapor</label>
-                <input type="tel" id="waPelapor" placeholder="0812xxxxxx (Untuk dihubungi jika ditemukan)" required>
+                <input type="text" id="waPelapor" placeholder="0812xxxxxx (Untuk dihubungi jika ditemukan)" required inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
             </div>
 
             <div class="input-group">
@@ -79,6 +94,31 @@
         const hariIni = new Date().toISOString().split("T")[0];
         document.getElementById('tanggalHilang').setAttribute('max', hariIni);
 
+        // === LOGIKA DROPDOWN CUSTOM ===
+        document.querySelectorAll('.custom-select').forEach(select => {
+            const btn = select.querySelector('.select-button');
+            const list = select.querySelector('.dropdown-list');
+            const hiddenInput = select.querySelector('input[type="hidden"]');
+            btn.addEventListener('click', () => { select.classList.toggle('open'); btn.classList.toggle('active'); });
+            list.querySelectorAll('div').forEach(option => {
+                option.addEventListener('click', () => {
+                    btn.innerText = option.innerText;
+                    hiddenInput.value = option.getAttribute('data-value');
+                    select.classList.remove('open'); btn.classList.remove('active');
+                });
+            });
+        });
+
+        // Tutup dropdown jika klik di luar
+        window.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-select')) {
+                document.querySelectorAll('.custom-select').forEach(s => {
+                    s.classList.remove('open'); s.querySelector('.select-button').classList.remove('active');
+                });
+            }
+        });
+
+        // === LOGIKA FILE UPLOAD ===
         const fileInput = document.getElementById('fileInput');
         const fileNameDisplay = document.getElementById('fileNameDisplay');
 
@@ -88,8 +128,22 @@
             }
         });
 
+        // === PROSES SUBMIT ===
         document.getElementById('formHilang').addEventListener('submit', async function(e) {
             e.preventDefault();
+
+            // Validasi Custom Dropdown (Lokasi dan Kategori)
+            const lokasi = document.querySelector('input[name="lokasi"]').value;
+            const kategori = document.querySelector('input[name="kategori"]').value;
+            
+            if(!kategori) {
+                Swal.fire({ title: 'Data Belum Lengkap', text: 'Silakan pilih Kategori terlebih dahulu.', icon: 'warning', confirmButtonColor: '#284B63' });
+                return;
+            }
+            if(!lokasi) {
+                Swal.fire({ title: 'Data Belum Lengkap', text: 'Silakan pilih Lokasi Terakhir Dilihat terlebih dahulu.', icon: 'warning', confirmButtonColor: '#284B63' });
+                return;
+            }
 
             Swal.fire({
                 title: 'Menyimpan Laporan...',
@@ -99,8 +153,6 @@
 
             try {
                 const namaBarang = document.getElementById('namaBarang').value;
-                const kategori = document.getElementById('kategori').value;
-                const lokasi = document.getElementById('lokasi').value;
                 const tanggalHilang = document.getElementById('tanggalHilang').value;
                 const waPelapor = document.getElementById('waPelapor').value;
                 const ciriCiri = document.getElementById('ciriCiri').value;
@@ -129,26 +181,32 @@
                     .from('barang_hilang')
                     .insert([{
                         nama_barang: namaBarang,
-                        kategori: kategori,
-                        lokasi_terakhir: lokasi,
+                        kategori: kategori, // Diambil dari hidden input dropdown kategori
+                        lokasi_terakhir: lokasi, // Diambil dari hidden input dropdown lokasi
                         tanggal_hilang: tanggalHilang,
                         wa_pelapor: waPelapor,
                         ciri_ciri: ciriCiri,
                         image_url: imageUrl,
-                        nim_pengupload: localStorage.getItem("username")
+                        nim_pengupload: localStorage.getItem("username") // Identitas asli
                     }]);
 
                 if (insertError) throw insertError;
 
-                // === SIMPAN NO WA AGAR LANGSUNG MASUK TAB LAPORANKU ===
-                localStorage.setItem("userPhone", waPelapor);
-
-                Swal.fire({ title: 'Laporan Diterima', text: 'Semoga barangmu segera ditemukan!', icon: 'success' })
-                .then(() => { window.location.href = "dashboard.html"; });
+                Swal.fire({ 
+                    title: 'Laporan Diterima', 
+                    text: 'Semoga barangmu segera ditemukan!', 
+                    icon: 'success',
+                    confirmButtonColor: '#3C6E71' 
+                }).then(() => { window.location.href = "dashboard.html"; });
 
             } catch (error) {
                 console.error("Error:", error);
-                Swal.fire({ title: 'Gagal!', text: error.message, icon: 'error' });
+                Swal.fire({ 
+                    title: 'Gagal!', 
+                    text: error.message, 
+                    icon: 'error',
+                    confirmButtonColor: '#284B63' 
+                });
             }
         });
     </script>

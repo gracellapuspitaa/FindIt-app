@@ -1,117 +1,183 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FindIt Nawasena - Login</title>
-    
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FindIt Nawasena - Login</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+
+/* TAMBAHAN AGAR JUDUL MASUK KE BOX HIJAU */
+.welcome-section{
+position:relative;
+}
+
+.welcome-content{
+position:absolute;
+top:50%;
+left:100px;
+transform:translateY(-50%);
+z-index:2;
+}
+
+.welcome-title{
+font-family:'Playfair Display', serif;
+font-size:48px;
+margin:0;
+}
+
+</style>
+
 </head>
+
 <body>
 
-    <div class="layer-top"></div>
-    <div class="layer-bottom"></div>
+<div class="layer-top"></div>
+<div class="layer-bottom"></div>
 
-    <div class="main-wrapper">
-        <div class="brand-logo">
-            <img src="images/logo.png" alt="Logo FindIt" class="logo-img">
-        </div>
+<div class="main-wrapper">
 
-        <div class="content">
-            <div class="welcome-text">
-                <h1>Welcome To</h1>
-                <h1>FindIt Nawasena</h1>
-            </div>
+<!-- LOGO -->
+<div class="brand-logo">
+<img src="images/logo.png" class="logo-img">
+</div>
 
-            <div class="login-box-container">
-                <div class="login-card">
-                    <h2>LOGIN</h2>
 
-                    <form id="loginForm">
-                        <div class="input-group">
-                            <input 
-                                type="text"
-                                id="nim"
-                                placeholder="NIM"
-                                required
-                                inputmode="numeric" 
-                                pattern="[0-9]*"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                            >
-                        </div>
+<div class="content">
 
-                        <div class="input-group">
-                            <input 
-                                type="password"
-                                id="password"
-                                placeholder="Password"
-                                required
-                            >
-                        </div>
+<!-- KIRI -->
+<div class="welcome-section">
 
-                        <div id="errorMsg"></div>
+<svg class="blob-bg" viewBox="0 0 900 800" preserveAspectRatio="none">
+<path fill="#3F6F6B"
+d="
+M0,0
+L550,0
+C700,120 700,280 620,400
+C560,500 700,640 560,800
+L0,800
+Z
+"/>
+</svg>
 
-                        <button type="submit" class="btn-login">Login</button>
+<div class="welcome-content">
 
-                        <button type="button" class="btn-login btn-sarpras"
-                            onclick="window.location.href='login_sarpras.html'">
-                            Login Sarpras
-                        </button>
-
-                        <div class="forgot-password">
-                            Forgot Your Password? Please Contact Admin
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div class="welcome-text">
+        <h1 class="welcome-title">Welcome To</h1>
+        <h1 class="welcome-title">FindIt Nawasena</h1>
     </div>
 
+    <img src="images/maskot.png" alt="Maskot FindIt" class="owl-img">
+
+</div>
+
+</div>
+
+
+<!-- KANAN -->
+<div class="login-area">
+
+<div class="login-card">
+
+<h2>LOGIN MAHASISWA</h2>
+
+<form id="loginForm">
+
+<div class="input-group">
+<input 
+type="text"
+id="nim"
+placeholder="NIM"
+required
+inputmode="numeric"
+pattern="[0-9]*"
+oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+>
+</div>
+
+<div class="input-group">
+<input 
+type="password"
+id="password"
+placeholder="Password"
+required
+>
+</div>
+
+<div id="errorMsg"></div>
+
+<button type="submit" class="btn-login">Login</button>
+
+<button type="button"
+class="btn-login btn-sarpras"
+onclick="window.location.href='login_sarpras.html'">
+Login Sarpras
+</button>
+
+<div class="forgot-password">
+Forgot Your Password? Please Contact Admin
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
 <script>
-    document.getElementById("loginForm").addEventListener("submit", async function(e) {
-        e.preventDefault();
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+e.preventDefault();
 
-        const nim = document.getElementById("nim").value.trim();
-        const password = document.getElementById("password").value.trim();
+const nim = document.getElementById("nim").value.trim();
+const password = document.getElementById("password").value.trim();
 
-        // Kirim data ke server (Node.js)
-        const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: nim, password: password })
-        });
+const response = await fetch('/api/login', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ username: nim, password: password })
+});
 
-        const result = await response.json();
+const result = await response.json();
 
-        if (result.success) {
-            // SIMPAN DATA PENTING KE LOCAL STORAGE UNTUK PROFIL
-            localStorage.setItem("userLoggedIn", "true");
-            localStorage.setItem("namaUser", result.user.nama_lengkap);
-            localStorage.setItem("username", nim); // Simpan NIM sebagai kunci utama
-            
-            // Simpan no_telp jika backend mengirimkannya, jika tidak biarkan kosong
-            if(result.user.no_telp) {
-                localStorage.setItem("userPhone", result.user.no_telp);
-            }
+if (result.success) {
 
-            Swal.fire({
-                icon: 'success',
-                title: 'Login Berhasil!',
-                text: 'Selamat datang, ' + result.user.nama_lengkap,
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.location.href = "dashboard.html";
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Login Gagal',
-                text: result.message
-            });
-        }
-    });
+localStorage.setItem("userLoggedIn", "true");
+localStorage.setItem("namaUser", result.user.nama_lengkap);
+localStorage.setItem("username", nim);
+
+if(result.user.no_telp){
+localStorage.setItem("userPhone", result.user.no_telp);
+}
+
+Swal.fire({
+icon: 'success',
+title: 'Login Berhasil!',
+text: 'Selamat datang, ' + result.user.nama_lengkap,
+confirmButtonText: 'OK'
+}).then(()=>{
+window.location.href="dashboard.html";
+});
+
+}else{
+
+Swal.fire({
+icon: 'error',
+title: 'Login Gagal',
+text: result.message
+});
+
+}
+
+});
 </script>
 
 </body>

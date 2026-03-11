@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Barang - FindIt Nawasena</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="css/tambah-barang.css">
@@ -18,17 +18,17 @@
         </header>
 
         <form id="formTambah">
-            <div class="photo-box" onclick="document.getElementById('fileInput').click()">
-                <i class="fas fa-camera fa-2x"></i>
-                <p id="fileNameDisplay">Klik untuk Upload Foto Barang</p>
-                <small>(Maksimal 2MB)</small>
+            <div class="photo-box" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                <p id="fileNameDisplay">Klik atau Seret Foto Barang ke Sini</p>
+                <small>Format: JPG, PNG (Maks. 2MB)</small>
                 <input type="file" id="fileInput" hidden accept="image/*">
             </div>
 
             <div class="input-grid">
                 <div class="input-group">
                     <label>Nama Barang</label>
-                    <input type="text" id="namaBarang" placeholder="Kunci Motor Honda, Dompet, dll" required>
+                    <input type="text" id="namaBarang" placeholder="Misal: Kunci Motor Honda" required>
                 </div>
 
                 <div class="input-group">
@@ -38,10 +38,10 @@
                         <div class="dropdown-list">
                             <div data-value="FEB">FEB</div>
                             <div data-value="FISIP">FISIP</div>
-                            <div data-value="FIB">FK</div>
+                            <div data-value="FK">FK</div>
                             <div data-value="FPSI">FPSI</div>
                             <div data-value="FIB">FIB</div>
-                            <div data-value="FIB">FT</div>
+                            <div data-value="FT">FT</div>
                             <div data-value="FASILITAS UMUM">FASILITAS UMUM</div>
                         </div>
                         <input type="hidden" name="lokasi" required>
@@ -64,7 +64,7 @@
 
                 <div class="input-group">
                     <label>WhatsApp Penemu</label>
-                    <input type="tel" id="waPenemu" placeholder="0812xxxxxx" required>
+                    <input type="text" id="waPenemu" placeholder="0812xxxx" required inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
             </div>
 
@@ -103,10 +103,12 @@
 
             <div class="input-group">
                 <label>Deskripsi Detail</label>
-                <textarea id="deskripsi" rows="3" placeholder="Jelaskan detail barangnya..."></textarea>
+                <textarea id="deskripsi" rows="3" placeholder="Contoh: Casing warna biru, ditemukan di kursi pojok..."></textarea>
             </div>
 
-            <button type="submit" class="btn-submit">Simpan & Publikasikan</button>
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> Publikasikan Barang
+            </button>
         </form>
     </div>
 
@@ -114,29 +116,43 @@
     <script src="js/supabase-frontend.js"></script>
 
     <script>
-        // Logika Dropdown (Sama)
+        // Logika Dropdown
         document.querySelectorAll('.custom-select').forEach(select => {
             const btn = select.querySelector('.select-button');
             const list = select.querySelector('.dropdown-list');
             const hiddenInput = select.querySelector('input[type="hidden"]');
-            btn.addEventListener('click', () => { select.classList.toggle('open'); btn.classList.toggle('active'); });
+            
+            btn.addEventListener('click', () => { 
+                select.classList.toggle('open'); 
+                btn.classList.toggle('active'); 
+            });
+
             list.querySelectorAll('div').forEach(option => {
                 option.addEventListener('click', () => {
                     btn.innerText = option.innerText;
                     hiddenInput.value = option.getAttribute('data-value');
-                    select.classList.remove('open'); btn.classList.remove('active');
+                    select.classList.remove('open'); 
+                    btn.classList.remove('active');
+                    
+                    // Gaya saat sudah terpilih (Warna Arang)
+                    btn.style.color = "#353535";
+                    btn.style.fontWeight = "600";
+                    btn.style.borderColor = "#284B63"; // Border jadi Navy
                 });
             });
         });
 
+        // Close dropdown when clicking outside
         window.addEventListener('click', (e) => {
             if (!e.target.closest('.custom-select')) {
                 document.querySelectorAll('.custom-select').forEach(s => {
-                    s.classList.remove('open'); s.querySelector('.select-button').classList.remove('active');
+                    s.classList.remove('open'); 
+                    s.querySelector('.select-button').classList.remove('active');
                 });
             }
         });
 
+        // File Input Preview Text
         const fileInput = document.getElementById('fileInput');
         const fileNameDisplay = document.getElementById('fileNameDisplay');
         fileInput.addEventListener('change', function() {
@@ -144,11 +160,17 @@
             if (file) {
                 const fileSizeInMB = (file.size / (1024 * 1024)).toFixed(2);
                 if (file.size > 2 * 1024 * 1024) {
-                    Swal.fire({ title: 'File Terlalu Besar', text: `Ukuran file: ${fileSizeInMB} MB. Maksimal 2MB!`, icon: 'error', confirmButtonColor: '#FF6700' });
-                    this.value = ""; fileNameDisplay.textContent = "Klik untuk Upload Foto Barang";
+                    Swal.fire({ 
+                        title: 'File Terlalu Besar', 
+                        text: `Ukuran: ${fileSizeInMB} MB. Maksimal 2MB!`, 
+                        icon: 'error', 
+                        confirmButtonColor: '#284B63' // Warna Konfirmasi Navy
+                    });
+                    this.value = ""; 
+                    fileNameDisplay.textContent = "Klik untuk Upload Foto Barang";
                 } else {
-                    fileNameDisplay.textContent = `Terpilih: ${file.name} (${fileSizeInMB} MB)`;
-                    fileNameDisplay.style.color = "#004E98";
+                    fileNameDisplay.textContent = `Terpilih: ${file.name}`;
+                    fileNameDisplay.style.color = "#284B63"; // Teks jadi Navy
                 }
             }
         });
@@ -159,64 +181,71 @@
             document.getElementById('inputNama').required = show;
         }
 
-        // PROSES SUBMIT KE SUPABASE
+        // Handle Submit ke Supabase
         document.getElementById('formTambah').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             if (!fileInput.files[0]) {
-                Swal.fire({ title: 'Foto Kosong', text: 'Mohon upload foto barang.', icon: 'warning' });
+                Swal.fire({ title: 'Foto Kosong', text: 'Mohon upload foto barang.', icon: 'warning', confirmButtonColor: '#284B63' });
                 return;
             }
 
-            Swal.fire({ title: 'Mengupload Data...', text: 'Mohon tunggu sebentar.', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+            const lokasi = document.querySelector('input[name="lokasi"]').value;
+            const kategori = document.querySelector('input[name="kategori"]').value;
+            
+            if(!lokasi || !kategori) {
+                Swal.fire({ title: 'Belum Lengkap', text: 'Pilih Lokasi dan Kategori dahulu.', icon: 'warning', confirmButtonColor: '#284B63' });
+                return;
+            }
+
+            Swal.fire({ 
+                title: 'Sedang Memproses...', 
+                text: 'Mohon tunggu sebentar.', 
+                allowOutsideClick: false, 
+                didOpen: () => { Swal.showLoading() } 
+            });
 
             try {
                 const file = fileInput.files[0];
-                const namaBarang = document.getElementById('namaBarang').value;
-                const lokasi = document.querySelector('input[name="lokasi"]').value;
-                const kategori = document.querySelector('input[name="kategori"]').value;
-                const waPenemu = document.getElementById('waPenemu').value;
-                const jenis = document.querySelector('input[name="jenis"]:checked').value;
-                const inputNama = document.getElementById('inputNama').value;
-                const statusLokasi = document.querySelector('input[name="status"]:checked').value;
-                const deskripsi = document.getElementById('deskripsi').value;
-
                 const fileExt = file.name.split('.').pop();
-                const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+                const fileName = `${Date.now()}.${fileExt}`;
                 
+                // Upload Storage
                 const { error: uploadError } = await supabaseClient.storage.from('items-images').upload(fileName, file);
                 if (uploadError) throw uploadError;
 
                 const { data: publicUrlData } = supabaseClient.storage.from('items-images').getPublicUrl(fileName);
                 const imageUrl = publicUrlData.publicUrl;
 
-                // INSERT DATA: Menyisipkan nim_pengupload dari localStorage
-                const { error: insertError } = await supabaseClient
-                    .from('items')
-                    .insert([
-                        {
-                            nama_barang: namaBarang,
-                            lokasi_temuan: lokasi,
-                            kategori: kategori,
-                            jenis_barang: jenis, 
-                            nama_pemilik: jenis === 'Bertuan' ? inputNama : null,
-                            status_lokasi: statusLokasi, 
-                            deskripsi: deskripsi,
-                            image_url: imageUrl,
-                            id_penemu: waPenemu, 
-                            status_barang: 'Ditemukan',
-                            nim_pengupload: localStorage.getItem("username") // <--- BARIS PENTING
-                        }
-                    ]);
+                // Insert Database
+                const { error: insertError } = await supabaseClient.from('items').insert([{
+                    nama_barang: document.getElementById('namaBarang').value,
+                    lokasi_temuan: lokasi,
+                    kategori: kategori,
+                    jenis_barang: document.querySelector('input[name="jenis"]:checked').value,
+                    nama_pemilik: document.querySelector('input[name="jenis"]:checked').value === 'Bertuan' ? document.getElementById('inputNama').value : null,
+                    status_lokasi: document.querySelector('input[name="status"]:checked').value,
+                    deskripsi: document.getElementById('deskripsi').value,
+                    image_url: imageUrl,
+                    id_penemu: document.getElementById('waPenemu').value,
+                    status_barang: 'Ditemukan',
+                    nim_pengupload: localStorage.getItem("username") // Mengambil NIM dari login
+                }]);
 
                 if (insertError) throw insertError;
 
-                Swal.fire({ title: 'Berhasil!', text: 'Barang telah dipublikasikan.', icon: 'success' })
-                .then(() => { window.location.href = "dashboard.html"; });
+                Swal.fire({ 
+                    title: 'Berhasil!', 
+                    text: 'Barang telah dipublikasikan.', 
+                    icon: 'success',
+                    confirmButtonColor: '#284B63' 
+                }).then(() => { 
+                    window.location.href = "dashboard.html"; 
+                });
 
             } catch (error) {
                 console.error("Error:", error);
-                Swal.fire({ title: 'Gagal!', text: error.message || 'Terjadi kesalahan saat upload.', icon: 'error' });
+                Swal.fire({ title: 'Gagal!', text: 'Terjadi kesalahan saat mengunggah.', icon: 'error' });
             }
         });
     </script>

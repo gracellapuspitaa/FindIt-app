@@ -11,9 +11,8 @@ let currentDate = new Date();
 let selectedDate = null; 
 let nomorAdminSarpras = ""; 
 
-let myKategoriChart = null; // Menyimpan instansi grafik
+let myKategoriChart = null; 
 
-// Mengambil nomor WA user dan NIM dari localStorage
 let currentUserPhone = localStorage.getItem("userPhone") || null;
 const savedNim = localStorage.getItem("username"); 
 
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSidebarAccordion();
     setupSearch();
     setupCalendar(); 
-    setupProfileMenu(); // Inisialisasi menu dropdown profil
+    setupProfileMenu(); 
 
     const welcomeUser = document.getElementById('welcomeUser');
     const savedName = localStorage.getItem("namaUser");
@@ -33,13 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ==========================================
-// 1. AMBIL NOMOR ADMIN
-// ==========================================
 async function fetchAdminPhone() {
     const { data, error } = await supabaseClient 
         .from('users')
-        .select('no_telp') // PERBAIKAN: Ejaan sesuai database (pakai 'e')
+        .select('no_telp') 
         .eq('role', 'admin')
         .limit(1); 
 
@@ -48,9 +44,6 @@ async function fetchAdminPhone() {
     }
 }
 
-// ==========================================
-// 2. FUNGSI TAB SWITCHER
-// ==========================================
 function setupTabs() {
     const tabTemuan = document.getElementById('tabTemuan');
     const tabHilang = document.getElementById('tabHilang');
@@ -74,7 +67,6 @@ function setupTabs() {
         });
 
         tabLaporanku.addEventListener('click', async () => {
-            // Jika nomor WA belum ada, tanyakan sekali saja
             if (!currentUserPhone) {
                 const { value: waInput } = await Swal.fire({
                     title: 'Verifikasi Nomor WA',
@@ -82,14 +74,14 @@ function setupTabs() {
                     input: 'text',
                     inputPlaceholder: '0812xxxxxx',
                     showCancelButton: true,
-                    confirmButtonColor: '#004E98'
+                    confirmButtonColor: '#284B63'
                 });
                 
                 if (waInput) {
                     currentUserPhone = waInput;
                     localStorage.setItem("userPhone", currentUserPhone);
                 } else {
-                    return; // Batal masuk tab jika cancel
+                    return; 
                 }
             }
 
@@ -102,9 +94,6 @@ function setupTabs() {
     }
 }
 
-// ==========================================
-// 3. AMBIL DATA DARI 2 TABEL SEKALIGUS (DIPERBARUI)
-// ==========================================
 async function fetchItems() {
     const grid = document.getElementById('itemsGrid');
     if (!grid) return; 
@@ -124,37 +113,26 @@ async function fetchItems() {
     if (errTemu || errHilang) {
         grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Gagal memuat data.</p>';
     } else {
-        // TANDAI ASAL TABEL
         let dtTemu = dataTemu || [];
         dtTemu.forEach(d => d.tabel_asal = 'temuan');
         
         let dtHilang = dataHilang || [];
         dtHilang.forEach(d => d.tabel_asal = 'hilang');
 
-        // ==========================================
-        // FILTER: SEMBUNYIKAN YANG SUDAH SELESAI
-        // ==========================================
-        // Untuk temuan: Sembunyikan jika statusnya 'Sudah Dikembalikan'
         allDataBarang = dtTemu.filter(item => item.status_lokasi !== 'Sudah Dikembalikan');
-        
-        // Untuk kehilangan: Sembunyikan jika statusnya 'Selesai' atau 'Case Closed'
         allDataHilang = dtHilang.filter(item => item.status !== 'Selesai' && item.status !== 'Case Closed');
 
         terapkanSemuaFilter(); 
-
         updateDiagramKategori();
     }
 }
 
-// ==========================================
-// 4. TAMPILKAN KARTU
-// ==========================================
 function renderCards(items) {
     const grid = document.getElementById('itemsGrid');
     grid.innerHTML = '';
 
     if (items.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: #666;">Belum ada barang hilang.</p>';
+        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: #666;">Belum ada laporan.</p>';
         return;
     }
 
@@ -166,13 +144,13 @@ function renderCards(items) {
         const lokasi = isTemuan ? item.lokasi_temuan : item.lokasi_terakhir;
         
         let cardStyle = "";
-        if (currentTab === 'laporanku') cardStyle = "border-top: 4px solid #a855f7;"; 
-        else if (!isTemuan) cardStyle = "border-top: 4px solid #ef4444;"; 
+        if (currentTab === 'laporanku') cardStyle = "border-top: 4px solid #284B63;"; 
+        else if (!isTemuan) cardStyle = "border-top: 4px solid #3C6E71;"; 
         
         const iconFallback = isTemuan ? "fa-box" : "fa-search";
-        const badgeBg = isTemuan ? "#f1f5f9" : "#fee2e2";
-        const badgeColor = isTemuan ? "#94a3b8" : "#ef4444";
-        const locColor = currentTab === 'laporanku' ? "#a855f7" : (isTemuan ? "#FF6700" : "#ef4444");
+        const badgeBg = "#f1f5f9"; 
+        const badgeColor = "#284B63"; 
+        const locColor = "#3C6E71"; 
 
         const imageHtml = item.image_url 
             ? `<img src="${item.image_url}" alt="Foto ${item.nama_barang}">`
@@ -204,17 +182,14 @@ function renderCards(items) {
     });
 }
 
-// ==========================================
-// 5. FUNGSI HAPUS LAPORAN (TAB LAPORANKU)
-// ==========================================
 window.hapusLaporanKu = function(id, tabelAsal) {
     Swal.fire({
         title: 'Tandai Selesai?',
         text: "Laporan ini akan dihapus dari sistem secara permanen.",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#25D366',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#3C6E71', 
+        cancelButtonColor: '#353535',
         confirmButtonText: 'Ya, Sudah Selesai!'
     }).then(async (result) => {
         if (result.isConfirmed) {
@@ -238,9 +213,6 @@ window.hapusLaporanKu = function(id, tabelAsal) {
     });
 };
 
-// ==========================================
-// 6. FUNGSI POPUP DETAIL 
-// ==========================================
 window.bukaPopupDetail = function(id, tabelAsal) {
     const isTemuan = tabelAsal === 'temuan';
     
@@ -257,6 +229,10 @@ window.bukaPopupDetail = function(id, tabelAsal) {
     let waNumber = "";
     let tujuanChat = "";
     let pesanTemplate = `Halo, saya ingin bertanya tentang laporan dengan ID ${formatId}`;
+
+    let bgPopup = "#f8f9fa";
+    let borderPopup = "#284B63"; 
+    let colorText = "#284B63";
 
     if (isTemuan) {
         let infoPemilik = item.jenis_barang === 'Bertuan' && item.nama_pemilik ? `<p style="margin: 5px 0;"><b>Atas Nama:</b> ${item.nama_pemilik}</p>` : '';
@@ -275,16 +251,16 @@ window.bukaPopupDetail = function(id, tabelAsal) {
         }
 
         htmlContent = `
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #e2e8f0;">
-                <p style="margin: 5px 0;"><b>ID Laporan:</b> <span style="color:#004E98; font-weight:bold;">${formatId}</span></p>
+            <div style="background: ${bgPopup}; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid ${borderPopup};">
+                <p style="margin: 5px 0;"><b>ID Laporan:</b> <span style="color:${colorText}; font-weight:bold;">${formatId}</span></p>
                 <p style="margin: 5px 0;"><b>Tanggal Ditemukan:</b> ${tanggalFormat}</p>
-                <p style="margin: 5px 0;"><b>Keberadaan:</b> <span style="color: #FF6700; font-weight:600;">${item.status_lokasi}</span></p>
+                <p style="margin: 5px 0;"><b>Keberadaan:</b> <span style="color: #3C6E71; font-weight:600;">${item.status_lokasi}</span></p>
                 <p style="margin: 5px 0;"><b>Kategori:</b> ${item.kategori}</p>
                 <p style="margin: 5px 0;"><b>Lokasi Temu:</b> ${item.lokasi_temuan}</p>
                 <p style="margin: 5px 0;"><b>Jenis:</b> ${item.jenis_barang}</p>
                 ${infoPemilik}
             </div>
-            <p style="margin: 0;"><b>Deskripsi Detail:</b><br><span style="color:#475569;">${item.deskripsi || 'Tidak ada deskripsi.'}</span></p>
+            <p style="margin: 0;"><b>Deskripsi Detail:</b><br><span style="color:#353535;">${item.deskripsi || 'Tidak ada deskripsi.'}</span></p>
         `;
     } else {
         waNumber = String(item.wa_pelapor || '');
@@ -297,27 +273,27 @@ window.bukaPopupDetail = function(id, tabelAsal) {
         }
 
         htmlContent = `
-            <div style="background: #fff1f0; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #ffccc7;">
-                <p style="margin: 5px 0;"><b>ID Laporan:</b> <span style="color:#cf1322; font-weight:bold;">${formatId}</span></p>
+            <div style="background: ${bgPopup}; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid ${borderPopup};">
+                <p style="margin: 5px 0;"><b>ID Laporan:</b> <span style="color:${colorText}; font-weight:bold;">${formatId}</span></p>
                 <p style="margin: 5px 0;"><b>Tanggal Kehilangan:</b> ${tanggalFormat}</p>
-                <p style="margin: 5px 0;"><b>Status:</b> <span style="color: #cf1322; font-weight:600;">${item.status}</span></p>
+                <p style="margin: 5px 0;"><b>Status:</b> <span style="color: #3C6E71; font-weight:600;">${item.status}</span></p>
                 <p style="margin: 5px 0;"><b>Kategori:</b> ${item.kategori}</p>
                 <p style="margin: 5px 0;"><b>Lokasi Terakhir:</b> ${item.lokasi_terakhir}</p>
             </div>
-            <p style="margin: 0;"><b>Ciri-ciri Khusus:</b><br><span style="color:#475569;">${item.ciri_ciri || 'Tidak ada ciri-ciri spesifik.'}</span></p>
+            <p style="margin: 0;"><b>Ciri-ciri Khusus:</b><br><span style="color:#353535;">${item.ciri_ciri || 'Tidak ada ciri-ciri spesifik.'}</span></p>
         `;
     }
 
     if(waNumber.startsWith('0')) waNumber = '62' + waNumber.substring(1);
 
     Swal.fire({
-        title: `<span style="color: ${isTemuan ? '#004E98' : '#cf1322'}; font-weight:700;">${item.nama_barang}</span>`,
+        title: `<span style="color: ${colorText}; font-weight:700;">${item.nama_barang}</span>`,
         html: `
-            <div style="text-align: left; font-family: 'Poppins', sans-serif; font-size: 14px;">
+            <div style="text-align: left; font-family: 'Outfit', sans-serif; font-size: 14px;">
                 ${htmlContent}
                 <hr style="margin: 20px 0; border: 0; border-top: 1px dashed #cbd5e1;">
                 <p style="text-align: center; margin-bottom: 10px;"><b>Tahu barang ini?</b></p>
-                <a href="https://wa.me/${waNumber}?text=${encodeURIComponent(pesanTemplate)}" target="_blank" style="display: block; background: #25D366; color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px;">
+                <a href="https://wa.me/${waNumber}?text=${encodeURIComponent(pesanTemplate)}" target="_blank" style="display: block; background: #3C6E71; color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px;">
                     <i class="fab fa-whatsapp"></i> ${tujuanChat}
                 </a>
             </div>
@@ -327,9 +303,6 @@ window.bukaPopupDetail = function(id, tabelAsal) {
     });
 };
 
-// ==========================================
-// 7. GABUNGAN PENCARIAN & FILTER
-// ==========================================
 function setupSearch() {
     const searchBar = document.getElementById('searchBar');
     if (searchBar) {
@@ -348,8 +321,8 @@ function terapkanSemuaFilter() {
     } else if (currentTab === 'hilang') {
         dataSumber = allDataHilang;
     } else if (currentTab === 'laporanku') {
-        let myTemuan = allDataBarang.filter(i => i.id_penemu === currentUserPhone);
-        let myHilang = allDataHilang.filter(i => i.wa_pelapor === currentUserPhone);
+        let myTemuan = allDataBarang.filter(i => i.nim_pengupload === savedNim);
+        let myHilang = allDataHilang.filter(i => i.nim_pengupload === savedNim);
         dataSumber = [...myTemuan, ...myHilang]; 
     }
 
@@ -394,9 +367,6 @@ function terapkanSemuaFilter() {
     renderCards(hasilFilter);
 }
 
-// ==========================================
-// 8. FUNGSI SIDEBAR & RESET
-// ==========================================
 function setupSidebarAccordion() {
     const labels = document.querySelectorAll('.menu-label');
     labels.forEach(label => {
@@ -419,10 +389,10 @@ function setupSidebarAccordion() {
             if (value === 'All') {
                 filterAktif[parentLabel] = [];
                 const siblingOpts = this.closest('.sub-menu').querySelectorAll('.filter-opt');
-                siblingOpts.forEach(el => el.classList.remove('selected-filter'));
+                siblingOpts.forEach(el => el.parentElement.classList.remove('selected-filter'));
             } else {
-                this.classList.toggle('selected-filter');
-                if (this.classList.contains('selected-filter')) {
+                this.parentElement.classList.toggle('selected-filter');
+                if (this.parentElement.classList.contains('selected-filter')) {
                     if (!filterAktif[parentLabel].includes(value)) filterAktif[parentLabel].push(value);
                 } else {
                     filterAktif[parentLabel] = filterAktif[parentLabel].filter(v => v !== value);
@@ -439,7 +409,7 @@ function setupSidebarAccordion() {
             if(searchBar) searchBar.value = '';
             pencarianAktif = "";
             filterAktif = { 'Fakultas': [], 'Jenis Barang': [], 'Kategori': [] };
-            document.querySelectorAll('.filter-opt').forEach(el => el.classList.remove('selected-filter'));
+            document.querySelectorAll('.sub-menu li').forEach(el => el.classList.remove('selected-filter'));
             selectedDate = null; 
             setupCalendar(); 
             terapkanSemuaFilter(); 
@@ -447,9 +417,6 @@ function setupSidebarAccordion() {
     }
 }
 
-// ==========================================
-// 9. FUNGSI KALENDER
-// ==========================================
 function setupCalendar() {
     const monthYearText = document.getElementById('monthYear');
     const daysContainer = document.getElementById('calendarDays');
@@ -463,7 +430,7 @@ function setupCalendar() {
         const month = date.getMonth();
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         
-        monthYearText.innerHTML = `${months[month]}, <span style="color: #94a3b8; font-weight: 400;">${year}</span>`;
+        monthYearText.innerHTML = `${months[month]}, <span style="font-weight: 400;">${year}</span>`;
 
         const firstDayIndex = new Date(year, month, 1).getDay(); 
         const lastDay = new Date(year, month + 1, 0).getDate(); 
@@ -480,7 +447,8 @@ function setupCalendar() {
         for (let i = 1; i <= lastDay; i++) {
             let isToday = (year === today.getFullYear() && month === today.getMonth() && i === today.getDate()) ? "today" : "";
             let isSelected = (selectedDate && year === selectedDate.getFullYear() && month === selectedDate.getMonth() && i === selectedDate.getDate()) ? "selected" : "";
-            daysHTML += `<div class="calendar-day ${isToday} ${isSelected}" data-day="${i}">${i}</div>`;
+            
+            daysHTML += `<div class="calendar-day ${isSelected}" data-day="${i}" ${isToday ? "style='color:#3C6E71; font-weight:800;'" : ""}>${i}</div>`;
         }
 
         let nextDays = 7 - lastDayIndex - 1;
@@ -523,9 +491,6 @@ function setupCalendar() {
     renderCalendar(currentDate);
 }
 
-// ==========================================
-// 10. MANAJEMEN PROFIL & DROPDOWN
-// ==========================================
 function setupProfileMenu() {
     const profileBtn = document.getElementById('profileBtn');
     const profileDropdown = document.getElementById('profileDropdown');
@@ -550,24 +515,25 @@ function setupProfileMenu() {
         }
     });
 
-    // 10A. UBAH NO WA
     document.getElementById('btnUbahWa')?.addEventListener('click', async (e) => {
         e.preventDefault();
         const { value: waInput } = await Swal.fire({
             title: 'Atur Nomor WhatsApp',
-            text: 'Masukkan nomor yang aktif untuk dihubungi jika barang ditemukan:',
-            input: 'text',
-            inputValue: currentUserPhone || "",
-            inputPlaceholder: '0812xxxxxx',
+            text: 'Masukkan nomor yang aktif untuk dihubungi:',
+            html: '<input id="swal-input-telp" class="swal2-input" type="tel" placeholder="0812xxxxxx" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')">',
+            focusConfirm: false,
             showCancelButton: true,
-            confirmButtonColor: '#25D366'
+            confirmButtonColor: '#284B63',
+            preConfirm: () => {
+                return document.getElementById('swal-input-telp').value;
+            }
         });
 
         if (waInput && savedNim) {
             Swal.fire({ title: 'Menyimpan...', didOpen: () => Swal.showLoading() });
             const { error } = await supabaseClient
                 .from('users')
-                .update({ no_telp: waInput }) // Ejaan no_telp sesuai database
+                .update({ no_telp: waInput }) 
                 .eq('username', savedNim);
 
             if (!error) {
@@ -580,7 +546,6 @@ function setupProfileMenu() {
         }
     });
 
-    // 10B. UBAH PASSWORD
     document.getElementById('btnUbahPass')?.addEventListener('click', async (e) => {
         e.preventDefault();
         const { value: formValues } = await Swal.fire({
@@ -590,7 +555,7 @@ function setupProfileMenu() {
                 '<input id="newPass" class="swal2-input" placeholder="Password Baru" type="password">',
             focusConfirm: false,
             showCancelButton: true,
-            confirmButtonColor: '#004E98',
+            confirmButtonColor: '#284B63',
             preConfirm: () => {
                 return [
                     document.getElementById('oldPass').value,
@@ -627,7 +592,6 @@ function setupProfileMenu() {
         }
     });
 
-    // 10C. LOGOUT
     document.getElementById('btnLogout')?.addEventListener('click', (e) => {
         e.preventDefault();
         Swal.fire({
@@ -635,8 +599,8 @@ function setupProfileMenu() {
             text: "Apakah Anda yakin ingin keluar?",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#FF6700',
-            cancelButtonColor: '#3A6EA5',
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#353535',
             confirmButtonText: 'Ya, Keluar!'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -647,26 +611,23 @@ function setupProfileMenu() {
     });
 }
 
-// ==========================================
-// 11. RENDER DIAGRAM KATEGORI
-// ==========================================
 function updateDiagramKategori() {
     const ctx = document.getElementById('kategoriChart');
     if (!ctx) return;
 
-    // Siapkan wadah hitungan
-    const catCounts = { 'Elektronik': 0, 'Dokumen': 0, 'Aksesoris': 0, 'Perlengkapan': 0 };
-    
-    // Gabungkan data yang masih aktif (belum Case Closed)
+    const catCounts = { 'Elektronik': 0, 'Pakaian': 0, 'Perhiasan': 0, 'Dokumen': 0, 'Lain-lain': 0 };
     const semuaDataAktif = [...allDataBarang, ...allDataHilang];
     
-    // Hitung jumlah per kategori
     semuaDataAktif.forEach(item => {
-        if(item.kategori) {
-            if(catCounts[item.kategori] !== undefined) {
-                catCounts[item.kategori]++;
+        let kat = item.kategori;
+        if(kat === 'Aksesoris') kat = 'Perhiasan';
+        if(kat === 'Perlengkapan') kat = 'Lain-lain';
+
+        if(kat) {
+            if(catCounts[kat] !== undefined) {
+                catCounts[kat]++;
             } else {
-                catCounts[item.kategori] = 1; // Jika ada kategori tak terduga
+                catCounts[kat] = 1; 
             }
         }
     });
@@ -675,17 +636,15 @@ function updateDiagramKategori() {
     const dataValues = Object.values(catCounts);
     const totalData = dataValues.reduce((a, b) => a + b, 0);
 
-    // Mencegah grafik error jika database masih kosong
     const chartData = totalData === 0 ? [1] : dataValues;
     const chartLabels = totalData === 0 ? ['Belum ada data'] : labels;
-    const chartColors = totalData === 0 ? ['#e2e8f0'] : ['#4A90E2', '#FFCA28', '#FF6B6B', '#66C12E', '#9d4edd'];
+    
+    const chartColors = totalData === 0 ? ['#e2e8f0'] : ['#F4B41A', '#D9363E', '#284B63', '#A3A3A3', '#518545'];
 
-    // Hancurkan grafik lama sebelum menggambar ulang (Mencegah bug tumpuk)
     if (myKategoriChart) {
         myKategoriChart.destroy();
     }
 
-    // Gambar grafik baru
     myKategoriChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -702,15 +661,17 @@ function updateDiagramKategori() {
             cutout: '70%',
             plugins: {
                 legend: {
-                    position: 'right', // Posisi keterangan di sebelah kanan
+                    position: 'right', 
                     labels: {
                         boxWidth: 10,
                         padding: 10,
-                        font: { size: 10, family: 'Poppins' }
+                        /* UPDATE: Font family di chart diubah ke Outfit */
+                        font: { size: 10, family: 'Outfit' },
+                        color: '#FFFFFF' 
                     }
                 },
                 tooltip: {
-                    enabled: totalData !== 0 // Matikan tooltip jika kosong
+                    enabled: totalData !== 0 
                 }
             }
         }

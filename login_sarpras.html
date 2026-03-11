@@ -4,158 +4,172 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FindIt Nawasena - Login Sarpras</title>
-    <!-- CSS Utama -->
+
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <!-- SweetAlert2 CDN -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
-        /* Style tambahan untuk sarpras */
-        .badge-sarpras {
-            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 10px;
-            display: inline-block;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-            animation: fadeInOnly 0.8s ease-out 2.2s forwards;
-            opacity: 0;
+        /* Mengikuti gaya yang ada di login.html */
+        .welcome-section {
+            position: relative;
         }
-        
+
+        .welcome-content {
+            position: absolute;
+            top: 50%;
+            left: 100px;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+
+        .welcome-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            margin: 0;
+        }
+
+        /* Penyesuaian khusus tombol kembali */
         .btn-back {
             background-color: #6c757d !important;
-            margin-top: 10px;
-        }
-        
-        .btn-back:hover {
-            background-color: #5a6268 !important;
-        }
-        
-        .back-link {
-            margin-top: 20px;
-            text-align: center;
-        }
-        
-        .back-link a {
-            color: #666;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        
-        .back-link a:hover {
-            color: #ff6b6b;
+            margin-top: 5px;
         }
     </style>
 </head>
+
 <body>
 
     <div class="layer-top"></div>
     <div class="layer-bottom"></div>
 
     <div class="main-wrapper">
-        
+
         <div class="brand-logo">
-            <img src="images/logo.png" alt="Logo FindIt" class="logo-img">
+            <img src="images/logo.png" class="logo-img">
         </div>
 
         <div class="content">
-            
-            <div class="welcome-text">
-                <h1>Sarpras</h1>
-                <h1>Login Portal</h1>
+
+            <div class="welcome-section">
+
+                <svg class="blob-bg" viewBox="0 0 900 800" preserveAspectRatio="none">
+                    <path fill="#3F6F6B" d="
+                    M0,0
+                    L550,0
+                    C700,120 700,280 620,400
+                    C560,500 700,640 560,800
+                    L0,800
+                    Z
+                    " />
+                </svg>
+
+                <div class="welcome-content">
+                    <div class="welcome-text">
+                        <h1 class="welcome-title">Portal Login</h1>
+                        <h1 class="welcome-title">Sarpras</h1>
+                    </div>
+                    <img src="images/maskot.png" alt="Maskot FindIt" class="owl-img">
+                </div>
+
             </div>
 
-            <div class="login-box-container">
+            <div class="login-area">
+
                 <div class="login-card">
+
                     <h2>LOGIN SARPRAS</h2>
 
                     <form id="loginSarprasForm">
 
                         <div class="input-group">
                             <input 
-                                type="text"
-                                id="username"
-                                placeholder="Username"
+                                type="text" 
+                                id="username" 
+                                placeholder="Username" 
                                 required
                             >
                         </div>
 
                         <div class="input-group">
                             <input 
-                                type="password"
-                                id="password"
-                                placeholder="Password"
+                                type="password" 
+                                id="password" 
+                                placeholder="Password" 
                                 required
                             >
                         </div>
 
-                        <div id="errorMsg" style="color: red; font-size: 14px; margin-bottom: 10px; text-align: left;"></div>
+                        <div id="errorMsg"></div>
 
                         <button type="submit" class="btn-login">Login Sarpras</button>
 
-                        <button type="button" class="btn-login btn-back" 
-                            onclick="window.location.href='/'">
-                            ← Kembali ke Login Mahasiswa
+                        <button type="button" class="btn-login btn-back" onclick="window.location.href='login.html'">
+                            Kembali
                         </button>
 
+                        <div class="forgot-password">
+                            Forgot Your Password? Please Contact Admin
+                        </div>
+
                     </form>
+
                 </div>
+
             </div>
 
         </div>
     </div>
 
-<script>
-    document.getElementById("loginSarprasForm").addEventListener("submit", async function(e) {
-        e.preventDefault();
+    <script>
+        document.getElementById("loginSarprasForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
 
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
 
-        const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username,
+                    password
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success && result.user.role === 'admin') {
+                localStorage.setItem("namaUser", result.user.nama_lengkap);
+                localStorage.setItem("userLoggedIn", "true");
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Sarpras Berhasil!',
+                    text: 'Selamat datang, ' + result.user.nama_lengkap,
+                    confirmButtonText: 'Lanjut ke Dashboard',
+                    confirmButtonColor: '#3F6F6B'
+                }).then(() => {
+                    window.location.href = "dashboard_sarpras.html";
+                });
+
+            } else if (result.success && result.user.role !== 'admin') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Akses Ditolak',
+                    text: 'Anda bukan Admin Sarpras!'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Gagal',
+                    text: result.message
+                });
+            }
         });
-
-        const result = await response.json();
-
-        if (result.success && result.user.role === 'admin') {
-            
-            // --- TAMBAHKAN 2 BARIS INI AGAR ADMIN.JS BISA MEMBACANYA ---
-            localStorage.setItem("namaUser", result.user.nama_lengkap);
-            localStorage.setItem("userLoggedIn", "true");
-            // -----------------------------------------------------------
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Login Sarpras Berhasil!',
-                text: 'Selamat datang, ' + result.user.nama_lengkap,
-                confirmButtonText: 'Lanjut ke Dashboard',
-                confirmButtonColor: '#004e98'
-            }).then(() => {
-                window.location.href = "dashboard_sarpras.html";
-            });
-        
-        } else if (result.success && result.user.role !== 'admin') {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Akses Ditolak',
-                text: 'Anda bukan Admin Sarpras!'
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Login Gagal',
-                text: result.message
-            });
-        }
-    });
-</script>
+    </script>
 
 </body>
 </html>

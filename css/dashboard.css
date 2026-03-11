@@ -2,13 +2,11 @@
    1. GLOBAL VARIABLES (:root)
    ========================================================== */
 :root {
-    --orange: #FF6700;
-    --gray-light: #EBEBEB;
-    --gray-mid: #C0C0C0;
-    --blue-light: #3A6EA5;
-    --blue-dark: #004E98;
-    --text-dark: #333333;
-    --bg-white: #FFFFFF;
+    --teal-main: #3C6E71;      /* Hijau Kebiruan */
+    --blue-dark: #284B63;      /* Biru Dongker */
+    --gray-light: #D9D9D9;     /* Abu-abu terang */
+    --text-dark: #353535;      /* Hitam arang */
+    --bg-white: #FFFFFF;       /* Putih murni */
 }
 
 /* ==========================================================
@@ -18,11 +16,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    /* UPDATE: Seluruh web menggunakan font Outfit */
+    font-family: 'Outfit', sans-serif;
 }
 
 body {
-    background-color: var(--bg-white);
+    background-color: var(--bg-white); 
     color: var(--text-dark);
     padding: 20px 40px;
 }
@@ -34,77 +33,33 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 15px;
+    background-color: var(--teal-main); 
+    padding: 10px 30px;
+    border-radius: 15px; 
     margin-bottom: 20px;
-    border-bottom: 1px solid var(--gray-light);
     position: relative;
     height: 80px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-.brand-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    z-index: 2;
-}
+.brand-section { display: flex; align-items: center; gap: 15px; z-index: 2; }
+.header-logo { height: 50px; } 
 
-.header-logo {
-    height: 60px;
-}
+.header-title { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 1; white-space: nowrap; }
+.header-title h1 { 
+    font-family: 'Outfit', sans-serif; 
+    font-size: 24px; 
+    margin: 0; 
+    color: var(--bg-white); 
+} 
 
-.logo-placeholder {
-    width: 50px;
-    height: 50px;
-    background-color: var(--orange);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.header-title {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    white-space: nowrap;
-}
-
-.header-title h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    margin: 0;
-    color: var(--blue-dark);
-}
-
-.nav-controls {
-    z-index: 2;
-}
-
-.btn-out {
-    background-color: var(--gray-light);
-    border: none;
-    padding: 8px 25px;
-    border-radius: 20px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-out:hover {
-    background-color: var(--orange);
-    color: white;
-}
+.nav-controls { z-index: 2; }
 
 /* ==========================================================
    4. WELCOME BANNER
    ========================================================== */
 .welcome-banner {
-    background-color: var(--gray-light);
+    background-color: var(--gray-light); 
     border-radius: 15px;
     padding: 20px 40px;
     display: flex;
@@ -112,48 +67,22 @@ body {
     align-items: center;
     margin-bottom: 30px;
 }
-
-.welcome-text h2 { 
-    font-size: 24px; 
-    margin-bottom: 10px;
-}
-
-.welcome-text p {
-    margin-bottom: 5px;
-}
-
-.maskot-img { 
-    height: 120px; 
-    object-fit: contain; 
-}
+.welcome-text h2 { font-size: 24px; margin-bottom: 10px; color: var(--blue-dark); font-weight: 700;}
+.welcome-text p { margin-bottom: 5px; color: var(--text-dark); }
+.maskot-img { height: 120px; object-fit: contain; }
 
 /* ==========================================================
    5. SEARCH & ACTION BAR
    ========================================================== */
-.search-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
+.search-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.search-title-group { display: flex; align-items: center; gap: 20px; }
+.search-title-group h3 { color: var(--blue-dark); }
 
-.search-title-group { 
-    display: flex; 
-    align-items: center; 
-    gap: 20px; 
-}
-
-.search-title-group h3 {
-    color: var(--blue-dark);
-}
-
-.search-box {
-    display: flex;
-    align-items: center;
-}
+.search-box { display: flex; align-items: center; }
 
 .search-bar {
-    background-color: var(--gray-light);
+    background-color: var(--teal-main);
+    color: var(--bg-white);
     border: none;
     padding: 12px 20px;
     border-radius: 10px;
@@ -161,16 +90,13 @@ body {
     outline: none;
     font-size: 14px;
 }
-
-.search-bar:focus {
-    border: 2px solid var(--orange);
-}
+.search-bar::placeholder { color: #b2cfd1; } 
+.search-bar:focus { box-shadow: 0 0 0 3px rgba(40, 75, 99, 0.3); }
 
 .btn-add-page {
-    background-color: var(--orange);
     color: white;
     text-decoration: none;
-    padding: 8px 15px;
+    padding: 10px 15px;
     border-radius: 10px;
     font-weight: 600;
     font-size: 14px;
@@ -179,44 +105,24 @@ body {
     align-items: center;
     gap: 5px;
 }
-
-.btn-add-page:hover { 
-    background-color: var(--blue-dark); 
-}
+.btn-temuan, .btn-hilang { background-color: var(--teal-main); }
+.btn-temuan:hover, .btn-hilang:hover { background-color: #2b5052; }
 
 /* ==========================================================
    6. MAIN CONTAINER & SIDEBAR
    ========================================================== */
-.main-container {
-    display: flex;
-    gap: 30px;
-}
-
-.sidebar {
-    width: 280px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+.main-container { display: flex; gap: 30px; }
+.sidebar { width: 280px; display: flex; flex-direction: column; gap: 20px; }
 
 .side-box {
-    background-color: var(--gray-light);
+    background-color: var(--teal-main); 
     border-radius: 15px;
     padding: 15px;
 }
 
-.category-container {
-    padding: 10px 0;
-}
-
-/* Menu Bertingkat (Tree Menu) */
-.tree-menu { 
-    list-style: none; 
-}
-
-.tree-menu li {
-    margin-bottom: 5px;
-}
+.category-container { padding: 10px 0; }
+.tree-menu { list-style: none; }
+.tree-menu li { margin-bottom: 5px; }
 
 .menu-label {
     display: flex;
@@ -225,470 +131,154 @@ body {
     cursor: pointer;
     font-size: 14px;
     font-weight: 600;
+    color: var(--bg-white); 
     border-radius: 10px;
     transition: background-color 0.3s;
 }
+.menu-label:hover { background-color: rgba(0,0,0,0.1); }
+.icon-main { margin-right: 12px; width: 20px; color: var(--gray-light); font-size: 16px; }
+.arrow { transition: transform 0.3s ease; margin-left: auto; font-size: 12px; color: var(--bg-white); }
+.menu-label.active .arrow { transform: rotate(180deg); }
 
-.menu-label:hover {
-    background-color: rgba(0,0,0,0.05);
-}
+.sub-menu { list-style: none; padding-left: 47px; margin: 0 0 10px 0; display: none; }
+.sub-menu.show { display: block; }
+.sub-menu li { margin-bottom: 2px; }
 
-.icon-main { 
-    margin-right: 12px; 
-    width: 20px; 
-    color: var(--blue-light);
-    font-size: 16px;
-}
-
-.badge {
-    background-color: #FF4D4F;
-    color: white;
-    border-radius: 10px;
-    padding: 2px 8px;
-    font-size: 10px;
-    margin-left: 10px;
-}
-
-.arrow {
-    transition: transform 0.3s ease;
-    margin-left: auto;
-    font-size: 12px;
-    color: var(--blue-dark);
-}
-
-.menu-label.active .arrow {
-    transform: rotate(180deg);
-}
-
-.sub-menu {
-    list-style: none;
-    padding-left: 47px;
-    margin: 0 0 10px 0;
-    display: none;
-}
-
-.sub-menu.show {
-    display: block;
-}
-
-.sub-menu li {
-    font-size: 13px;
-    padding: 8px 10px;
-    color: #666;
+.filter-opt {
     cursor: pointer;
-    border-radius: 8px;
     transition: all 0.2s;
-}
-
-.sub-menu li:hover { 
-    background-color: var(--orange);
-    color: white;
-    padding-left: 15px;
-}
-
-.btn-reset {
+    display: inline-block;
     width: 100%;
-    padding: 8px;
-    border-radius: 10px;
-    border: 1px solid var(--gray-mid);
-    background: white;
-    cursor: pointer;
-    font-weight: 500;
-    transition: 0.3s;
+    color: var(--gray-light); 
+    font-size: 13px;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+.filter-opt:hover { color: var(--bg-white); background-color: rgba(255,255,255,0.1); }
+.selected-filter .filter-opt { font-weight: 700; color: var(--bg-white); background-color: var(--blue-dark); padding-left: 15px;}
+
+/* UPDATE: Teks Judul Sidebar di Tengah */
+.side-box h4 { 
+    color: var(--bg-white) !important; 
+    margin-bottom: 15px; 
+    font-weight: 700; 
+    font-size: 15px;
+    text-align: center; /* Membuat "Kalender Akademik" & "Statistik Kategori" ke tengah */
 }
 
-.btn-reset:hover {
-    background-color: var(--orange);
-    color: white;
-    border-color: var(--orange);
+/* UPDATE: Memberi Jarak Tombol Reset dengan Kalender */
+.btn-reset { 
+    width: 100%; 
+    padding: 10px; /* Diperbesar sedikit agar nyaman di klik */
+    border-radius: 10px; 
+    border: none; 
+    background: var(--blue-dark); 
+    color: white; 
+    cursor: pointer; 
+    font-weight: 600; 
+    transition: 0.3s; 
+    margin-top: 25px; /* Ini memberikan jarak jauh dengan kalender di atasnya */
 }
+.btn-reset:hover { background-color: #1a3345; }
 
 /* ==========================================================
-   7. ITEMS GRID & CARDS
+   7. ITEMS GRID & CARDS 
    ========================================================== */
-.items-grid {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    align-items: start; 
-}
+.items-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 20px; align-items: start; }
 
 .item-card {
-    background: #ffffff;
+    background: var(--bg-white); 
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    border: 1px solid #eee;
+    border-top: 4px solid var(--blue-dark);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: stretch; 
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid #f0f0f0;
 }
+.item-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
 
-.item-card:hover { 
-    transform: translateY(-5px); 
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-}
+.card-img-container { width: 100%; height: 180px; background: var(--gray-light); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.card-img-container img { width: 100%; height: 100%; object-fit: cover; }
+.card-img-container .fa-box, .card-img-container .fa-search { color: #fff; }
 
-.card-img-container {
-    width: 100%;
-    height: 180px;
-    background: #f8f9fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
+.card-content { padding: 15px; flex-grow: 1; width: 100%; text-align: left; }
+.card-title { font-size: 16px; font-weight: 700; margin: 0 0 8px 0; color: var(--blue-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+.card-desc { font-size: 13px; color: var(--text-dark); margin: 0 0 10px 0; }
+.badge-kategori { display: inline-block; background: var(--gray-light); color: var(--text-dark); padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
 
-.card-img-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-}
-
-.card-img-container .fa-box {
-    color: #cbd5e1;
-}
-
-.card-content {
-    padding: 15px;
-    flex-grow: 1;
-    width: 100%; 
-    text-align: left; 
-}
-
-.card-title {
-    font-size: 16px;
-    font-weight: 700;
-    margin: 0 0 8px 0;
-    color: #1e293b;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: left; 
-}
-
-.card-desc {
-    font-size: 13px;
-    color: #64748b;
-    margin: 0 0 10px 0;
-}
-
-.badge-kategori {
-    display: inline-block;
-    background: #e1effe;
-    color: #1e429f;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 600;
-}
-
-.btn-detail {
-    width: 100%;
-    padding: 12px;
-    background: #004E98;
-    color: white;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    font-size: 14px;
-}
-
-.btn-detail:hover {
-    background: #FF6700; 
-}
-
-/* ==========================================================
-   8. MISC / MOCKUPS
-   ========================================================== */
-.pie-chart-mock {
-    width: 120px;
-    height: 120px;
-    background: conic-gradient(var(--orange) 0% 40%, var(--blue-light) 40% 70%, var(--gray-mid) 70% 100%);
-    border-radius: 50%;
-    margin: 15px auto;
-    border: 3px solid white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-/* ==========================================================
-   9. RESPONSIVE DESIGN
-   ========================================================== */
-@media (max-width: 1024px) {
-    body { padding: 15px 20px; }
-    .main-container { flex-direction: column; }
-    .sidebar { width: 100%; }
-    .items-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
-}
-
-@media (max-width: 768px) {
-    .search-section { flex-direction: column; gap: 15px; align-items: stretch; }
-    .search-box { width: 100%; }
-    .search-bar { width: 100%; }
-    .header-title h1 { font-size: 18px; }
-}
+.btn-detail { width: 100%; padding: 12px; background: var(--blue-dark); color: white; border: none; font-weight: 600; cursor: pointer; transition: background 0.2s; font-size: 14px; }
+.btn-detail:hover { background: #1c3647; }
+.btn-delete { width: 100%; padding: 12px; background: var(--blue-dark); color: white; border: none; font-weight: 600; cursor: pointer; transition: background 0.2s; font-size: 14px; }
+.btn-delete:hover { background: #1c3647; }
 
 /* =========================================
-   GAYA UNTUK MULTI-SELECT SIDEBAR
+   8. GAYA TAB / TOGGLE SWITCH 
 ========================================= */
-.filter-opt {
-    cursor: pointer;
-    transition: color 0.2s;
-    display: inline-block;
-    width: 100%;
-}
+.tab-container { display: flex; gap: 15px; margin-bottom: 20px; padding: 0; }
 
-.filter-opt:hover {
-    color: #FF6700;
-}
-
-.selected-filter {
-    font-weight: 700;
-    color: #FF6700;
-}
-
-.selected-filter::before {
-    content: '\f00c'; 
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    margin-right: 8px;
-    color: #FF6700;
-}
-
-/* =========================================
-   GAYA TOMBOL DUAL ACTION
-========================================= */
-.btn-temuan { background-color: var(--blue-light); }
-.btn-temuan:hover { background-color: var(--blue-dark); }
-.btn-hilang { background-color: #FF4D4F; }
-.btn-hilang:hover { background-color: #d9363e; }
-
-/* =========================================
-   GAYA TAB / TOGGLE SWITCH
-========================================= */
-.tab-container {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 10px;
-    padding: 0 20px;
-}
-
-.tab-btn {
-    padding: 10px 20px;
-    border: 2px solid transparent;
-    background-color: #f1f5f9;
-    color: #64748b;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'Poppins', sans-serif;
-}
-
-.tab-btn:hover {
-    background-color: #e2e8f0;
-}
-
-.tab-btn.active#tabTemuan {
-    background-color: #e0f2fe;
-    color: #0369a1;
-    border-color: #0284c7;
-}
-
-.tab-btn.active#tabHilang {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    border-color: #ef4444;
-}
-
-/* =========================================
-   GAYA CARD KHUSUS BARANG HILANG
-========================================= */
-.item-card.card-hilang {
-    border-top: 4px solid #ef4444;
-}
-.item-card.card-hilang .btn-detail {
-    background-color: #ef4444;
-}
-.item-card.card-hilang .btn-detail:hover {
-    background-color: #b91c1c;
-}
-
-/* =========================================
-   DESAIN WIDGET KALENDER UTUH
-========================================= */
-.custom-calendar {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 15px 10px;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.04);
-    border: 1px solid #f1f5f9;
-    font-family: 'Poppins', sans-serif;
-}
-.calendar-header { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    margin-bottom: 15px; 
-    padding: 0 10px; 
-}
-.calendar-header h3 { 
-    margin: 0; 
-    font-size: 15px; 
-    font-weight: 500; 
-    color: #0f172a; 
-}
-.cal-nav { 
+.tab-btn { 
+    padding: 10px 20px; 
+    border: 2px solid transparent; 
+    background-color: var(--gray-light); 
+    color: var(--text-dark); 
+    border-radius: 8px; 
+    font-weight: 600; 
     cursor: pointer; 
-    color: #94a3b8; 
-    font-size: 13px; 
-    padding: 5px; 
-    transition: color 0.2s; 
-}
-.cal-nav:hover { color: #004E98; }
-.calendar-weekdays { 
-    display: grid; 
-    grid-template-columns: repeat(7, 1fr); 
-    text-align: center; 
-    font-weight: 500; 
-    font-size: 12px; 
-    color: #0f172a; 
-    margin-bottom: 10px; 
-}
-.calendar-days { 
-    display: grid; 
-    grid-template-columns: repeat(7, 1fr); 
-    gap: 4px 0; 
-}
-.calendar-day { 
+    transition: all 0.3s; 
     display: flex; 
     align-items: center; 
-    justify-content: center; 
-    width: 32px; 
-    height: 32px; 
-    margin: auto; 
-    font-size: 13px; 
-    color: #334155; 
-    cursor: pointer; 
-    border-radius: 6px; 
-    transition: background-color 0.2s; 
+    gap: 8px; 
 }
-.calendar-day:hover:not(.faded) { background-color: #f1f5f9; }
+.tab-btn:hover { background-color: #c9c9c9; }
+
+.tab-btn.active { 
+    background-color: var(--blue-dark) !important; 
+    color: var(--bg-white) !important; 
+    border-color: var(--blue-dark) !important; 
+}
+
+/* =========================================
+   DESAIN WIDGET KALENDER
+========================================= */
+.custom-calendar { background: #ffffff; border-radius: 10px; padding: 15px 10px; border: 1px solid #f1f5f9; }
+.calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 10px; }
+.calendar-header h3 { margin: 0; font-size: 15px; font-weight: 500; color: var(--blue-dark); }
+.cal-nav { cursor: pointer; color: var(--teal-main); font-size: 13px; padding: 5px; transition: color 0.2s; }
+.cal-nav:hover { color: var(--blue-dark); }
+.calendar-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 600; font-size: 12px; color: #555; margin-bottom: 10px; }
+.calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px 0; }
+.calendar-day { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin: auto; font-size: 13px; color: var(--text-dark); cursor: pointer; border-radius: 6px; transition: background-color 0.2s; }
+.calendar-day:hover:not(.faded) { background-color: var(--gray-light); }
 .calendar-day.faded { color: #cbd5e1; cursor: default; }
-.calendar-day.faded:hover { background-color: transparent; }
-.calendar-day.selected { 
-    background-color: #004E98; 
-    color: white; 
-    font-weight: 500; 
-    box-shadow: 0 4px 8px rgba(0, 78, 152, 0.3); 
-}
-.calendar-day.today:not(.selected) { color: #FF6700; font-weight: 700; }
-
-/* Tab Aktif untuk Laporan Saya (Ungu) */
-.tab-btn.active#tabLaporanku {
-    background-color: #f3e8ff;
-    color: #7e22ce;
-    border-color: #a855f7;
-}
-
-/* Tombol Khusus Hapus Laporan */
-.btn-delete {
-    width: 100%;
-    padding: 12px;
-    background: #ef4444;
-    color: white;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    font-size: 14px;
-}
-.btn-delete:hover {
-    background: #b91c1c;
-}
-
-/* Tab Aktif untuk Laporan Saya (Ungu) */
-.tab-btn.active#tabLaporanku {
-    background-color: #f3e8ff;
-    color: #7e22ce;
-    border-color: #a855f7;
-}
-
-/* Tombol Khusus Hapus Laporan */
-.btn-delete {
-    width: 100%;
-    padding: 12px;
-    background: #ef4444;
-    color: white;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    font-size: 14px;
-}
-.btn-delete:hover {
-    background: #b91c1c;
-}
+.calendar-day.selected { background-color: var(--blue-dark); color: white; font-weight: 500; }
+.calendar-day.today:not(.selected) { color: var(--teal-main); font-weight: 700; }
 
 /* =========================================
    GAYA PROFIL DROPDOWN
 ========================================= */
-.profile-menu {
-    position: relative;
-    display: inline-block;
+.profile-menu { position: relative; display: inline-block; }
+.profile-icon { background-color: var(--gray-light); color: var(--blue-dark); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-weight: bold; font-size: 18px; transition: 0.3s; }
+.profile-icon:hover { box-shadow: 0 0 10px rgba(0,0,0,0.2); background-color: #fff; }
+.dropdown-content { display: none; position: absolute; right: 0; top: 50px; background-color: #ffffff; min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); border-radius: 10px; z-index: 1000; border: 1px solid var(--gray-light); overflow: hidden; }
+.dropdown-content.show { display: block; animation: fadeInDown 0.2s ease-out; }
+.dropdown-header { padding: 12px 16px; background-color: #f8f9fa; }
+.dropdown-content a { color: var(--text-dark); padding: 12px 16px; text-decoration: none; display: flex; align-items: center; font-size: 13px; font-weight: 500; transition: background 0.2s; }
+.dropdown-content a:hover { background-color: var(--gray-light); }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* =========================================
+   10. SWEETALERT OVERRIDES (POP-UP)
+   UPDATE: Ketebalan border diubah menjadi 4px
+========================================= */
+.swal2-popup {
+    border: 4px solid var(--blue-dark) !important; 
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(40, 75, 99, 0.2) !important;
 }
 
-.profile-icon:hover {
-    box-shadow: 0 0 10px rgba(0, 78, 152, 0.4);
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 50px;
-    background-color: #ffffff;
-    min-width: 200px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-    border-radius: 10px;
-    z-index: 1000;
-    border: 1px solid #f1f5f9;
-    overflow: hidden;
-}
-
-.dropdown-content.show {
-    display: block;
-    animation: fadeInDown 0.2s ease-out;
-}
-
-.dropdown-header {
-    padding: 12px 16px;
-    background-color: #f8f9fa;
-}
-
-.dropdown-content a {
-    color: #334155;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    font-size: 13px;
-    font-weight: 500;
-    transition: background 0.2s;
-}
-
-.dropdown-content a:hover {
-    background-color: #f1f5f9;
-}
-
-@keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) { body { padding: 15px 20px; } .main-container { flex-direction: column; } .sidebar { width: 100%; } .items-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); } }
+@media (max-width: 768px) { .search-section { flex-direction: column; gap: 15px; align-items: stretch; } .search-box { width: 100%; } .search-bar { width: 100%; } .header-title h1 { font-size: 18px; } }

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - FindIt Universitas Nawasena</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="css/dashboard.css">
@@ -15,8 +15,7 @@
 <header class="navbar">
     <div class="brand-section">
         <div class="logo-wrapper">
-            <img src="images/logo.png" alt="Logo FindIt" class="header-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="logo-placeholder" style="display: none;">F</div>
+            <img src="images/logo.png" alt="Logo FindIt" class="header-logo" onerror="this.style.display='none';">
         </div>
     </div>
 
@@ -26,7 +25,7 @@
 
     <div class="nav-controls">
         <div class="profile-menu">
-            <div class="profile-icon" id="profileBtn" style="background-color: #004E98; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-weight: bold; font-size: 18px; transition: 0.3s;">
+            <div class="profile-icon" id="profileBtn">
                 <i class="fas fa-user"></i>
             </div>
             <div class="dropdown-content" id="profileDropdown">
@@ -35,8 +34,8 @@
                     <p style="font-size: 11px; color: #666;" id="dropNim">NIM</p>
                 </div>
                 <hr style="margin: 5px 0; border: 0; border-top: 1px solid #eee;">
-                <a href="#" id="btnUbahWa"><i class="fas fa-phone-alt" style="color: #25D366; width: 20px; text-align: center; margin-right: 8px;"></i> Ubah No WA</a>
-                <a href="#" id="btnUbahPass"><i class="fas fa-lock" style="color: #FF6700; width: 20px; text-align: center; margin-right: 8px;"></i> Ubah Password</a>
+                <a href="#" id="btnUbahWa"><i class="fas fa-phone-alt" style="color: #3C6E71; width: 20px; text-align: center; margin-right: 8px;"></i> Ubah No WA</a>
+                <a href="#" id="btnUbahPass"><i class="fas fa-lock" style="color: #284B63; width: 20px; text-align: center; margin-right: 8px;"></i> Ubah Password</a>
                 <hr style="margin: 5px 0; border: 0; border-top: 1px solid #eee;">
                 <a href="#" id="btnLogout"><i class="fas fa-sign-out-alt" style="color: #ef4444; width: 20px; text-align: center; margin-right: 8px;"></i> Logout</a>
             </div>
@@ -121,7 +120,7 @@
         </div>
         
         <div class="side-box">
-            <h4 style="font-size: 14px; color: #1e293b; margin-bottom: 12px; font-weight: 700;">Kalender Akademik</h4>
+            <h4>Kalender Akademik</h4>
             <div class="custom-calendar">
                 <div class="calendar-header">
                     <i class="fas fa-chevron-left cal-nav" id="prevMonth"></i>
@@ -133,11 +132,11 @@
                 </div>
                 <div class="calendar-days" id="calendarDays"></div>
             </div>
-            <button class="btn-reset" id="btnReset" style="margin-top: 15px; width: 100%;">Reset Filter</button>
+            <button class="btn-reset" id="btnReset">Reset Filter</button>
         </div>
 
         <div class="side-box">
-            <h4 style="font-size: 12px; color: #1e293b; margin-bottom: 15px; font-weight: 700;">Statistik Kategori</h4>
+            <h4>Statistik Kategori</h4>
             <div style="position: relative; height: 160px; width: 100%;">
                 <canvas id="kategoriChart"></canvas>
             </div>

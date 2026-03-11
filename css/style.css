@@ -1,261 +1,353 @@
-/* ================= RESET & GLOBAL FONT ================= 
-   Menghilangkan margin/padding bawaan browser agar layout presisi.
-   ========================================================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box; /* Menghitung padding ke dalam lebar elemen */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #F1F0E8; 
-    height: 100vh; /* Memenuhi tinggi layar */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; /* Mencegah scrollbar muncul saat animasi tirai jalan */
-    position: relative;
+body{
+font-family:'Poppins',sans-serif;
+background:#F1F0E8;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+position:relative;
 }
 
-/* ================= ANIMASI TIRAI (ULTRA SMOOTH OPTIMIZED) ================= 
-   Layer ini berfungsi sebagai animasi pembuka saat halaman pertama kali dimuat.
-   ========================================================= */
-.layer-top, .layer-bottom {
-    position: fixed;
-    width: 160%; 
-    height: 100vh;
-    z-index: 10000; /* Berada di paling atas menutupi semua konten */
-    top: 0;
-    will-change: transform, left, right; /* Mengoptimalkan render GPU untuk animasi mulus */
-    backface-visibility: hidden;
-    -webkit-font-smoothing: antialiased;
+
+/* ================= TIRAI ================= */
+
+.layer-top,.layer-bottom{
+position:fixed;
+width:160%;
+height:100vh;
+z-index:10000;
+top:0;
+will-change:transform,left,right;
 }
 
-.layer-top {
-    background-color: #E5E1DA; /* Warna Orange */
-    left: -160%;
-    transform: skewX(-25deg); /* Membuat efek miring pada tirai */
-    animation: slideCrossLeft 2.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+.layer-top{
+background:#3C6E71;
+left:-160%;
+transform:skewX(-25deg);
+animation:slideCrossLeft 2.2s cubic-bezier(0.7,0,0.3,1) forwards;
 }
 
-.layer-bottom {
-    background-color: #89A8B2; /* Warna Biru */
-    right: -160%;
-    transform: skewX(-25deg);
-    animation: slideCrossRight 2.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+.layer-bottom{
+background:#D9D9D9;
+right:-160%;
+transform:skewX(-25deg);
+animation:slideCrossRight 2.2s cubic-bezier(0.7,0,0.3,1) forwards;
 }
 
-/* Keyframes Tirai: Masuk dari samping, berhenti di tengah sebentar, lalu lanjut keluar */
-@keyframes slideCrossLeft {
-    0% { left: -160%; }
-    40%, 60% { left: -30%; } 
-    100% { left: -180%; visibility: hidden; } 
+@keyframes slideCrossLeft{
+0%{left:-160%}
+40%,60%{left:-30%}
+100%{left:-180%;visibility:hidden}
 }
 
-@keyframes slideCrossRight {
-    0% { right: -160%; }
-    40%, 60% { right: -30%; } 
-    100% { right: -180%; visibility: hidden; } 
+@keyframes slideCrossRight{
+0%{right:-160%}
+40%,60%{right:-30%}
+100%{right:-180%;visibility:hidden}
 }
 
-/* ================= MAIN WRAPPER (REVEAL) ================= 
-   Kotak abu-abu besar yang muncul setelah tirai terbuka.
-   ========================================================= */
-.main-wrapper {
-    position: relative;
-    width: 95%;
-    max-width: 1200px;
-    height: 90vh;
-    background-color: #E5E1DA; 
-    border-radius: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-    opacity: 0%;
-    /* Animasi muncul (fade in) yang dipending sampai tirai selesai bergerak */
-    animation: smoothReveal 1s ease-out 1.8s forwards;
-    transition: transform 0.5s ease, box-shadow 0.8s ease;
+
+
+/* ================= WRAPPER ================= */
+
+.main-wrapper{
+
+width:95%;
+max-width:1200px;
+height:85vh;
+
+background:#E5E1DA;
+
+border-radius:35px;
+
+box-shadow:0 20px 40px rgba(0,0,0,0.25);
+
+position:relative;
+
+overflow:hidden;
+
+opacity:0;
+animation:smoothReveal 1s ease-out 1.8s forwards;
+
 }
 
-@keyframes smoothReveal {
-    0% { opacity: 0 ; transform: scale(0.95); filter: blur(5px); }
-    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+@keyframes smoothReveal{
+
+0%{
+opacity:0;
+transform:scale(.95);
 }
+
+100%{
+opacity:1;
+transform:scale(1);
+}
+
+}
+
+
 
 /* ================= LOGO ================= */
-.brand-logo {
-    position: absolute;
-    top: 30px; 
-    left: 40px;
-    z-index: 10;
-    opacity: 0;
-    animation: fadeInOnly 0.8s ease-out 2.2s forwards;
+
+.brand-logo{
+position:absolute;
+top:20px;
+left:30px;
+z-index:10;
 }
 
-.logo-img {
-    width: 135px;
-    height: auto;
+.logo-img{
+width:90px;
 }
 
-/* ================= CONTENT AREA ================= 
-   Layout pembagi antara teks welcome dan card login.
-   ========================================================= */
-.content {
-    display: flex;
-    width: 100%;
-    padding: 0 80px;
-    align-items: center;
-    justify-content: space-between;
-    gap: 50px;
+
+
+/* ================= CONTENT ================= */
+
+.content{
+display:flex;
+width:100%;
+height:100%;
 }
 
-.welcome-text {
-    flex: 1;
-    opacity: 0;
-    animation: slideInLeft 1s ease-out 2.2s forwards;
+
+
+/* ================= KIRI BLOB WELCOME ================= */
+
+.welcome-section{
+
+width:60%;
+position:relative;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+overflow:hidden;
+
 }
 
-.welcome-text h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 3.8rem;
-    font-weight: 700;
-    color: #000000; 
-    line-height: 1.1;
+/* SVG background blob */
+
+.blob-bg{
+
+position:absolute;
+
+left:0;
+top:0;
+
+width:100%;
+height:100%;
+
+z-index:1;
+
 }
 
-/* ================= LOGIN CARD ================= 
-   Kotak putih tempat input form berada.
-   ========================================================= */
-.login-card {
-    background-color: #F1F0E8;
-    padding: 60px 45px;
-    border-radius: 40px;
-    width: 430px;
-    text-align: center;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-    opacity: 0;
-    animation: smoothReveal 0.8s ease-out 2.4s forwards;
+/* isi text di atas blob */
+
+.welcome-content{
+
+position:relative;
+z-index:2;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+
+color:white;
+
 }
 
-.login-card h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    margin-bottom: 40px;
-    color: #000000; 
+
+
+/* ================= TEXT ================= */
+
+.welcome-text h1{
+
+font-family:'outfit',serif;
+
+font-size:50px;
+
+text-align:center;
+
+line-height:1.2;
+color: #ffffff;
+
 }
 
-/* ================= FORM & BUTTON ================= */
-form { display: flex; flex-direction: column; gap: 20px; }
 
-input {
-    width: 100%;
-    padding: 16px 25px;
-    border-radius: 15px;
-    border: 1px solid #000000;
-    background-color: #F8F9FA;
-    font-size: 1rem;
-    outline: none;
-    font-family: 'Poppins', sans-serif;
+
+/* ================= OWL ================= */
+
+.owl-img{
+
+width:300px;
+
+margin-top:20px;
+
 }
 
-.btn-login {
-    width: 100%;
-    padding: 16px;
-    margin-top: 10px;
-    border-radius: 15px;
-    border: 1;
-    background-color: #B3C8CF; 
-    color: #ffffff;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.3s ease;
-    font-family: 'Poppins', sans-serif;
+
+
+/* ================= KANAN LOGIN ================= */
+
+.login-area{
+
+width:40%;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
 }
 
-.btn-login:hover {
-    background-color: #B3C8CF; 
-    opacity: 80%;
-    transform: scale(1.02);
+
+
+/* ================= LOGIN CARD ================= */
+
+.login-card{
+
+width:330px;
+
+padding:35px;
+
+border-radius:25px;
+
+border:2px solid black;
+
+background:#E5E1DA;
+
+text-align:center;
+
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+
 }
 
-/* ================= ERROR MESSAGE ================= */
-#errorMsg {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 10px;
-    text-align: left;
+
+
+.login-card h2{
+
+font-family:'Playfair Display',serif;
+
+font-size:22px;
+
+margin-bottom:25px;
+
 }
 
-/* ================= BUTTON SARPRAS ================= */
-.btn-sarpras {
-    margin-top: 5px;
-    background-color: #B3C8CF;
-    width: 70%; 
-    height: 20%;             /* Ukuran tinggi tombol diperkecil */
-    align-self: center;      /* Penempatan di tengah secara horizontal */
+
+
+/* ================= INPUT ================= */
+
+form{
+display:flex;
+flex-direction:column;
+gap:15px;
 }
 
-.btn-sarpras:hover {
-    background-color:#B3C8CF;
-    opacity: 80%;
+input{
+
+width:100%;
+
+padding:10px 18px;
+
+border-radius:20px;
+
+border:1px solid black;
+
+background:white;
+
+font-size:14px;
+
 }
 
-/* ================= FORGOT PASSWORD ================= */
-.forgot-password {
-    text-align: right;
-    margin-top: 10px;
-    font-size: 13px;
-    color: #555;
+
+
+/* ================= BUTTON ================= */
+
+.btn-login{
+
+padding:10px;
+
+border-radius:20px;
+
+border:none;
+
+background:#3a3a3a;
+
+color:white;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
 }
 
-/* ================= CUSTOM MODAL (SWEETALERT2 OVERRIDE) ================= 
-   Memaksa style library pop-up agar menyatu dengan desain FindIt.
-   ========================================================= */
-.swal2-popup, .modal-content, .login-success-box {
-    border-radius: 30px !important;
-    padding: 2em !important;
-    background: #ffffff !important;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.2) !important;
+.btn-login:hover{
+
+opacity:.8;
+transform:scale(1.03);
+
 }
 
-.swal2-title, .modal-title {
-    font-family: 'Poppins', sans-serif !important;
-    font-weight: 700 !important;
-    color: #1a1a1a !important;
+
+
+.btn-sarpras{
+
+width:70%;
+
+align-self:center;
+
+background:#3a3a3a;
+
 }
 
-.swal2-confirm, .btn-ok-custom {
-    background-color: #004e98 !important; 
-    color: #ffffff!important;
-    border-radius: 12px !important;
-    padding: 12px 35px !important;
-    font-weight: 700 !important;
-    border: none !important;
-    box-shadow: 0 4px 15px #004e98 !important;
+
+
+/* ================= FORGOT ================= */
+
+.forgot-password{
+
+font-size:12px;
+
+margin-top:10px;
+
+color:#333;
+
 }
 
-.swal2-success-ring {
-    border-color: rgba(74, 222, 128, 0.3) !important;
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+
+.content{
+flex-direction:column;
 }
 
-/* ================= ANIMASI TAMBAHAN ================= */
-@keyframes slideInLeft {
-    from { opacity: 0; transform: translateX(-50px); }
-    to { opacity: 1; transform: translateX(0); }
+.welcome-section{
+
+width:100%;
+height:40%;
+
 }
 
-@keyframes fadeInOnly {
-    to { opacity: 1; }
+.login-area{
+
+width:100%;
+height:60%;
+
 }
 
-/* ================= RESPONSIVE ================= 
-   Penyesuaian layout jika dibuka di layar yang lebih kecil (Tablet/HP).
-   ========================================================= */
-@media (max-width: 992px) {
-    .content { flex-direction: column; text-align: center; padding: 0 20px; }
-    .welcome-text h1 { font-size: 2.5rem; margin-top: 60px; }
-    .brand-logo { left: 50%; transform: translateX(-50%); }
 }
