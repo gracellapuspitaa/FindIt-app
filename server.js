@@ -16,7 +16,7 @@ app.get('/sarpras', (req, res) => {
     res.sendFile(path.join(__dirname, 'login_sarpras.html'));
 });
 
-// --- API UNTUK LOGIN (MENGHUBUNGKAN KE SUPABASE) ---
+// --- API UNTUK LOGIN (MENGHUBUNGKAN KE SUPABASE - PROTOYPE VERSION) ---
 app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
 
