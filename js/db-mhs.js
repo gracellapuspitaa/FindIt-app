@@ -143,15 +143,15 @@ function renderCards(items) {
         const formatId = prefixId + String(idBarang).padStart(3, '0');
         const lokasi = isTemuan ? item.lokasi_temuan : item.lokasi_terakhir;
         
-        let cardStyle = "";
-        if (currentTab === 'laporanku') cardStyle = "border-top: 4px solid #284B63;"; 
-        else if (!isTemuan) cardStyle = "border-top: 4px solid #3C6E71;"; 
+        // UPDATE: Border atas Card dibuat seragam warnanya (Biru Dongker)
+        let cardStyle = "border-top: 4px solid #284B63;"; 
         
-        const iconFallback = isTemuan ? "fa-box" : "fa-search";
+        // UPDATE: Warna seragam (Biru Dongker / Teal) tanpa sisa merah/ungu
         const badgeBg = "#f1f5f9"; 
         const badgeColor = "#284B63"; 
         const locColor = "#3C6E71"; 
 
+        const iconFallback = isTemuan ? "fa-box" : "fa-search";
         const imageHtml = item.image_url 
             ? `<img src="${item.image_url}" alt="Foto ${item.nama_barang}">`
             : `<i class="fas ${iconFallback} fa-3x" style="color: #cbd5e1;"></i>`;
@@ -164,7 +164,8 @@ function renderCards(items) {
         }
 
         const card = document.createElement('div');
-        card.className = `item-card`;
+        // UPDATE: Menghapus class tambahan yang mungkin memicu style khusus dari CSS lama
+        card.className = `item-card`; 
         card.style = cardStyle;
         card.innerHTML = `
             <div class="card-img-container">${imageHtml}</div>
@@ -665,7 +666,6 @@ function updateDiagramKategori() {
                     labels: {
                         boxWidth: 10,
                         padding: 10,
-                        /* UPDATE: Font family di chart diubah ke Outfit */
                         font: { size: 10, family: 'Outfit' },
                         color: '#FFFFFF' 
                     }

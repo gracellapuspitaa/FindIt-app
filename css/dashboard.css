@@ -43,7 +43,7 @@ body {
 }
 
 .brand-section { display: flex; align-items: center; gap: 15px; z-index: 2; }
-.header-logo { height: 50px; } 
+.header-logo { height: 60px; } 
 
 .header-title { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 1; white-space: nowrap; }
 .header-title h1 { 

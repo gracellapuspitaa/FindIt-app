@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Sarpras - FindIt Nawasena</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <div class="modal-overlay" id="modalMhs">
@@ -130,28 +130,28 @@
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #e0f2fe; color: #0369a1;"><i class="fas fa-users"></i></div>
+                    <div class="stat-icon" style="background: #e0f2fe; color: #284B63;"><i class="fas fa-users"></i></div>
                     <div class="stat-info">
                         <p>Total Mahasiswa</p>
                         <h3 id="countMhs">0</h3>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #dcfce7; color: #0369a1;"><i class="fas fa-box"></i></div>
+                    <div class="stat-icon" style="background: #d1e5e6; color: #3C6E71;"><i class="fas fa-box"></i></div>
                     <div class="stat-info">
                         <p>Barang Ditemukan</p>
                         <h3 id="countTemuan">0</h3>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #fee2e2; color: #b91c1c;"><i class="fas fa-search"></i></div>
+                    <div class="stat-icon" style="background: #fee2e2; color: #e63946;"><i class="fas fa-search"></i></div>
                     <div class="stat-info">
                         <p>Laporan Kehilangan</p>
                         <h3 id="countHilang">0</h3>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #dcfce7; color: #15803d;"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-icon" style="background: #dcfce7; color: #2A9D8F;"><i class="fas fa-check-circle"></i></div>
                     <div class="stat-info">
                         <p>Kasus Selesai</p>
                         <h3 id="countSelesai">0</h3>
@@ -162,15 +162,15 @@
             <div class="charts-grid">
                 <div class="chart-container">
                     <h4>Status Keberadaan Barang</h4>
-                    <canvas id="chartStatus"></canvas>
+                    <div class="chart-wrapper"><canvas id="chartStatus"></canvas></div>
                 </div>
                 <div class="chart-container">
                     <h4>Barang Berdasarkan Kategori</h4>
-                    <canvas id="chartKategori"></canvas>
+                    <div class="chart-wrapper"><canvas id="chartKategori"></canvas></div>
                 </div>
-                <div class="chart-container" style="grid-column: 1 / -1;">
+                <div class="chart-container full-width">
                     <h4>Lokasi Paling Sering Terjadi Kehilangan/Temuan</h4>
-                    <canvas id="chartLokasi"></canvas>
+                    <div class="chart-wrapper-wide"><canvas id="chartLokasi"></canvas></div>
                 </div>
             </div>
         </section>
@@ -201,8 +201,14 @@
         </section>
 
         <section id="sec-temuan" class="content-section">
-            <div class="section-header">
+            <div class="section-header" style="flex-direction: column; align-items: flex-start; gap: 15px;">
                 <h2>Data Barang Temuan</h2>
+                <div class="admin-filter-group" id="filterTemuanGroup">
+                    <button class="filter-btn active" data-filter="All">Semua Data</button>
+                    <button class="filter-btn" data-filter="Di Sarpras">Di Sarpras</button>
+                    <button class="filter-btn" data-filter="Dibawa Penemu">Dibawa Penemu</button>
+                    <button class="filter-btn" data-filter="Sudah Dikembalikan">Sudah Dikembalikan (Selesai)</button>
+                </div>
             </div>
             <div class="table-container">
                 <table class="admin-table">
@@ -223,8 +229,13 @@
         </section>
 
         <section id="sec-hilang" class="content-section">
-            <div class="section-header">
+            <div class="section-header" style="flex-direction: column; align-items: flex-start; gap: 15px;">
                 <h2>Data Laporan Kehilangan</h2>
+                <div class="admin-filter-group" id="filterHilangGroup">
+                    <button class="filter-btn active" data-filter="All">Semua Data</button>
+                    <button class="filter-btn" data-filter="Aktif">Sedang Dicari</button>
+                    <button class="filter-btn" data-filter="Case Closed">Selesai (Ditemukan)</button>
+                </div>
             </div>
             <div class="table-container">
                 <table class="admin-table">
@@ -235,6 +246,7 @@
                             <th>Kategori</th>
                             <th>Lokasi Terakhir</th>
                             <th>Tanggal Hilang</th>
+                            <th>Status Keberadaan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>

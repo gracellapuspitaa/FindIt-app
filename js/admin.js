@@ -5,6 +5,10 @@ let globalUsers = [];
 let globalTemuan = [];
 let globalHilang = [];
 
+// Variabel status filter
+let activeFilterTemuan = 'All';
+let activeFilterHilang = 'All';
+
 document.addEventListener('DOMContentLoaded', async function() {
     const adminName = localStorage.getItem("namaUser");
     if (!adminName) { window.location.href = "login_sarpras.html"; return; }
@@ -12,6 +16,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('adminName').innerText = adminName;
     setupWaktuGreeting();
     setupSPARouting();
+    setupFilterButtons(); // Panggil fungsi setup filter
     
     await reloadAllData();
     setupSearchBar();
@@ -30,7 +35,32 @@ function setupWaktuGreeting() {
 }
 
 // ==========================================
-// SINKRONISASI DATA DARI SUPABASE (REAL-TIME MIRROR)
+// FUNGSI SETUP FILTER BUTTONS
+// ==========================================
+function setupFilterButtons() {
+    // Event Listener Filter Barang Temuan
+    document.querySelectorAll('#filterTemuanGroup .filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('#filterTemuanGroup .filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            activeFilterTemuan = this.getAttribute('data-filter');
+            renderTableTemuan(); // Gambar ulang tabel dengan filter
+        });
+    });
+
+    // Event Listener Filter Laporan Kehilangan
+    document.querySelectorAll('#filterHilangGroup .filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('#filterHilangGroup .filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            activeFilterHilang = this.getAttribute('data-filter');
+            renderTableHilang(); // Gambar ulang tabel dengan filter
+        });
+    });
+}
+
+// ==========================================
+// SINKRONISASI DATA DARI SUPABASE 
 // ==========================================
 async function reloadAllData() {
     Swal.fire({ title: 'Sinkronisasi Database...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
@@ -56,9 +86,8 @@ async function reloadAllData() {
 function setupSPARouting() {
     const menus = document.querySelectorAll('.sidebar-menu li');
     const sections = document.querySelectorAll('.content-section');
-    const searchContainer = document.getElementById('headerSearchContainer'); // Ambil elemen search
+    const searchContainer = document.getElementById('headerSearchContainer'); 
 
-    // 1. Sembunyikan search bar saat pertama kali web dibuka (karena menu awalnya Dashboard)
     if (searchContainer) {
         searchContainer.style.visibility = 'hidden'; 
     }
@@ -72,16 +101,13 @@ function setupSPARouting() {
             sections.forEach(sec => sec.classList.remove('active'));
             document.getElementById(targetId).classList.add('active');
             
-            // 2. LOGIKA TAMPIL/SEMBUNYI SEARCH BAR
             if (searchContainer) {
                 if (targetId === 'sec-dashboard') {
-                    // Jika buka Dashboard, sembunyikan search bar (tapi letak profil tetap aman)
                     searchContainer.style.visibility = 'hidden';
                 } else {
-                    // Jika buka menu lain (Mahasiswa/Temuan/Hilang), munculkan search bar
                     searchContainer.style.visibility = 'visible';
-                    document.getElementById('adminSearch').value = ''; // Kosongkan isi ketikan lama
-                    setupSearchBar(); // Aktifkan fungsi pencariannya
+                    document.getElementById('adminSearch').value = ''; 
+                    setupSearchBar(); 
                 }
             }
         });
@@ -89,7 +115,7 @@ function setupSPARouting() {
 }
 
 // ==========================================
-// DASHBOARD & CHARTS
+// DASHBOARD & CHARTS 
 // ==========================================
 let myCharts = {};
 
@@ -111,40 +137,67 @@ function renderDashboardStats() {
         if(i.status_lokasi === 'Dibawa Penemu') statusCounts['Dibawa Penemu']++;
     });
 
-    renderDonutChart('chartStatus', ['Di Sarpras', 'Dibawa Penemu', 'Selesai / Closed'], Object.values(statusCounts), ['#0284c7', '#ca8a04', '#16a34a']);
-    renderBarChart('chartKategori', Object.keys(catCounts), Object.values(catCounts), '#f97316');
+    renderDonutChart('chartStatus', ['Di Sarpras', 'Dibawa Penemu', 'Selesai / Closed'], Object.values(statusCounts), ['#284B63', '#F4B41A', '#3C6E71']);
+    renderBarChart('chartKategori', Object.keys(catCounts), Object.values(catCounts), '#3C6E71');
     
-    // === MENGHITUNG LOKASI PALING SERING ===
     let locCounts = {};
-    // Hitung dari tabel temuan
     globalTemuan.forEach(i => { if(i.lokasi_temuan) locCounts[i.lokasi_temuan] = (locCounts[i.lokasi_temuan] || 0) + 1; });
-    // Hitung dari tabel hilang
     globalHilang.forEach(i => { if(i.lokasi_terakhir) locCounts[i.lokasi_terakhir] = (locCounts[i.lokasi_terakhir] || 0) + 1; });
 
-    // Urutkan dari yang terbanyak dan ambil 5 teratas
     let sortedLocs = Object.entries(locCounts).sort((a,b) => b[1] - a[1]).slice(0, 5);
     let locLabels = sortedLocs.length > 0 ? sortedLocs.map(i => i[0]) : ['Belum ada data'];
     let locData = sortedLocs.length > 0 ? sortedLocs.map(i => i[1]) : [0];
 
-    // Gambar grafiknya
-    renderHorizontalBar('chartLokasi', locLabels, locData, '#FF6B6B');
+    renderHorizontalBar('chartLokasi', locLabels, locData, '#284B63');
 }
+
+const commonChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: { labels: { font: { family: 'Outfit', size: 12 } } },
+        tooltip: { titleFont: { family: 'Outfit' }, bodyFont: { family: 'Outfit' } }
+    },
+    scales: {
+        x: { ticks: { font: { family: 'Outfit' } } },
+        y: { ticks: { font: { family: 'Outfit' } } }
+    }
+};
 
 function renderDonutChart(cId, lbl, data, col) {
     if(myCharts[cId]) myCharts[cId].destroy();
-    myCharts[cId] = new Chart(document.getElementById(cId).getContext('2d'), { type: 'doughnut', data: { labels: lbl, datasets: [{ data: data, backgroundColor: col }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '65%' } });
+    myCharts[cId] = new Chart(document.getElementById(cId).getContext('2d'), { 
+        type: 'doughnut', 
+        data: { labels: lbl, datasets: [{ data: data, backgroundColor: col, borderWidth: 0 }] }, 
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            cutout: '65%',
+            plugins: { legend: { position: 'bottom', labels: { font: { family: 'Outfit' } } } }
+        } 
+    });
 }
+
 function renderBarChart(cId, lbl, data, col) {
     if(myCharts[cId]) myCharts[cId].destroy();
-    myCharts[cId] = new Chart(document.getElementById(cId).getContext('2d'), { type: 'bar', data: { labels: lbl, datasets: [{ label: 'Jumlah', data: data, backgroundColor: col }] }, options: { responsive: true, maintainAspectRatio: false } });
+    myCharts[cId] = new Chart(document.getElementById(cId).getContext('2d'), { 
+        type: 'bar', 
+        data: { labels: lbl, datasets: [{ label: 'Jumlah', data: data, backgroundColor: col, borderRadius: 4 }] }, 
+        options: commonChartOptions 
+    });
 }
+
 function renderHorizontalBar(cId, lbl, data, col) {
     if(myCharts[cId]) myCharts[cId].destroy();
-    myCharts[cId] = new Chart(document.getElementById(cId).getContext('2d'), { type: 'bar', data: { labels: lbl, datasets: [{ label: 'Kasus', data: data, backgroundColor: col }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false } });
+    myCharts[cId] = new Chart(document.getElementById(cId).getContext('2d'), { 
+        type: 'bar', 
+        data: { labels: lbl, datasets: [{ label: 'Kasus', data: data, backgroundColor: col, borderRadius: 4 }] }, 
+        options: { ...commonChartOptions, indexAxis: 'y' } 
+    });
 }
 
 // ==========================================
-// CRUD MAHASISWA & IMPORT CSV 
+// CRUD MAHASISWA
 // ==========================================
 function renderTableMahasiswa() {
     const tbody = document.getElementById('tableMahasiswa');
@@ -164,12 +217,10 @@ function renderTableMahasiswa() {
     });
 }
 
-// 1. FUNGSI MUNCULKAN MODAL TAMBAH
 window.bukaModalMhs = () => { document.getElementById('modalMhs').classList.add('show'); }
 window.tutupModal = (id) => { 
     document.getElementById(id).classList.remove('show'); 
     
-    // Khusus membersihkan modal Detail Barang agar tidak nyangkut saat dibuka lagi
     if (id === 'modalDetail' && document.getElementById('modalBodyReplace')) {
         document.getElementById('modalBodyReplace').outerHTML = `
             <div class="modal-body">
@@ -181,37 +232,33 @@ window.tutupModal = (id) => {
     }
 }
 
-// 2. FUNGSI SIMPAN MAHASISWA MANUAL
 window.simpanMahasiswaBaru = async () => {
     const nim = document.getElementById('mhsNim').value;
     const nama = document.getElementById('mhsNama').value;
     const telp = document.getElementById('mhsTelp').value;
     const pass = document.getElementById('mhsPass').value;
-    const fakultas = document.getElementById('mhsFakultas').value; // Mengambil ID Fakultas
+    const fakultas = document.getElementById('mhsFakultas').value; 
 
     if(!nim || !nama || !pass || !fakultas) return Swal.fire('Error', 'NIM, Nama, Fakultas, dan Password wajib diisi', 'error');
 
     Swal.fire({ title: 'Menyimpan...', didOpen: () => Swal.showLoading() });
     
-    // Mengirim data ke Supabase beserta id_fakultas
     const { error } = await supabaseClient.from('users').insert([{ 
         username: nim, 
         nama_lengkap: nama, 
         no_telp: telp, 
         password: pass, 
         role: 'Mahasiswa',
-        id_fakultas: parseInt(fakultas) // Diubah jadi angka
+        id_fakultas: parseInt(fakultas) 
     }]);
     
     if(error) {
         console.error("Detail Error Supabase:", error);
-        // Memunculkan pesan error jujur dari database
         Swal.fire('Gagal Disimpan!', error.message, 'error'); 
     } else { 
         Swal.fire('Berhasil', 'Mahasiswa baru ditambahkan', 'success'); 
         tutupModal('modalMhs'); 
         
-        // Kosongkan form setelah sukses
         document.getElementById('mhsNim').value = '';
         document.getElementById('mhsNama').value = '';
         document.getElementById('mhsTelp').value = '';
@@ -221,7 +268,6 @@ window.simpanMahasiswaBaru = async () => {
     }
 }
 
-// 3. FUNGSI IMPORT CSV
 window.prosesImportCSV = function(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -232,7 +278,6 @@ window.prosesImportCSV = function(event) {
         const rows = text.split('\n').map(row => row.split(',').map(cell => cell.trim()));
         const dataToInsert = [];
         
-        // FORMAT EXCEL BARU: NIM, NAMA, NO_TELP, PASSWORD, ID_FAKULTAS
         for (let i = 1; i < rows.length; i++) {
             if (rows[i].length >= 2 && rows[i][0] !== "") {
                 dataToInsert.push({
@@ -241,7 +286,6 @@ window.prosesImportCSV = function(event) {
                     no_telp: rows[i][2] || null,
                     password: rows[i][3] || '123456',
                     role: 'Mahasiswa',
-                    // Ambil dari kolom ke-5 CSV, jika kosong default ke 1 (FEB)
                     id_fakultas: rows[i][4] ? parseInt(rows[i][4]) : 1 
                 });
             }
@@ -261,10 +305,9 @@ window.prosesImportCSV = function(event) {
         }
     };
     reader.readAsText(file);
-    event.target.value = ''; // Reset input
+    event.target.value = ''; 
 }
 
-// 4. RESET PASSWORD
 window.resetPasswordMhs = async (id, nim) => {
     const { value: newPass } = await Swal.fire({
         title: `Reset Password ${nim}`,
@@ -283,12 +326,24 @@ window.resetPasswordMhs = async (id, nim) => {
 }
 
 // ==========================================
-// RENDER TABEL BARANG (HISTORY LENGKAP)
+// RENDER TABEL BARANG DENGAN FILTER
 // ==========================================
 function renderTableTemuan() {
     const tbody = document.getElementById('tableTemuan');
     tbody.innerHTML = '';
-    globalTemuan.forEach(item => {
+
+    // Menerapkan Filter Status
+    let filteredData = globalTemuan;
+    if(activeFilterTemuan !== 'All') {
+        filteredData = globalTemuan.filter(item => item.status_lokasi === activeFilterTemuan);
+    }
+
+    if(filteredData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Tidak ada data dengan status ini</td></tr>';
+        return;
+    }
+
+    filteredData.forEach(item => {
         const formatId = "BR-" + String(item.id_item).padStart(3, '0');
         let badgeCls = item.status_lokasi === 'Dibawa Penemu' ? 'badge-penemu' : (item.status_lokasi === 'Sudah Dikembalikan' ? 'badge-selesai' : 'badge-sarpras');
 
@@ -307,24 +362,43 @@ function renderTableTemuan() {
 function renderTableHilang() {
     const tbody = document.getElementById('tableHilang');
     tbody.innerHTML = '';
-    globalHilang.forEach(item => {
+
+    // Menerapkan Filter Status
+    let filteredData = globalHilang;
+    if(activeFilterHilang === 'Aktif') {
+        filteredData = globalHilang.filter(item => item.status !== 'Selesai' && item.status !== 'Case Closed');
+    } else if (activeFilterHilang === 'Case Closed') {
+        filteredData = globalHilang.filter(item => item.status === 'Selesai' || item.status === 'Case Closed');
+    }
+
+    if(filteredData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Tidak ada data dengan status ini</td></tr>';
+        return;
+    }
+
+    filteredData.forEach(item => {
         const formatId = "HL-" + String(item.id_hilang).padStart(3, '0');
         let badgeCls = (item.status === 'Selesai' || item.status === 'Case Closed') ? 'badge-selesai' : 'badge-penemu';
         
+        // Memunculkan Tanggal Hilang yang sebelumnya hilang, dan menampilkan Status dengan benar
+        let tglHilang = item.tanggal_hilang ? item.tanggal_hilang : '-';
+        let statusTeks = item.status || 'Sedang Dicari';
+
         tbody.innerHTML += `
             <tr class="search-row">
                 <td><strong>${formatId}</strong></td>
                 <td>${item.nama_barang}</td>
                 <td>${item.kategori}</td>
                 <td>${item.lokasi_terakhir}</td>
-                <td><span class="badge-status ${badgeCls}">${item.status}</span></td>
+                <td>${tglHilang}</td>
+                <td><span class="badge-status ${badgeCls}">${statusTeks}</span></td>
                 <td><button class="btn-action btn-edit" onclick="bukaDetailBarang('${item.id_hilang}', 'hilang')">Lihat Detail</button></td>
             </tr>`;
     });
 }
 
 // ==========================================
-// MODAL DETAIL LENGKAP & SISTEM RESOLVE (CASE CLOSED)
+// MODAL DETAIL LENGKAP & SISTEM RESOLVE
 // ==========================================
 window.bukaDetailBarang = function(id, tipe) {
     const isTemu = tipe === 'temuan';
@@ -335,7 +409,6 @@ window.bukaDetailBarang = function(id, tipe) {
     
     document.querySelector('#modalDetail .modal-content').classList.add('large');
 
-    // MENCARI DATA PELAPOR ASLI DARI TABEL USERS 
     let pelapor = globalUsers.find(u => 
         u.username === dataObj.nim_pengupload || 
         u.no_telp === (isTemu ? dataObj.id_penemu : dataObj.wa_pelapor)
@@ -346,7 +419,7 @@ window.bukaDetailBarang = function(id, tipe) {
         infoPelaporHTML = `
             <p><strong>NIM Mahasiswa:</strong> ${pelapor.username}</p>
             <p><strong>Nama Lengkap:</strong> ${pelapor.nama_lengkap}</p>
-            <p><strong>No. Telp Terkini (Aktif):</strong> <span style="color:#25D366; font-weight:bold;">${pelapor.no_telp || 'Tidak Ada'}</span></p>
+            <p><strong>No. Telp Terkini (Aktif):</strong> <span style="color:#3C6E71; font-weight:bold; font-size:14px;">${pelapor.no_telp || 'Tidak Ada'}</span></p>
         `;
     } else {
         infoPelaporHTML = `
@@ -356,7 +429,7 @@ window.bukaDetailBarang = function(id, tipe) {
     }
 
     let infoBarangHTML = isTemu ? `
-            <p><strong>ID:</strong> <span style="color:var(--orange); font-weight:bold;">${formatId}</span></p>
+            <p><strong>ID:</strong> <span style="color:var(--teal-main); font-weight:bold;">${formatId}</span></p>
             <p><strong>Barang:</strong> ${dataObj.nama_barang} (${dataObj.kategori})</p>
             <p><strong>Status Saat Ini:</strong> ${dataObj.status_lokasi}</p>
             <p><strong>Lokasi Ditemukan:</strong> ${dataObj.lokasi_temuan}</p>
@@ -402,13 +475,13 @@ window.bukaDetailBarang = function(id, tipe) {
         if (dataObj.status_lokasi !== 'Sudah Dikembalikan') {
             btns += `<button class="btn-success" onclick="aksiSelesaikanKasus('${id}', 'temuan')"><i class="fas fa-check-double"></i> Tandai Sudah Dikembalikan (Case Closed)</button>`;
         } else {
-            btns += `<span style="color:#15803d; font-weight:bold;"><i class="fas fa-lock"></i> Kasus Ini Telah Selesai</span>`;
+            btns += `<span style="color:#3C6E71; font-weight:bold;"><i class="fas fa-lock"></i> Kasus Ini Telah Selesai</span>`;
         }
     } else {
         if (dataObj.status !== 'Selesai' && dataObj.status !== 'Case Closed') {
             btns += `<button class="btn-success" onclick="aksiSelesaikanKasus('${id}', 'hilang')"><i class="fas fa-check-double"></i> Tandai Barang Ditemukan (Case Closed)</button>`;
         } else {
-            btns += `<span style="color:#15803d; font-weight:bold;"><i class="fas fa-lock"></i> Laporan Ini Telah Selesai</span>`;
+            btns += `<span style="color:#3C6E71; font-weight:bold;"><i class="fas fa-lock"></i> Laporan Ini Telah Selesai</span>`;
         }
     }
     
@@ -416,18 +489,13 @@ window.bukaDetailBarang = function(id, tipe) {
     document.getElementById('modalDetail').classList.add('show');
 }
 
-// ==========================================
-// FUNGSI CASE CLOSED (SISTEM UPDATE INSTAN TANPA REFRESH)
-// ==========================================
 window.aksiSelesaikanKasus = async (id, tipe) => {
     if(await confirmAction("Tandai kasus ini sebagai Selesai? Data tidak akan dihapus dan tetap masuk dalam riwayat/sejarah.")) {
         
-        // Munculkan loading
         Swal.fire({ title: 'Memperbarui Status...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
         
         let err = null;
 
-        // 1. UPDATE KE DATABASE SUPABASE
         if (tipe === 'temuan') {
             const { error } = await supabaseClient.from('items').update({ status_lokasi: 'Sudah Dikembalikan' }).eq('id_item', id);
             err = error;
@@ -439,7 +507,6 @@ window.aksiSelesaikanKasus = async (id, tipe) => {
         if (err) {
             Swal.fire('Gagal!', err.message, 'error');
         } else {
-            // 2. UPDATE DATA DI MEMORI LOKAL BROWSER (Ini rahasia agar instan!)
             if (tipe === 'temuan') {
                 const idx = globalTemuan.findIndex(i => String(i.id_item) === String(id));
                 if (idx !== -1) globalTemuan[idx].status_lokasi = 'Sudah Dikembalikan';
@@ -448,15 +515,17 @@ window.aksiSelesaikanKasus = async (id, tipe) => {
                 if (idx !== -1) globalHilang[idx].status = 'Case Closed';
             }
 
-            // 3. GAMBAR ULANG TABEL & GRAFIK DIAGRAM SECARA OTOMATIS
             renderDashboardStats();
             renderTableTemuan();
             renderTableHilang();
             tutupModal('modalDetail');
 
-            // 4. MUNCULKAN PESAN SUKSES
-            Swal.fire('Berhasil!', 'Kasus telah diselesaikan (Case Closed).', 'success').then(() => {
-                // Trik: Jika admin sedang mencari barang di Search Bar, terapkan filternya lagi
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'Kasus telah diselesaikan (Case Closed).',
+                icon: 'success',
+                confirmButtonColor: '#3C6E71'
+            }).then(() => {
                 const searchInput = document.getElementById('adminSearch');
                 if(searchInput && searchInput.value) searchInput.dispatchEvent(new Event('keyup'));
             });
@@ -465,7 +534,14 @@ window.aksiSelesaikanKasus = async (id, tipe) => {
 }
 
 async function confirmAction(text) {
-    const res = await Swal.fire({ title: 'Konfirmasi Tutup Kasus', text: text, icon: 'info', showCancelButton: true, confirmButtonColor: '#16a34a', confirmButtonText: 'Ya, Selesaikan' });
+    const res = await Swal.fire({ 
+        title: 'Konfirmasi Tutup Kasus', 
+        text: text, 
+        icon: 'info', 
+        showCancelButton: true, 
+        confirmButtonColor: '#3C6E71', 
+        confirmButtonText: 'Ya, Selesaikan' 
+    });
     return res.isConfirmed;
 }
 
