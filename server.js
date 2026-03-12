@@ -42,3 +42,5 @@ app.post('/api/login', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Sistem FINDIT berjalan di http://localhost:${PORT}`);
 });
+
+module.exports = app;
