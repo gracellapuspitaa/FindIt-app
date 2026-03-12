@@ -115,7 +115,7 @@ function setupSPARouting() {
 }
 
 // ==========================================
-// DASHBOARD & CHARTS 
+// DASHBOARD & CHARTS (DIPERBAIKI & DIRAPIKAN)
 // ==========================================
 let myCharts = {};
 
@@ -128,42 +128,35 @@ function renderDashboardStats() {
     document.getElementById('countHilang').innerText = globalHilang.length;
     document.getElementById('countSelesai').innerText = selesaiTemuan + selesaiHilang;
 
-    const catCounts = { Elektronik: 0, Dokumen: 0, Aksesoris: 0, Perlengkapan: 0 };
-    globalTemuan.concat(globalHilang).forEach(obj => { if(catCounts[obj.kategori] !== undefined) catCounts[obj.kategori]++; });
-
+    // 1. DATA STATUS KEBERADAAN
     let statusCounts = { 'Di Sarpras': 0, 'Dibawa Penemu': 0, 'Selesai / Closed': selesaiTemuan + selesaiHilang };
     globalTemuan.forEach(i => {
         if(i.status_lokasi === 'Di Sarpras') statusCounts['Di Sarpras']++;
         if(i.status_lokasi === 'Dibawa Penemu') statusCounts['Dibawa Penemu']++;
     });
 
-    renderDonutChart('chartStatus', ['Di Sarpras', 'Dibawa Penemu', 'Selesai / Closed'], Object.values(statusCounts), ['#284B63', '#F4B41A', '#3C6E71']);
-    renderBarChart('chartKategori', Object.keys(catCounts), Object.values(catCounts), '#3C6E71');
-    
-    let locCounts = {};
-    globalTemuan.forEach(i => { if(i.lokasi_temuan) locCounts[i.lokasi_temuan] = (locCounts[i.lokasi_temuan] || 0) + 1; });
-    globalHilang.forEach(i => { if(i.lokasi_terakhir) locCounts[i.lokasi_terakhir] = (locCounts[i.lokasi_terakhir] || 0) + 1; });
+    // 2. DATA KATEGORI (Statis, semua pasti muncul)
+    const catCounts = { 'Elektronik': 0, 'Dokumen': 0, 'Aksesoris': 0, 'Perlengkapan': 0 };
+    globalTemuan.concat(globalHilang).forEach(obj => { 
+        if(catCounts[obj.kategori] !== undefined) catCounts[obj.kategori]++; 
+    });
+    // Warna-warni untuk tiap kategori
+    const catColors = ['#3C6E71', '#284B63', '#F4B41A', '#A3A3A3'];
 
-    let sortedLocs = Object.entries(locCounts).sort((a,b) => b[1] - a[1]).slice(0, 5);
-    let locLabels = sortedLocs.length > 0 ? sortedLocs.map(i => i[0]) : ['Belum ada data'];
-    let locData = sortedLocs.length > 0 ? sortedLocs.map(i => i[1]) : [0];
+    // 3. DATA LOKASI (Statis sesuai opsi Dropdown, semua pasti muncul)
+    let locCounts = { 'FEB': 0, 'FISIP': 0, 'FK': 0, 'FPSI': 0, 'FIB': 0, 'FT': 0, 'FASILITAS UMUM': 0 };
+    globalTemuan.forEach(i => { if(locCounts[i.lokasi_temuan] !== undefined) locCounts[i.lokasi_temuan]++; });
+    globalHilang.forEach(i => { if(locCounts[i.lokasi_terakhir] !== undefined) locCounts[i.lokasi_terakhir]++; });
+    // Gradient warna tema untuk lokasi
+    const locColors = ['#284B63', '#325C6A', '#3C6E71', '#478385', '#F4B41A', '#A3A3A3', '#64748b'];
 
-    renderHorizontalBar('chartLokasi', locLabels, locData, '#284B63');
+    // RENDER GRAFIK
+    renderDonutChart('chartStatus', Object.keys(statusCounts), Object.values(statusCounts), ['#284B63', '#F4B41A', '#3C6E71']);
+    renderBarChart('chartKategori', Object.keys(catCounts), Object.values(catCounts), catColors);
+    renderBarChart('chartLokasi', Object.keys(locCounts), Object.values(locCounts), locColors);
 }
 
-const commonChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: { labels: { font: { family: 'Outfit', size: 12 } } },
-        tooltip: { titleFont: { family: 'Outfit' }, bodyFont: { family: 'Outfit' } }
-    },
-    scales: {
-        x: { ticks: { font: { family: 'Outfit' } } },
-        y: { ticks: { font: { family: 'Outfit' } } }
-    }
-};
-
+// === FUNGSI MENGGAMBAR CHART DONUT ===
 function renderDonutChart(cId, lbl, data, col) {
     if(myCharts[cId]) myCharts[cId].destroy();
     myCharts[cId] = new Chart(document.getElementById(cId).getContext('2d'), { 
@@ -173,26 +166,43 @@ function renderDonutChart(cId, lbl, data, col) {
             responsive: true, 
             maintainAspectRatio: false, 
             cutout: '65%',
-            plugins: { legend: { position: 'bottom', labels: { font: { family: 'Outfit' } } } }
+            plugins: { 
+                // Posisi legenda dipindah ke kanan agar donat terlihat lebih besar & rapi
+                legend: { position: 'right', labels: { font: { family: 'Outfit' }, usePointStyle: true, boxWidth: 8 } },
+                tooltip: { titleFont: { family: 'Outfit' }, bodyFont: { family: 'Outfit' } }
+            }
         } 
     });
 }
 
+// === FUNGSI MENGGAMBAR CHART BATANG (BAR) ===
 function renderBarChart(cId, lbl, data, col) {
     if(myCharts[cId]) myCharts[cId].destroy();
     myCharts[cId] = new Chart(document.getElementById(cId).getContext('2d'), { 
         type: 'bar', 
-        data: { labels: lbl, datasets: [{ label: 'Jumlah', data: data, backgroundColor: col, borderRadius: 4 }] }, 
-        options: commonChartOptions 
-    });
-}
-
-function renderHorizontalBar(cId, lbl, data, col) {
-    if(myCharts[cId]) myCharts[cId].destroy();
-    myCharts[cId] = new Chart(document.getElementById(cId).getContext('2d'), { 
-        type: 'bar', 
-        data: { labels: lbl, datasets: [{ label: 'Kasus', data: data, backgroundColor: col, borderRadius: 4 }] }, 
-        options: { ...commonChartOptions, indexAxis: 'y' } 
+        data: { labels: lbl, datasets: [{ data: data, backgroundColor: col, borderRadius: 6 }] }, 
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }, // Menghilangkan kotak kecil "Jumlah" di atas grafik
+                tooltip: { titleFont: { family: 'Outfit' }, bodyFont: { family: 'Outfit' } }
+            },
+            scales: {
+                x: { 
+                    ticks: { font: { family: 'Outfit' } }, 
+                    grid: { display: false } // Menghilangkan garis vertikal di latar belakang
+                },
+                y: { 
+                    ticks: { 
+                        font: { family: 'Outfit' }, 
+                        stepSize: 1, // MEMAKSA ANGKA BULAT (1, 2, 3), tanpa desimal
+                        precision: 0 
+                    }, 
+                    beginAtZero: true 
+                }
+            }
+        } 
     });
 }
 
