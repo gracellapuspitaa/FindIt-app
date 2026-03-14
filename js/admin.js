@@ -228,17 +228,18 @@ function renderTableMahasiswa() {
 }
 
 window.bukaModalMhs = () => { document.getElementById('modalMhs').classList.add('show'); }
+
 window.tutupModal = (id) => { 
     document.getElementById(id).classList.remove('show'); 
     
-    if (id === 'modalDetail' && document.getElementById('modalBodyReplace')) {
-        document.getElementById('modalBodyReplace').outerHTML = `
-            <div class="modal-body">
-                <div class="detail-img-box" id="detImgBox"></div>
-                <div class="detail-info" id="detInfo"></div>
-            </div>
-        `;
+    // Pembersihan total agar tidak ada elemen yang menumpuk / beranak
+    if (id === 'modalDetail') {
         document.querySelector('#modalDetail .modal-content').classList.remove('large');
+        const modalBody = document.querySelector('#modalDetail .modal-body');
+        if (modalBody) {
+            modalBody.classList.remove('split-view');
+            modalBody.innerHTML = ''; // Kosongkan isi modal saat ditutup
+        }
     }
 }
 
@@ -458,22 +459,22 @@ window.bukaDetailBarang = function(id, tipe) {
         ? `<img src="${dataObj.image_url}" style="width:100%; height:100%; object-fit:cover;">` 
         : `<i class="fas ${isTemu ? 'fa-box' : 'fa-search'} fa-4x" style="color:#cbd5e1;"></i>`;
 
-    document.getElementById('detImgBox').outerHTML = `
-        <div class="modal-body split-view" id="modalBodyReplace">
-            <div class="left-col">
-                <div class="detail-img-box" style="height: 180px; background: #f1f5f9; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; overflow:hidden;">
-                    ${imgHTML}
-                </div>
-                <div class="info-card info-list">
-                    <h4><i class="fas fa-user-circle"></i> Info Pelapor / Penemu</h4>
-                    ${infoPelaporHTML}
-                </div>
+    const modalBody = document.querySelector('#modalDetail .modal-body');
+    modalBody.classList.add('split-view');
+    modalBody.innerHTML = `
+        <div class="left-col">
+            <div class="detail-img-box" style="height: 180px; background: #f1f5f9; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; overflow:hidden;">
+                ${imgHTML}
             </div>
-            <div class="right-col">
-                <div class="info-card info-list" style="height: 100%;">
-                    <h4><i class="fas fa-info-circle"></i> Rincian Barang</h4>
-                    ${infoBarangHTML}
-                </div>
+            <div class="info-card info-list">
+                <h4><i class="fas fa-user-circle"></i> Info Pelapor / Penemu</h4>
+                ${infoPelaporHTML}
+            </div>
+        </div>
+        <div class="right-col">
+            <div class="info-card info-list" style="height: 100%;">
+                <h4><i class="fas fa-info-circle"></i> Rincian Barang</h4>
+                ${infoBarangHTML}
             </div>
         </div>
     `;
