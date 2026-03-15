@@ -2,11 +2,11 @@
    1. GLOBAL VARIABLES (:root)
    ========================================================== */
 :root {
-    --teal-main: #3C6E71;      /* Hijau Kebiruan */
-    --blue-dark: #284B63;      /* Biru Dongker */
-    --gray-light: #D9D9D9;     /* Abu-abu terang */
-    --text-dark: #353535;      /* Hitam arang */
-    --bg-white: #FFFFFF;       /* Putih murni */
+    --teal-main: #3C6E71;
+    --blue-dark: #284B63;
+    --gray-light: #D9D9D9;
+    --text-dark: #353535;
+    --bg-white: #FFFFFF;
 }
 
 /* ==========================================================
@@ -16,12 +16,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* UPDATE: Seluruh web menggunakan font Outfit */
     font-family: 'Outfit', sans-serif;
 }
 
 body {
-    background-color: var(--bg-white); 
+    background-color: var(--bg-white);
     color: var(--text-dark);
     padding: 20px 40px;
 }
@@ -33,9 +32,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--teal-main); 
+    background-color: var(--teal-main);
     padding: 10px 30px;
-    border-radius: 15px; 
+    border-radius: 15px;
     margin-bottom: 20px;
     position: relative;
     height: 80px;
@@ -43,15 +42,15 @@ body {
 }
 
 .brand-section { display: flex; align-items: center; gap: 15px; z-index: 2; }
-.header-logo { height: 60px; } 
+.header-logo { height: 60px; }
 
 .header-title { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 1; white-space: nowrap; }
-.header-title h1 { 
-    font-family: 'Outfit', sans-serif; 
-    font-size: 24px; 
-    margin: 0; 
-    color: var(--bg-white); 
-} 
+.header-title h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 24px;
+    margin: 0;
+    color: var(--bg-white);
+}
 
 .nav-controls { z-index: 2; }
 
@@ -59,7 +58,7 @@ body {
    4. WELCOME BANNER
    ========================================================== */
 .welcome-banner {
-    background-color: var(--gray-light); 
+    background-color: var(--gray-light);
     border-radius: 15px;
     padding: 20px 40px;
     display: flex;
@@ -90,7 +89,7 @@ body {
     outline: none;
     font-size: 14px;
 }
-.search-bar::placeholder { color: #b2cfd1; } 
+.search-bar::placeholder { color: #b2cfd1; }
 .search-bar:focus { box-shadow: 0 0 0 3px rgba(40, 75, 99, 0.3); }
 
 .btn-add-page {
@@ -115,7 +114,7 @@ body {
 .sidebar { width: 280px; display: flex; flex-direction: column; gap: 20px; }
 
 .side-box {
-    background-color: var(--teal-main); 
+    background-color: var(--teal-main);
     border-radius: 15px;
     padding: 15px;
 }
@@ -131,7 +130,7 @@ body {
     cursor: pointer;
     font-size: 14px;
     font-weight: 600;
-    color: var(--bg-white); 
+    color: var(--bg-white);
     border-radius: 10px;
     transition: background-color 0.3s;
 }
@@ -149,7 +148,7 @@ body {
     transition: all 0.2s;
     display: inline-block;
     width: 100%;
-    color: var(--gray-light); 
+    color: var(--gray-light);
     font-size: 13px;
     padding: 6px 10px;
     border-radius: 8px;
@@ -157,37 +156,35 @@ body {
 .filter-opt:hover { color: var(--bg-white); background-color: rgba(255,255,255,0.1); }
 .selected-filter .filter-opt { font-weight: 700; color: var(--bg-white); background-color: var(--blue-dark); padding-left: 15px;}
 
-/* UPDATE: Teks Judul Sidebar di Tengah */
-.side-box h4 { 
-    color: var(--bg-white) !important; 
-    margin-bottom: 15px; 
-    font-weight: 700; 
+.side-box h4 {
+    color: var(--bg-white) !important;
+    margin-bottom: 15px;
+    font-weight: 700;
     font-size: 15px;
-    text-align: center; /* Membuat "Kalender Akademik" & "Statistik Kategori" ke tengah */
+    text-align: center;
 }
 
-/* UPDATE: Memberi Jarak Tombol Reset dengan Kalender */
-.btn-reset { 
-    width: 100%; 
-    padding: 10px; /* Diperbesar sedikit agar nyaman di klik */
-    border-radius: 10px; 
-    border: none; 
-    background: var(--blue-dark); 
-    color: white; 
-    cursor: pointer; 
-    font-weight: 600; 
-    transition: 0.3s; 
-    margin-top: 25px; /* Ini memberikan jarak jauh dengan kalender di atasnya */
+.btn-reset {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: var(--blue-dark);
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    margin-top: 25px;
 }
 .btn-reset:hover { background-color: #1a3345; }
 
 /* ==========================================================
-   7. ITEMS GRID & CARDS 
+   7. ITEMS GRID & CARDS
    ========================================================== */
 .items-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 20px; align-items: start; }
 
 .item-card {
-    background: var(--bg-white); 
+    background: var(--bg-white);
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     border: 1px solid #eee;
@@ -195,7 +192,7 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: stretch; 
+    align-items: stretch;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .item-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
@@ -214,35 +211,34 @@ body {
 .btn-delete { width: 100%; padding: 12px; background: var(--blue-dark); color: white; border: none; font-weight: 600; cursor: pointer; transition: background 0.2s; font-size: 14px; }
 .btn-delete:hover { background: #1c3647; }
 
-/* =========================================
-   8. GAYA TAB / TOGGLE SWITCH 
-========================================= */
+/* ==========================================================
+   8. TAB BUTTONS
+   ========================================================== */
 .tab-container { display: flex; gap: 15px; margin-bottom: 20px; padding: 0; }
 
-.tab-btn { 
-    padding: 10px 20px; 
-    border: 2px solid transparent; 
-    background-color: var(--gray-light); 
-    color: var(--text-dark); 
-    border-radius: 8px; 
-    font-weight: 600; 
-    cursor: pointer; 
-    transition: all 0.3s; 
-    display: flex; 
-    align-items: center; 
-    gap: 8px; 
+.tab-btn {
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    background-color: var(--gray-light);
+    color: var(--text-dark);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 .tab-btn:hover { background-color: #c9c9c9; }
-
-.tab-btn.active { 
-    background-color: var(--blue-dark) !important; 
-    color: var(--bg-white) !important; 
-    border-color: var(--blue-dark) !important; 
+.tab-btn.active {
+    background-color: var(--blue-dark) !important;
+    color: var(--bg-white) !important;
+    border-color: var(--blue-dark) !important;
 }
 
-/* =========================================
-   DESAIN WIDGET KALENDER
-========================================= */
+/* ==========================================================
+   9. KALENDER
+   ========================================================== */
 .custom-calendar { background: #ffffff; border-radius: 10px; padding: 15px 10px; border: 1px solid #f1f5f9; }
 .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 10px; }
 .calendar-header h3 { margin: 0; font-size: 15px; font-weight: 500; color: var(--blue-dark); }
@@ -256,9 +252,9 @@ body {
 .calendar-day.selected { background-color: var(--blue-dark); color: white; font-weight: 500; }
 .calendar-day.today:not(.selected) { color: var(--teal-main); font-weight: 700; }
 
-/* =========================================
-   GAYA PROFIL DROPDOWN
-========================================= */
+/* ==========================================================
+   10. PROFIL DROPDOWN
+   ========================================================== */
 .profile-menu { position: relative; display: inline-block; }
 .profile-icon { background-color: var(--gray-light); color: var(--blue-dark); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-weight: bold; font-size: 18px; transition: 0.3s; }
 .profile-icon:hover { box-shadow: 0 0 10px rgba(0,0,0,0.2); background-color: #fff; }
@@ -269,16 +265,290 @@ body {
 .dropdown-content a:hover { background-color: var(--gray-light); }
 @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* =========================================
-   10. SWEETALERT OVERRIDES (POP-UP)
-   UPDATE: Ketebalan border diubah menjadi 4px
-========================================= */
+/* ==========================================================
+   11. SWEETALERT OVERRIDES
+   ========================================================== */
 .swal2-popup {
-    border: 4px solid var(--blue-dark) !important; 
+    border: 4px solid var(--blue-dark) !important;
     border-radius: 16px !important;
     box-shadow: 0 10px 30px rgba(40, 75, 99, 0.2) !important;
 }
 
-/* RESPONSIVE DESIGN */
-@media (max-width: 1024px) { body { padding: 15px 20px; } .main-container { flex-direction: column; } .sidebar { width: 100%; } .items-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); } }
-@media (max-width: 768px) { .search-section { flex-direction: column; gap: 15px; align-items: stretch; } .search-box { width: 100%; } .search-bar { width: 100%; } .header-title h1 { font-size: 18px; } }
+/* ==========================================================
+   RESPONSIVE — TABLET (max 1024px)
+   ========================================================== */
+@media (max-width: 1024px) {
+    body { padding: 15px 20px; }
+    .main-container { flex-direction: column; }
+    .sidebar { width: 100%; }
+    .items-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+}
+
+/* ==========================================================
+   RESPONSIVE — MOBILE & TABLET (max 768px)
+   ========================================================== */
+@media (max-width: 768px) {
+
+    body { padding: 10px 15px; }
+
+    /* NAVBAR */
+    .navbar {
+        padding: 8px 15px;
+        height: auto;
+        min-height: 60px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .header-title {
+        position: static;
+        transform: none;
+        order: 3;
+        width: 100%;
+        text-align: center;
+    }
+    .header-title h1 { font-size: 15px; }
+    .header-logo { height: 42px; }
+
+    /* WELCOME BANNER */
+    .welcome-banner {
+        padding: 15px 20px;
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    .welcome-text h2 { font-size: 18px; }
+    .welcome-text p  { font-size: 13px; }
+    .maskot-img { height: 80px; }
+
+    /* SEARCH SECTION */
+    .search-section {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    .search-title-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .search-title-group h3 { font-size: 15px; }
+    .action-buttons { flex-wrap: wrap; gap: 8px; }
+    .btn-add-page { font-size: 12px; padding: 8px 12px; }
+    .search-box { width: 100%; }
+    .search-bar { width: 100%; font-size: 13px; }
+
+    /* MAIN CONTAINER */
+    .main-container { flex-direction: column; gap: 15px; }
+
+    /* SIDEBAR */
+    .sidebar { width: 100%; flex-direction: column; gap: 12px; }
+
+    /* Sembunyikan kalender & statistik di mobile */
+    .sidebar .side-box:nth-child(2),
+    .sidebar .side-box:nth-child(3) { display: none; }
+
+    .side-box { padding: 10px; border-radius: 10px; }
+
+    /* Tree menu filter */
+    .tree-menu { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tree-menu li { margin-bottom: 0; }
+    .menu-label { padding: 8px 12px; font-size: 13px; border-radius: 8px; background: rgba(255,255,255,0.15); }
+    .sub-menu {
+        position: absolute;
+        background: var(--teal-main);
+        border-radius: 10px;
+        padding: 8px;
+        z-index: 100;
+        min-width: 140px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .category-container { position: relative; }
+
+    /* TAB BUTTONS */
+    .tab-container { gap: 8px; flex-wrap: wrap; }
+    .tab-btn { padding: 8px 12px; font-size: 12px; flex: 1; justify-content: center; min-width: 0; }
+
+    /* ITEM CARDS */
+    .items-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+    .card-img-container { height: 130px; }
+    .card-title { font-size: 14px; }
+    .card-desc { font-size: 12px; }
+    .btn-detail, .btn-delete { padding: 10px; font-size: 13px; }
+}
+
+/* ==========================================================
+   RESPONSIVE — HP KECIL (max 480px)
+   ========================================================== */
+@media (max-width: 480px) {
+
+    body { padding: 8px 10px; }
+
+    .navbar { padding: 8px 12px; }
+    .header-title h1 { font-size: 13px; }
+    .header-logo { height: 36px; }
+
+    .welcome-banner { padding: 12px 15px; }
+    .welcome-text h2 { font-size: 16px; }
+    .maskot-img { height: 60px; }
+
+    .items-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .card-img-container { height: 110px; }
+
+    .tab-btn { font-size: 11px; padding: 7px 8px; }
+}
+
+/* ==========================================================
+   RESPONSIVE FIX TAMBAHAN — FILTER, NAVBAR, CARD HEIGHT
+   ========================================================== */
+@media (max-width: 768px) {
+
+    /* ── NAVBAR: logo kiri, judul tengah, profil kanan sejajar ── */
+    .navbar {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-template-rows: 1fr;
+        align-items: center;
+        height: 64px;
+        padding: 0 15px;
+        gap: 0;
+    }
+    .brand-section {
+        grid-column: 1;
+        grid-row: 1;
+    }
+    .header-title {
+        grid-column: 2;
+        grid-row: 1;
+        position: static;
+        transform: none;
+        text-align: center;
+        white-space: normal;
+    }
+    .header-title h1 {
+        font-size: 13px;
+        line-height: 1.3;
+    }
+    .nav-controls {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    /* ── FILTER SIDEBAR: 3 tombol sejajar 1 baris, dropdown rapi ── */
+    .sidebar { width: 100%; }
+
+    .category-container {
+        padding: 10px;
+        position: static;
+    }
+
+    .tree-menu {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        flex-wrap: nowrap;
+    }
+
+    .tree-menu .menu-item {
+        flex: 1;
+        position: relative;
+        margin-bottom: 0;
+    }
+
+    .menu-label {
+        padding: 10px 8px;
+        font-size: 12px;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.15);
+        justify-content: center;
+        gap: 4px;
+        white-space: nowrap;
+    }
+
+    .icon-main { margin-right: 4px; font-size: 13px; }
+    .arrow { margin-left: 2px; }
+
+    /* Dropdown sub-menu muncul di bawah tombolnya */
+    .sub-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #284B63;
+        border-radius: 10px;
+        padding: 8px;
+        z-index: 200;
+        min-width: 130px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+        margin-top: 4px;
+        padding-left: 8px !important;
+    }
+
+    .filter-opt {
+        font-size: 12px;
+        padding: 7px 10px;
+        white-space: nowrap;
+    }
+
+    /* ── ACCORDION kalender & statistik di mobile ── */
+    .sidebar .side-box:nth-child(2),
+    .sidebar .side-box:nth-child(3) {
+        display: block; /* tampilkan kembali */
+        overflow: hidden;
+    }
+
+    .side-box-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        margin-bottom: 0;
+    }
+    .side-box-toggle .toggle-arrow {
+        transition: transform 0.3s;
+        font-size: 12px;
+    }
+    .side-box-toggle.open .toggle-arrow {
+        transform: rotate(180deg);
+    }
+
+    .side-box-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease;
+    }
+    .side-box-content.open {
+        max-height: 500px;
+    }
+
+    /* ── CARD BARANG: tinggi seragam ── */
+    .items-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0;
+        align-items: stretch;
+    }
+
+    .item-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .card-content {
+        flex: 1;
+    }
+
+    .card-img-container {
+        height: 120px;
+    }
+
+    .card-title {
+        font-size: 13px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .card-desc { font-size: 11px; }
+    .badge-kategori { font-size: 10px; }
+    .btn-detail, .btn-delete { padding: 10px; font-size: 12px; }
+}

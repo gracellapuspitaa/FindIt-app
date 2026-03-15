@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSidebarAccordion();
     setupSearch();
     setupCalendar(); 
-    setupProfileMenu(); 
+    setupProfileMenu();
+    initSideboxAccordionMobile(); // ← accordion kalender & statistik di mobile
 
     const welcomeUser = document.getElementById('welcomeUser');
     const savedName = localStorage.getItem("namaUser");
@@ -143,10 +144,8 @@ function renderCards(items) {
         const formatId = prefixId + String(idBarang).padStart(3, '0');
         const lokasi = isTemuan ? item.lokasi_temuan : item.lokasi_terakhir;
         
-        // UPDATE: Border atas Card dibuat seragam warnanya (Biru Dongker)
         let cardStyle = "border-top: 4px solid #284B63;"; 
         
-        // UPDATE: Warna seragam (Biru Dongker / Teal) tanpa sisa merah/ungu
         const badgeBg = "#f1f5f9"; 
         const badgeColor = "#284B63"; 
         const locColor = "#3C6E71"; 
@@ -164,7 +163,6 @@ function renderCards(items) {
         }
 
         const card = document.createElement('div');
-        // UPDATE: Menghapus class tambahan yang mungkin memicu style khusus dari CSS lama
         card.className = `item-card`; 
         card.style = cardStyle;
         card.innerHTML = `
@@ -675,5 +673,58 @@ function updateDiagramKategori() {
                 }
             }
         }
+    });
+}
+
+// ==========================================
+// ACCORDION KALENDER & STATISTIK DI MOBILE
+// Hanya aktif di layar <= 768px
+// ==========================================
+function initSideboxAccordionMobile() {
+    if (window.innerWidth > 768) return;
+
+    const sideBoxes = document.querySelectorAll('.sidebar .side-box:nth-child(2), .sidebar .side-box:nth-child(3)');
+
+    sideBoxes.forEach(box => {
+        const title = box.querySelector('h4');
+        if (!title || title.dataset.accordionInit) return;
+
+        title.dataset.accordionInit = 'true';
+        title.style.cursor = 'pointer';
+        title.style.marginBottom = '0';
+        title.style.display = 'flex';
+        title.style.justifyContent = 'space-between';
+        title.style.alignItems = 'center';
+
+        // Tambah ikon panah
+        const arrow = document.createElement('i');
+        arrow.className = 'fas fa-chevron-down';
+        arrow.style.transition = 'transform 0.3s';
+        arrow.style.fontSize = '12px';
+        title.appendChild(arrow);
+
+        // Bungkus semua konten (selain title) dalam div collapsible
+        const content = document.createElement('div');
+        content.style.maxHeight = '0';
+        content.style.overflow = 'hidden';
+        content.style.transition = 'max-height 0.4s ease, margin-top 0.3s';
+
+        const children = Array.from(box.children).filter(el => el !== title);
+        children.forEach(child => content.appendChild(child));
+        box.appendChild(content);
+
+        // Toggle buka/tutup saat klik judul
+        title.addEventListener('click', () => {
+            const isOpen = content.style.maxHeight !== '0px' && content.style.maxHeight !== '';
+            if (isOpen) {
+                content.style.maxHeight = '0';
+                content.style.marginTop = '0';
+                arrow.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.maxHeight = '600px';
+                content.style.marginTop = '12px';
+                arrow.style.transform = 'rotate(180deg)';
+            }
+        });
     });
 }
