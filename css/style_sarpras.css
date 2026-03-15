@@ -311,3 +311,51 @@ body { display: flex; height: 100vh; background-color: var(--bg-main); color: va
 .info-card h4 { margin-bottom: 15px; color: var(--blue-dark); font-size: 15px; border-bottom: 2px solid var(--teal-main); display: inline-block; padding-bottom: 4px; font-weight: 700;}
 .info-list p { font-size: 14px; margin-bottom: 10px; line-height: 1.5; color: var(--text-dark);}
 .info-list strong { color: var(--blue-dark); display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+
+/* ==========================================================
+   RESPONSIVE DESIGN (MOBILE & TABLET)
+   ========================================================== */
+@media (max-width: 992px) {
+    /* Menyesuaikan grid statistik jadi 2 kolom di tablet */
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+    /* 1. Mengubah struktur utama agar bisa di-scroll ke bawah */
+    body { flex-direction: column; overflow-y: auto; }
+    
+    /* 2. Sidebar diubah menjadi menu horizontal di atas atau disembunyikan */
+    .admin-sidebar { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; justify-content: center; padding: 10px 0; }
+    .sidebar-brand { width: 100%; justify-content: center; border-bottom: none; padding: 10px; }
+    .sidebar-menu { display: flex; width: 100%; overflow-x: auto; padding: 0 10px; gap: 10px; }
+    .sidebar-menu li { padding: 8px 15px; border-left: none; border-bottom: 3px solid transparent; font-size: 13px; white-space: nowrap; border-radius: 8px; }
+    .sidebar-menu li.active { border-bottom-color: transparent; background-color: white; color: var(--teal-main); }
+    
+    /* 3. Header & Pencarian disesuaikan ukurannya */
+    .admin-header { flex-direction: column; gap: 15px; padding: 15px; position: static; }
+    .header-search { width: 100%; }
+    .header-profile { width: 100%; justify-content: flex-end; }
+    
+    /* 4. Konten Utama */
+    .admin-main { overflow-y: visible; }
+    .content-section { padding: 15px; }
+    .welcome-banner-admin { flex-direction: column; text-align: center; gap: 15px; padding: 20px 15px; }
+    .welcome-banner-admin i { display: none; /* Sembunyikan ikon besar di HP */ }
+    
+    /* 5. Grid Statistik & Chart jadi 1 kolom berderet ke bawah */
+    .stats-grid { grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
+    .charts-grid { grid-template-columns: 1fr; }
+    .chart-container, .chart-container.full-width { height: 300px; padding: 15px; }
+    
+    /* 6. Header Tabel & Filter Tombol */
+    .section-header { flex-direction: column; align-items: stretch !important; gap: 10px; }
+    .action-group { flex-direction: column; width: 100%; }
+    .action-group button { width: 100%; }
+    .admin-filter-group { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 5px; }
+    .filter-btn { white-space: nowrap; }
+    
+    /* 7. Modal Detail (Memecah 2 kolom jadi 1 kolom di HP) */
+    .modal-content.large { width: 95%; margin: 20px auto; }
+    .modal-body.split-view { grid-template-columns: 1fr; gap: 15px; }
+    .detail-img-box { height: 200px !important; }
+}
