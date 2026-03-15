@@ -35,6 +35,27 @@
             background-color: #6c757d !important;
             margin-top: 5px;
         }
+
+        /* Fix mobile */
+        @media (max-width: 600px) {
+            .welcome-content {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+            }
+
+            .welcome-title {
+                font-size: 26px;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 
