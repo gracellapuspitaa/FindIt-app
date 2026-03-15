@@ -1,20 +1,16 @@
 :root {
-    /* Palet Warna Spesifik (Tema Baru) */
-    --charcoal: #353535;   /* Teks utama */
-    --teal: #3C6E71;       /* Aksen / Hover */
-    --white: #FFFFFF;      /* BG Form */
-    --silver: #D9D9D9;     /* Border / Garis */
-    --navy: #284B63;       /* DOMINAN / Tombol / Latar Body */
-
-    /* Penggunaan Tema (Agar Biru Dominan) */
-    --bg-body: var(--navy);       /* Latar belakang halaman dominan navy */
-    --form-bg: var(--white);      /* Kontainer form tetap putih bersih */
+    --charcoal: #353535;
+    --teal: #3C6E71;
+    --white: #FFFFFF;
+    --silver: #D9D9D9;
+    --navy: #284B63;
+    --bg-body: var(--navy);
+    --form-bg: var(--white);
     --text-color: var(--charcoal);
-    --primary-color: var(--navy); /* Warna primer untuk elemen penting */
-    --accent-hover: var(--teal);   /* Warna aksen saat hover */
+    --primary-color: var(--navy);
+    --accent-hover: var(--teal);
 }
 
-/* UPDATE: Menerapkan font Outfit ke seluruh halaman */
 body {
     background-color: var(--bg-body);
     font-family: 'Outfit', sans-serif; 
@@ -29,9 +25,9 @@ body {
     background: var(--form-bg);
     width: 100%;
     max-width: 700px;
-    border-radius: 35px; /* Radius besar agar modern */
+    border-radius: 35px;
     padding: 50px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.2); /* Shadow lebih dalam karena BG gelap */
+    box-shadow: 0 25px 60px rgba(0,0,0,0.2);
 }
 
 .form-header {
@@ -40,7 +36,7 @@ body {
     justify-content: center;
     position: relative;
     margin-bottom: 45px;
-    border-bottom: 2px solid var(--silver); /* Garis pemisah abu-abu */
+    border-bottom: 2px solid var(--silver);
     padding-bottom: 20px;
 }
 
@@ -72,13 +68,12 @@ body {
 }
 
 .form-header p {
-    display: none; /* Menyembunyikan sub-teks jika ada agar header sejajar */
+    display: none;
 }
 
-/* UPLOAD BOX (Biru Navy & Teal) */
 .photo-box {
-    background: #f8f9fa; /* Latar tipis abu-abu */
-    border: 3px dashed var(--primary-color); /* Border putus-putus navy */
+    background: #f8f9fa;
+    border: 3px dashed var(--primary-color);
     border-radius: 20px;
     padding: 45px;
     text-align: center;
@@ -88,8 +83,8 @@ body {
 }
 
 .photo-box:hover {
-    border-color: var(--accent-hover); /* Berubah teal saat hover */
-    background: #eff6f6; /* Warna BG hover tipis */
+    border-color: var(--accent-hover);
+    background: #eff6f6;
     transform: translateY(-4px);
 }
 
@@ -113,15 +108,12 @@ body {
     color: #666;
 }
 
-/* INPUT & GRID */
 .input-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
     margin-bottom: 30px;
 }
-
-@media (max-width: 600px) { .input-grid { grid-template-columns: 1fr; } }
 
 .input-group { 
     display: flex; 
@@ -138,9 +130,9 @@ body {
 
 input, textarea, select {
     padding: 16px 20px;
-    border: 2px solid var(--silver); /* Border abu-abu */
+    border: 2px solid var(--silver);
     border-radius: 15px;
-    font-family: 'Outfit', sans-serif; /* Pastikan input pakai Outfit */
+    font-family: 'Outfit', sans-serif;
     font-size: 14px;
     outline: none;
     transition: 0.3s;
@@ -154,13 +146,11 @@ input::placeholder, textarea::placeholder {
     color: #999;
 }
 
-/* Fokus input menggunakan Navy */
 input:focus, textarea:focus, select:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 4px rgba(40, 75, 99, 0.1);
 }
 
-/* CUSTOM DROPDOWN (Biru Navy) */
 .custom-select { position: relative; width: 100%; user-select: none;}
 
 .select-button {
@@ -223,14 +213,12 @@ input:focus, textarea:focus, select:focus {
     color: var(--charcoal);
 }
 
-/* Hover di dropdown menjadi Navy */
 .dropdown-list div:hover { 
     background: var(--primary-color); 
     color: white; 
     font-weight: 600;
 }
 
-/* MODERN RADIO BUTTONS (Navy & Teal) */
 .options-row { display: flex; gap: 15px; margin-top: 5px; }
 .radio-option { flex: 1; cursor: pointer; }
 .radio-option input { display: none; }
@@ -239,7 +227,7 @@ input:focus, textarea:focus, select:focus {
     align-items: center;
     justify-content: center;
     padding: 16px;
-    background: var(--silver); /* Latar abu-abu default */
+    background: var(--silver);
     border-radius: 15px;
     font-size: 14px;
     font-weight: 600;
@@ -248,25 +236,21 @@ input:focus, textarea:focus, select:focus {
     border: 2px solid transparent;
 }
 
-/* Saat aktif menjadi Navy */
 .radio-option input:checked + span {
     background: var(--primary-color);
     color: white;
     box-shadow: 0 4px 15px rgba(40, 75, 99, 0.25);
 }
 
-/* Saat hover di perbatasan radio */
 .radio-option:hover span {
     border-color: var(--primary-color);
 }
 
-/* Animasi untuk field Atas Nama */
 #fieldNama { animation: slideDown 0.3s ease-out forwards; }
 
-/* SUBMIT BUTTON (Dominan Navy, Hover Teal) */
 .btn-submit {
     width: 100%;
-    background: var(--primary-color); /* Navy */
+    background: var(--primary-color);
     color: white;
     border: none;
     padding: 22px;
@@ -282,9 +266,8 @@ input:focus, textarea:focus, select:focus {
     gap: 10px;
 }
 
-/* Hover Submit menjadi Teal */
 .btn-submit:hover {
-    background: var(--accent-hover); /* Teal */
+    background: var(--accent-hover);
     transform: translateY(-4px);
     box-shadow: 0 15px 35px rgba(60, 110, 113, 0.3);
 }
@@ -293,9 +276,6 @@ input:focus, textarea:focus, select:focus {
     transform: scale(0.97);
 }
 
-/* ==========================================================
-   SWEETALERT OVERRIDES (POP-UP) - Menyamakan dengan Dashboard
-   ========================================================== */
 .swal2-popup {
     border: 4px solid var(--primary-color) !important; 
     border-radius: 16px !important;
@@ -303,7 +283,7 @@ input:focus, textarea:focus, select:focus {
     font-family: 'Outfit', sans-serif !important;
 }
 .swal2-confirm { 
-    background-color: var(--accent-hover) !important; /* Hijau Teal */
+    background-color: var(--accent-hover) !important;
     border-radius: 10px !important;
     font-family: 'Outfit', sans-serif !important;
     font-weight: 600 !important;
@@ -312,4 +292,121 @@ input:focus, textarea:focus, select:focus {
     border-radius: 10px !important;
     font-family: 'Outfit', sans-serif !important;
     font-weight: 600 !important;
+}
+
+/* ==========================================================
+   RESPONSIVE — TABLET (max 768px)
+   ========================================================== */
+@media (max-width: 768px) {
+
+    body { padding: 20px 15px; }
+
+    .form-container {
+        padding: 30px 25px;
+        border-radius: 24px;
+    }
+
+    .form-header {
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .btn-back {
+        position: static;
+    }
+
+    .form-header h1 {
+        font-size: 20px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .header-teks {
+        text-align: center;
+        width: 100%;
+    }
+
+    .header-teks p {
+        display: block;
+        font-size: 13px;
+        color: #666;
+        margin-top: 4px;
+    }
+
+    .photo-box {
+        padding: 30px 20px;
+        margin-bottom: 25px;
+    }
+
+    .input-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .input-group { margin-bottom: 18px; }
+
+    input, textarea, .select-button {
+        padding: 13px 16px;
+        font-size: 14px;
+    }
+
+    .options-row { gap: 10px; }
+
+    .radio-option span {
+        padding: 12px 8px;
+        font-size: 13px;
+    }
+
+    .btn-submit {
+        padding: 18px;
+        font-size: 15px;
+        margin-top: 25px;
+    }
+}
+
+/* ==========================================================
+   RESPONSIVE — HP KECIL (max 480px)
+   ========================================================== */
+@media (max-width: 480px) {
+
+    body { padding: 0; }
+
+    .form-container {
+        padding: 24px 18px;
+        border-radius: 0;
+        box-shadow: none;
+        min-height: 100vh;
+    }
+
+    .form-header h1 { font-size: 18px; }
+
+    .photo-box {
+        padding: 24px 15px;
+        border-radius: 14px;
+    }
+
+    .photo-box i { font-size: 2rem !important; }
+
+    input, textarea, .select-button {
+        padding: 12px 14px;
+        font-size: 13px;
+        border-radius: 12px;
+    }
+
+    .dropdown-list div { padding: 10px 14px; font-size: 13px; }
+
+    .radio-option span {
+        padding: 11px 6px;
+        font-size: 12px;
+        border-radius: 12px;
+    }
+
+    .btn-submit {
+        padding: 16px;
+        font-size: 14px;
+        border-radius: 14px;
+    }
 }
