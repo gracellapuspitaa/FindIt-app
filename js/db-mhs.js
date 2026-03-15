@@ -207,10 +207,11 @@ function renderCards(items) {
     });
 }
 
+// PERBAIKAN: Tombol Selesai sekarang melakukan UPDATE (bukan DELETE)
 window.hapusLaporanKu = function(id, tabelAsal) {
     Swal.fire({
         title: 'Tandai Selesai?',
-        text: "Laporan ini akan dihapus dari sistem secara permanen.",
+        text: "Laporan ini akan ditandai sebagai Selesai (Case Closed) dan diarsipkan dari tampilan utama.",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3C6E71', 
@@ -218,20 +219,22 @@ window.hapusLaporanKu = function(id, tabelAsal) {
         confirmButtonText: 'Ya, Sudah Selesai!'
     }).then(async (result) => {
         if (result.isConfirmed) {
-            Swal.fire({ title: 'Menghapus...', didOpen: () => { Swal.showLoading() }});
+            Swal.fire({ title: 'Memproses...', didOpen: () => { Swal.showLoading() }});
             
-            const tabelSupabase = tabelAsal === 'temuan' ? 'items' : 'barang_hilang';
-            const kolomId = tabelAsal === 'temuan' ? 'id_item' : 'id_hilang';
+            const isTemuan = tabelAsal === 'temuan';
+            const tabelSupabase = isTemuan ? 'items' : 'barang_hilang';
+            const kolomId = isTemuan ? 'id_item' : 'id_hilang';
+            const dataUpdate = isTemuan ? { status_lokasi: 'Sudah Dikembalikan' } : { status: 'Case Closed' };
 
             const { error } = await supabaseClient
                 .from(tabelSupabase)
-                .delete()
+                .update(dataUpdate)
                 .eq(kolomId, id);
 
             if (error) {
-                Swal.fire('Error!', 'Gagal menghapus laporan.', 'error');
+                Swal.fire('Error!', 'Gagal menyelesaikan laporan.', 'error');
             } else {
-                Swal.fire('Berhasil!', 'Laporan telah diselesaikan dan dihapus.', 'success');
+                Swal.fire('Berhasil!', 'Laporan telah diselesaikan dan diarsipkan.', 'success');
                 fetchItems(); 
             }
         }
@@ -636,18 +639,16 @@ function setupProfileMenu() {
     });
 }
 
+// PERBAIKAN: Fungsi grafik yang akurat ke database dan warna teks diperbaiki
 function updateDiagramKategori() {
     const ctx = document.getElementById('kategoriChart');
     if (!ctx) return;
 
-    const catCounts = { 'Elektronik': 0, 'Pakaian': 0, 'Perhiasan': 0, 'Dokumen': 0, 'Lain-lain': 0 };
+    const catCounts = { 'Elektronik': 0, 'Dokumen': 0, 'Aksesoris': 0, 'Perlengkapan': 0 };
     const semuaDataAktif = [...allDataBarang, ...allDataHilang];
     
     semuaDataAktif.forEach(item => {
         let kat = item.kategori;
-        if(kat === 'Aksesoris') kat = 'Perhiasan';
-        if(kat === 'Perlengkapan') kat = 'Lain-lain';
-
         if(kat) {
             if(catCounts[kat] !== undefined) {
                 catCounts[kat]++;
@@ -664,7 +665,7 @@ function updateDiagramKategori() {
     const chartData = totalData === 0 ? [1] : dataValues;
     const chartLabels = totalData === 0 ? ['Belum ada data'] : labels;
     
-    const chartColors = totalData === 0 ? ['#e2e8f0'] : ['#F4B41A', '#D9363E', '#284B63', '#A3A3A3', '#518545'];
+    const chartColors = totalData === 0 ? ['#e2e8f0'] : ['#3C6E71', '#284B63', '#F4B41A', '#A3A3A3', '#64748b'];
 
     if (myKategoriChart) {
         myKategoriChart.destroy();
@@ -691,11 +692,13 @@ function updateDiagramKategori() {
                         boxWidth: 10,
                         padding: 10,
                         font: { size: 10, family: 'Outfit' },
-                        color: '#FFFFFF' 
+                        color: '#353535' 
                     }
                 },
                 tooltip: {
-                    enabled: totalData !== 0 
+                    enabled: totalData !== 0,
+                    titleFont: { family: 'Outfit' },
+                    bodyFont: { family: 'Outfit' }
                 }
             }
         }
@@ -704,7 +707,6 @@ function updateDiagramKategori() {
 
 // ==========================================
 // ACCORDION KALENDER & STATISTIK DI MOBILE
-// Hanya aktif di layar <= 768px
 // ==========================================
 function initSideboxAccordionMobile() {
     if (window.innerWidth > 768) return;
@@ -722,14 +724,12 @@ function initSideboxAccordionMobile() {
         title.style.justifyContent = 'space-between';
         title.style.alignItems = 'center';
 
-        // Tambah ikon panah
         const arrow = document.createElement('i');
         arrow.className = 'fas fa-chevron-down';
         arrow.style.transition = 'transform 0.3s';
         arrow.style.fontSize = '12px';
         title.appendChild(arrow);
 
-        // Bungkus semua konten (selain title) dalam div collapsible
         const content = document.createElement('div');
         content.style.maxHeight = '0';
         content.style.overflow = 'hidden';
@@ -739,7 +739,6 @@ function initSideboxAccordionMobile() {
         children.forEach(child => content.appendChild(child));
         box.appendChild(content);
 
-        // Toggle buka/tutup saat klik judul
         title.addEventListener('click', () => {
             const isOpen = content.style.maxHeight !== '0px' && content.style.maxHeight !== '';
             if (isOpen) {
