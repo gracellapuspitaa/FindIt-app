@@ -24,12 +24,38 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSearch();
     setupCalendar(); 
     setupProfileMenu();
-    initSideboxAccordionMobile(); // ← accordion kalender & statistik di mobile
+    initSideboxAccordionMobile();
 
+    // ── MODE TAMU ──
+    const isGuest = localStorage.getItem("isGuest") === "true";
     const welcomeUser = document.getElementById('welcomeUser');
     const savedName = localStorage.getItem("namaUser");
-    if (welcomeUser) {
-        welcomeUser.innerHTML = savedName ? `Hello, ${savedName} 👋` : `Hello, Nawasena! 👋`;
+
+    if (isGuest) {
+        // Sembunyikan tombol lapor temuan & lapor kehilangan
+        const actionButtons = document.querySelector('.action-buttons');
+        if (actionButtons) actionButtons.style.display = 'none';
+
+        // Sembunyikan tab "Laporan Saya"
+        const tabLaporanku = document.getElementById('tabLaporanku');
+        if (tabLaporanku) tabLaporanku.style.display = 'none';
+
+        // Sembunyikan profil dropdown (tamu tidak punya akun)
+        const profileMenu = document.querySelector('.profile-menu');
+        if (profileMenu) {
+            profileMenu.innerHTML = `
+                <a href="login.html" 
+                   style="background:#284B63; color:white; padding:8px 16px; border-radius:20px; text-decoration:none; font-size:13px; font-weight:600;">
+                   Login
+                </a>`;
+        }
+
+        if (welcomeUser) welcomeUser.innerHTML = 'Halo, Tamu! 👀';
+
+    } else {
+        if (welcomeUser) {
+            welcomeUser.innerHTML = savedName ? `Hello, ${savedName} 👋` : `Hello, Nawasena! 👋`;
+        }
     }
 });
 
