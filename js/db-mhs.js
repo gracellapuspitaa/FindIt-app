@@ -640,6 +640,7 @@ function setupProfileMenu() {
 }
 
 // PERBAIKAN: Fungsi grafik yang akurat ke database dan warna teks diperbaiki
+// PERBAIKAN: Fungsi grafik dengan warna kontras dan tidak menyatu dengan background
 function updateDiagramKategori() {
     const ctx = document.getElementById('kategoriChart');
     if (!ctx) return;
@@ -665,7 +666,11 @@ function updateDiagramKategori() {
     const chartData = totalData === 0 ? [1] : dataValues;
     const chartLabels = totalData === 0 ? ['Belum ada data'] : labels;
     
-    const chartColors = totalData === 0 ? ['#e2e8f0'] : ['#3C6E71', '#284B63', '#F4B41A', '#A3A3A3', '#64748b'];
+    // PERBAIKAN WARNA: 
+    // Menggunakan warna yang lebih gelap/tegas agar mencolok di background putih
+    const chartColors = totalData === 0 
+        ? ['#94A3B8'] // Slate/Abu-abu gelap untuk state "Belum ada data"
+        : ['#3C6E71', '#284B63', '#F4B41A', '#E07A5F', '#81B29A']; // Warna solid untuk data aktif
 
     if (myKategoriChart) {
         myKategoriChart.destroy();
@@ -678,7 +683,8 @@ function updateDiagramKategori() {
             datasets: [{
                 data: chartData,
                 backgroundColor: chartColors,
-                borderWidth: 0
+                borderWidth: 2, // Tambahan border agar batas antar warna lebih jelas
+                borderColor: '#FFFFFF'
             }]
         },
         options: {
@@ -692,7 +698,7 @@ function updateDiagramKategori() {
                         boxWidth: 10,
                         padding: 10,
                         font: { size: 10, family: 'Outfit' },
-                        color: '#353535' 
+                        color: '#2b2b2b' // Teks lebih gelap lagi agar sangat kontras
                     }
                 },
                 tooltip: {
