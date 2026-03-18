@@ -759,3 +759,76 @@ function initSideboxAccordionMobile() {
         });
     });
 }
+
+// ==========================================
+// FUNGSI FILTER YANG SUDAH KEBAL HURUF BESAR/KECIL
+// ==========================================
+function terapkanSemuaFilter() {
+    let dataSumber = [];
+    
+    if (currentTab === 'temuan') {
+        dataSumber = allDataBarang;
+    } else if (currentTab === 'hilang') {
+        dataSumber = allDataHilang;
+    } else if (currentTab === 'laporanku') {
+        let myTemuan = allDataBarang.filter(i => i.nim_pengupload === savedNim);
+        let myHilang = allDataHilang.filter(i => i.nim_pengupload === savedNim);
+        dataSumber = [...myTemuan, ...myHilang]; 
+    }
+
+    let hasilFilter = dataSumber;
+
+    // Filter Pencarian Teks
+    if (pencarianAktif !== "") {
+        hasilFilter = hasilFilter.filter(item => {
+            const semuaInfoBarang = Object.values(item).join(" ").toLowerCase();
+            return semuaInfoBarang.includes(pencarianAktif);
+        });
+    }
+
+    // Filter Kategori dari Sidebar
+    for (const [kategoriUtama, daftarPilihan] of Object.entries(filterAktif)) {
+        if (daftarPilihan.length > 0) {
+            hasilFilter = hasilFilter.filter(item => {
+                let isTemu = item.tabel_asal === 'temuan';
+                
+                if (kategoriUtama === 'Fakultas') {
+                    // Ambil lokasi (FASILITAS UMUM dari database)
+                    let loc = isTemu ? item.lokasi_temuan : item.lokasi_terakhir;
+                    
+                    // KUNCI PERBAIKAN: Ubah semuanya jadi huruf besar!
+                    let locUpper = loc ? loc.toUpperCase() : "";
+                    let pilihanUpper = daftarPilihan.map(p => p.toUpperCase());
+                    
+                    // Sekarang "FASILITAS UMUM" dari sidebar PASTI COCOK dengan "FASILITAS UMUM" dari database
+                    return pilihanUpper.includes(locUpper);
+                }
+                
+                if (kategoriUtama === 'Jenis Barang' && isTemu) {
+                    return daftarPilihan.includes(item.jenis_barang);
+                }
+                
+                if (kategoriUtama === 'Kategori') {
+                    return daftarPilihan.includes(item.kategori);
+                }
+                
+                return true;
+            });
+        }
+    }
+
+    // Filter Kalender
+    if (selectedDate !== null) {
+        hasilFilter = hasilFilter.filter(item => {
+            let targetDateStr = item.tabel_asal === 'temuan' ? item.created_at : item.tanggal_hilang;
+            if (!targetDateStr) return false;
+            
+            let itemDate = new Date(targetDateStr);
+            return itemDate.getFullYear() === selectedDate.getFullYear() &&
+                   itemDate.getMonth() === selectedDate.getMonth() &&
+                   itemDate.getDate() === selectedDate.getDate();
+        });
+    }
+
+    renderCards(hasilFilter);
+}
